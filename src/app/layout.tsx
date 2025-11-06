@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
 	title: "Compile Strength",
-	description: "Stronger each day, one rep at a time.",
+	description: "Compile your strongest version.",
 };
 
 export default function RootLayout({
