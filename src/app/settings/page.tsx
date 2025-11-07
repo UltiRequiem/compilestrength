@@ -5,11 +5,13 @@ import {
 	CreditCard,
 	Download,
 	Link as LinkIcon,
+	Loader2,
 	Palette,
 	Shield,
 	Trash2,
 	User,
 } from "lucide-react";
+import { useRequireAuth } from "@/lib/auth-client";
 import { Sidebar } from "@/components/dashboard/sidebar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -18,6 +20,19 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 export default function SettingsPage() {
+	const { session, isPending } = useRequireAuth();
+
+	if (isPending) {
+		return (
+			<div className="flex min-h-screen items-center justify-center">
+				<Loader2 className="h-8 w-8 animate-spin text-primary" />
+			</div>
+		);
+	}
+
+	if (!session) {
+		return null;
+	}
 	return (
 		<div className="flex min-h-screen">
 			<Sidebar />

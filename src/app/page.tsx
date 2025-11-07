@@ -11,8 +11,10 @@ import { Sidebar } from "@/components/dashboard/sidebar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { requireAuth } from "@/lib/auth-utils";
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+	const session = await requireAuth();
 	const today = new Date().toLocaleDateString("en-US", {
 		weekday: "long",
 		year: "numeric",
@@ -70,7 +72,9 @@ export default function DashboardPage() {
 				<div className="grid-background min-h-screen p-8">
 					{/* Welcome Header */}
 					<div className="mb-8">
-						<h1 className="text-3xl font-bold">Welcome back, John</h1>
+						<h1 className="text-3xl font-bold">
+							Welcome back, {session.user.name.split(" ")[0]}
+						</h1>
 						<p className="text-muted-foreground">{today}</p>
 					</div>
 

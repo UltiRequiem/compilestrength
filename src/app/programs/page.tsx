@@ -4,19 +4,34 @@ import {
 	ChevronDown,
 	ChevronUp,
 	Download,
+	Loader2,
 	Play,
 	RefreshCw,
 	Save,
 } from "lucide-react";
 import { useState } from "react";
+import { useRequireAuth } from "@/lib/auth-client";
 import { Sidebar } from "@/components/dashboard/sidebar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function ProgramsPage() {
+	const { session, isPending } = useRequireAuth();
 	const [activeWeek, setActiveWeek] = useState(1);
 	const [expandedDay, setExpandedDay] = useState<number | null>(null);
+
+	if (isPending) {
+		return (
+			<div className="flex min-h-screen items-center justify-center">
+				<Loader2 className="h-8 w-8 animate-spin text-primary" />
+			</div>
+		);
+	}
+
+	if (!session) {
+		return null;
+	}
 
 	const program = {
 		name: "Powerlifting Coach's 4-Day Upper/Lower Split",
