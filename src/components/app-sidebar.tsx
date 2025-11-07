@@ -12,6 +12,7 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 	SidebarHeader,
+	SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { Home, Zap, Bug, GitCommit } from "lucide-react";
 
@@ -28,9 +29,12 @@ export function AppSidebar() {
 	return (
 		<Sidebar collapsible="icon">
 			<SidebarHeader>
-				<div className="flex items-center gap-2 px-2 py-1">
-					<Zap className="h-6 w-6" />
-					<span className="font-bold text-lg">Compile Strength</span>
+				<div className="flex items-center justify-between gap-2 px-2 py-1">
+					<div className="flex items-center gap-2">
+						<Zap className="h-6 w-6" />
+						<span className="font-bold text-lg">Compile Strength</span>
+					</div>
+					<SidebarTrigger />
 				</div>
 			</SidebarHeader>
 			<SidebarContent>
