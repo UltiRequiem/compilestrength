@@ -5,12 +5,14 @@ import {
 	Circle,
 	Clock,
 	Edit,
+	Loader2,
 	Pause,
 	Play,
 	Plus,
 	X,
 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useRequireAuth } from "@/lib/auth-client";
 import { Sidebar } from "@/components/dashboard/sidebar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -24,6 +26,7 @@ const formatTime = (seconds: number) => {
 };
 
 export default function LogWorkoutPage() {
+	const { session, isPending } = useRequireAuth();
 	const [elapsedTime, setElapsedTime] = useState(0);
 	const [isRunning, setIsRunning] = useState(true);
 	const [restTimer, setRestTimer] = useState<number | null>(null);
@@ -89,6 +92,18 @@ export default function LogWorkoutPage() {
 		setRestTimer(seconds);
 		setIsResting(true);
 	};
+
+	if (isPending) {
+		return (
+			<div className="flex min-h-screen items-center justify-center">
+				<Loader2 className="h-8 w-8 animate-spin text-primary" />
+			</div>
+		);
+	}
+
+	if (!session) {
+		return null;
+	}
 
 	return (
 		<div className="flex min-h-screen">

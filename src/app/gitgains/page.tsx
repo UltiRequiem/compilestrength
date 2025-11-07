@@ -5,15 +5,30 @@ import {
 	Award,
 	Calendar,
 	Download,
+	Loader2,
 	Star,
 	TrendingUp,
 } from "lucide-react";
+import { useRequireAuth } from "@/lib/auth-client";
 import { Sidebar } from "@/components/dashboard/sidebar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function GitGainsPage() {
+	const { session, isPending } = useRequireAuth();
+
+	if (isPending) {
+		return (
+			<div className="flex min-h-screen items-center justify-center">
+				<Loader2 className="h-8 w-8 animate-spin text-primary" />
+			</div>
+		);
+	}
+
+	if (!session) {
+		return null;
+	}
 	const commits = [
 		{
 			id: 1,

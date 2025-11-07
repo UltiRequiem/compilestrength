@@ -11,10 +11,11 @@ import {
 	Wrench,
 } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useSession, signOut } from "@/lib/auth-client";
 
 const navigation = [
 	{ name: "Dashboard", href: "/", icon: Home },
@@ -28,6 +29,22 @@ const navigation = [
 
 export function Sidebar() {
 	const pathname = usePathname();
+	const router = useRouter();
+	const { data: session, isPending } = useSession();
+
+	const handleLogout = async () => {
+		await signOut();
+		router.push("/login");
+	};
+
+	const getInitials = (name: string) => {
+		return name
+			.split(" ")
+			.map((n) => n[0])
+			.join("")
+			.toUpperCase()
+			.slice(0, 2);
+	};
 
 	return (
 		<aside className="fixed left-0 top-0 z-40 h-screen w-64 border-r border-sidebar-border bg-sidebar">
@@ -71,28 +88,49 @@ export function Sidebar() {
 
 				{/* User Profile */}
 				<div className="border-t border-sidebar-border p-4">
-					<div className="flex items-center gap-3 rounded-md bg-sidebar-accent p-3">
-						<div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground">
-							<span className="text-sm font-semibold">JD</span>
-						</div>
-						<div className="flex-1 min-w-0">
-							<div className="flex items-center gap-2">
-								<p className="truncate text-sm font-medium">John Doe</p>
-								<Badge className="bg-primary text-[10px] px-1.5 py-0">
-									Pro
-								</Badge>
+					{isPending ? (
+						<div className="flex items-center gap-3 rounded-md bg-sidebar-accent p-3">
+							<div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/50 text-primary-foreground animate-pulse">
+								<span className="text-sm font-semibold">...</span>
 							</div>
-							<p className="text-xs text-muted-foreground">john@example.com</p>
+							<div className="flex-1 min-w-0">
+								<div className="h-4 bg-primary/20 rounded w-24 mb-2"></div>
+								<div className="h-3 bg-primary/10 rounded w-32"></div>
+							</div>
 						</div>
-					</div>
-					<Button
-						variant="ghost"
-						className="mt-2 w-full justify-start text-sm"
-						size="sm"
-					>
-						<LogOut className="h-4 w-4" />
-						Logout
-					</Button>
+					) : session?.user ? (
+						<>
+							<div className="flex items-center gap-3 rounded-md bg-sidebar-accent p-3">
+								<div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground">
+									<span className="text-sm font-semibold">
+										{getInitials(session.user.name)}
+									</span>
+								</div>
+								<div className="flex-1 min-w-0">
+									<div className="flex items-center gap-2">
+										<p className="truncate text-sm font-medium">
+											{session.user.name}
+										</p>
+										<Badge className="bg-primary text-[10px] px-1.5 py-0">
+											Pro
+										</Badge>
+									</div>
+									<p className="text-xs text-muted-foreground truncate">
+										{session.user.email}
+									</p>
+								</div>
+							</div>
+							<Button
+								variant="ghost"
+								className="mt-2 w-full justify-start text-sm"
+								size="sm"
+								onClick={handleLogout}
+							>
+								<LogOut className="h-4 w-4" />
+								Logout
+							</Button>
+						</>
+					) : null}
 				</div>
 			</div>
 		</aside>
