@@ -24,6 +24,9 @@ model user {
 model session {
   id        String   @id
   expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime
+  updatedAt DateTime
   ipAddress String?
   userAgent String?
   userId    String
@@ -31,7 +34,7 @@ model session {
 }
 
 model account {
-  id           String  @id
+  id           String    @id
   accountId    String
   providerId   String
   userId       String
@@ -40,7 +43,9 @@ model account {
   idToken      String?
   expiresAt    DateTime?
   password     String?
-  user         user    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt    DateTime
+  updatedAt    DateTime
+  user         user      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model verification {
