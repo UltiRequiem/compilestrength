@@ -10,7 +10,6 @@ const nextConfig: NextConfig = {
 	eslint: {
 		ignoreDuringBuilds: true,
 	},
-	serverExternalPackages: ["@mastra/*"],
 };
 
 export default nextConfig;
