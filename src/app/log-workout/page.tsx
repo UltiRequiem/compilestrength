@@ -1,21 +1,21 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Sidebar } from "@/components/dashboard/sidebar";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 import {
 	CheckCircle,
 	Circle,
 	Clock,
-	Play,
-	Pause,
-	Plus,
 	Edit,
+	Pause,
+	Play,
+	Plus,
 	X,
 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Sidebar } from "@/components/dashboard/sidebar";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 
 const formatTime = (seconds: number) => {
 	const mins = Math.floor(seconds / 60);

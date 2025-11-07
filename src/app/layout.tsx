@@ -5,18 +5,18 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "CompileStrength - Your Workout Compiler",
-  description: "AI-powered workout programming with a code/terminal aesthetic",
+	title: "CompileStrength - Your Workout Compiler",
+	description: "AI-powered workout programming with a code/terminal aesthetic",
 };
 
 export default function RootLayout({
-  children,
+	children,
 }: Readonly<{
-  children: React.ReactNode;
+	children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en" className="dark">
-      <body className={inter.className}>{children}</body>
-    </html>
-  );
+	return (
+		<html lang="en" className="dark">
+			<body className={inter.className}>{children}</body>
+		</html>
+	);
 }
