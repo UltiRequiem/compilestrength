@@ -1,10 +1,10 @@
 "use client";
 
+import { Lock, Mail, Terminal, User } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { signUp } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { Terminal, Lock, Mail, User } from "lucide-react";
 
 export default function SignUpPage() {
 	const router = useRouter();
@@ -51,7 +51,9 @@ export default function SignUpPage() {
 			);
 		} catch (err) {
 			console.error("Sign up error:", err);
-			setError(err instanceof Error ? err.message : "An unexpected error occurred");
+			setError(
+				err instanceof Error ? err.message : "An unexpected error occurred",
+			);
 		} finally {
 			setLoading(false);
 		}
@@ -112,7 +114,10 @@ export default function SignUpPage() {
 
 						{/* Password */}
 						<div>
-							<label htmlFor="password" className="block text-sm font-medium mb-2">
+							<label
+								htmlFor="password"
+								className="block text-sm font-medium mb-2"
+							>
 								Password
 							</label>
 							<div className="relative">

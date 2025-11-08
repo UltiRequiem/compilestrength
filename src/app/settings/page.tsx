@@ -11,14 +11,14 @@ import {
 	Trash2,
 	User,
 } from "lucide-react";
-import { useRequireAuth } from "@/lib/auth-client";
+import { useEffect, useState } from "react";
 import { Sidebar } from "@/components/dashboard/sidebar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useEffect, useState } from "react";
+import { useRequireAuth } from "@/lib/auth-client";
 import { getUserPreferences, updateUserPreferences } from "./actions";
 
 type UserPreferences = {
@@ -65,7 +65,7 @@ export default function SettingsPage() {
 			setPreferences(result.preferences);
 			setSaveMessage("Preferences saved successfully!");
 			setTimeout(() => setSaveMessage(""), 3000);
-		} catch (error) {
+		} catch (_error) {
 			setSaveMessage("Failed to save preferences");
 		} finally {
 			setSaving(false);

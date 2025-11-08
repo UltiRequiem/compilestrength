@@ -10,13 +10,13 @@ import {
 	Target,
 } from "lucide-react";
 import { useState } from "react";
-import { useRequireAuth } from "@/lib/auth-client";
 import { Sidebar } from "@/components/dashboard/sidebar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useRequireAuth } from "@/lib/auth-client";
 
 export default function WorkoutBuilderPage() {
 	const { session, isPending } = useRequireAuth();

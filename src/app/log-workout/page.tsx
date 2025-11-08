@@ -12,12 +12,12 @@ import {
 	X,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useRequireAuth } from "@/lib/auth-client";
 import { Sidebar } from "@/components/dashboard/sidebar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { useRequireAuth } from "@/lib/auth-client";
 
 const formatTime = (seconds: number) => {
 	const mins = Math.floor(seconds / 60);

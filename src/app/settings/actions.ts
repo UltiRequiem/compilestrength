@@ -1,8 +1,8 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { PrismaClient } from "@/generated/prisma/client";
 import { requireAuth } from "@/lib/auth-utils";
-import { revalidatePath } from "next/cache";
 
 const prisma = new PrismaClient();
 
@@ -16,11 +16,11 @@ export async function getUserPreferences() {
 	return preferences;
 }
 
-export async function updateUserProfile(formData: {
+export async function updateUserProfile(_formData: {
 	name: string;
 	bio?: string;
 }) {
-	const session = await requireAuth();
+	const _session = await requireAuth();
 
 	// Note: Better Auth manages the user table, so we can't directly update it
 	// We would need to use Better Auth's API to update the user

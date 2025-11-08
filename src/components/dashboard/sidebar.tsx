@@ -14,8 +14,8 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { signOut, useSession } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
-import { useSession, signOut } from "@/lib/auth-client";
 
 const navigation = [
 	{ name: "Dashboard", href: "/", icon: Home },

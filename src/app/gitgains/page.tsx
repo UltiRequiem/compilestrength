@@ -9,11 +9,11 @@ import {
 	Star,
 	TrendingUp,
 } from "lucide-react";
-import { useRequireAuth } from "@/lib/auth-client";
 import { Sidebar } from "@/components/dashboard/sidebar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useRequireAuth } from "@/lib/auth-client";
 
 export default function GitGainsPage() {
 	const { session, isPending } = useRequireAuth();
