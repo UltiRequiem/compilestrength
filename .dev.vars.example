@@ -1,0 +1,18 @@
+# Environment variables for local development with Cloudflare Workers
+# Copy this file to .dev.vars and fill in the values
+#
+# Note: .dev.vars is used by Wrangler for local development only
+# For production, set these as environment variables in the Cloudflare Workers dashboard
+#
+# IMPORTANT: NEXT_PUBLIC_* variables must be set during BUILD time
+# For local builds: set in .dev.vars or as shell environment variables
+# For CI/CD: set as repository secrets and pass to build step
+
+# Server-side variables (available at runtime)
+DATABASE_URL=your-database-url-here
+BETTER_AUTH_SECRET=your-secret-here-must-be-at-least-32-characters-long
+BETTER_AUTH_URL=http://localhost:3000
+
+# Client-side variable (must be available at build time)
+# This gets embedded into the client bundle during build
+NEXT_PUBLIC_BETTER_AUTH_URL=http://localhost:3000
