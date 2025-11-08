@@ -289,7 +289,7 @@ export default function CoachPage() {
 							<div className="mb-3 flex gap-2 overflow-x-auto pb-2">
 								{quickPrompts.map((prompt, idx) => (
 									<Button
-										key={idx}
+										key={prompt}
 										variant="outline"
 										size="sm"
 										className="whitespace-nowrap"
