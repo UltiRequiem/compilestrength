@@ -1,10 +1,10 @@
 "use server";
 
+import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { getDb } from "@/db";
 import { userPreferences } from "@/db/schema";
 import { requireAuth } from "@/lib/auth-utils";
-import { eq } from "drizzle-orm";
 
 export async function getUserPreferences() {
 	const session = await requireAuth();
