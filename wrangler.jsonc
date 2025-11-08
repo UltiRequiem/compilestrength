@@ -1,7 +1,4 @@
-/**
- * For more details on how to configure Wrangler, refer to:
- * https://developers.cloudflare.com/workers/wrangler/configuration/
- */ {
+{
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "compilestrength",
 	"main": ".open-next/worker.js",
@@ -18,5 +15,6 @@
 	"vars": {
 		"BETTER_AUTH_URL": "https://compilestrength.com",
 		"NEXT_PUBLIC_BETTER_AUTH_URL": "https://compilestrength.com"
-	}
+	},
+	"keep_vars": true
 }
