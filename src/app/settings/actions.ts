@@ -6,6 +6,14 @@ import { db } from "@/db";
 import { userPreferences } from "@/db/schema";
 import { requireAuth } from "@/lib/auth-utils";
 
+type UserPreferencesUpdate = {
+	units?: string;
+	restTimerDefault?: number;
+	trainingGoal?: string | null;
+	experienceLevel?: string | null;
+	availableDays?: number | null;
+};
+
 export async function getUserPreferences() {
 	const session = await requireAuth();
 
@@ -16,69 +24,67 @@ export async function getUserPreferences() {
 	return preferences;
 }
 
-export async function updateUserProfile(_formData: {
-	name: string;
-	bio?: string;
-}) {
-	await requireAuth();
-
-	// Note: Better Auth manages the user table, so we can't directly update it
-	// We would need to use Better Auth's API to update the user
-	// For now, we'll return success and handle profile updates through Better Auth later
-
-	return { success: true, message: "Profile updated successfully" };
-}
-
-export async function updateUserPreferences(formData: {
-	units?: string;
-	restTimerDefault?: number;
-	trainingGoal?: string;
-	experienceLevel?: string;
-	availableDays?: number;
-}) {
+export async function updateUserPreferences(formData: UserPreferencesUpdate) {
 	const session = await requireAuth();
 
-	// Check if preferences exist
 	const existing = await db.query.userPreferences.findFirst({
 		where: eq(userPreferences.userId, session.user.id),
 	});
 
-	let preferences;
-	if (existing) {
-		// Update existing preferences
-		const updateData: Record<string, unknown> = {};
-		if (formData.units) updateData.units = formData.units;
-		if (formData.restTimerDefault)
-			updateData.restTimerDefault = formData.restTimerDefault;
-		if (formData.trainingGoal) updateData.trainingGoal = formData.trainingGoal;
-		if (formData.experienceLevel)
-			updateData.experienceLevel = formData.experienceLevel;
-		if (formData.availableDays !== undefined)
-			updateData.availableDays = formData.availableDays;
+	const updateData = buildUpdateData(formData);
 
+	if (existing && Object.keys(updateData).length > 0) {
 		const [updated] = await db
 			.update(userPreferences)
 			.set(updateData)
 			.where(eq(userPreferences.userId, session.user.id))
 			.returning();
-		preferences = updated;
-	} else {
-		// Create new preferences
+
+		revalidatePath("/settings");
+		return { success: true, preferences: updated };
+	}
+
+	if (!existing) {
 		const [created] = await db
 			.insert(userPreferences)
 			.values({
 				userId: session.user.id,
-				units: formData.units || "lbs",
-				restTimerDefault: formData.restTimerDefault || 90,
-				trainingGoal: formData.trainingGoal || null,
-				experienceLevel: formData.experienceLevel || null,
+				units: formData.units ?? "lbs",
+				restTimerDefault: formData.restTimerDefault ?? 90,
+				trainingGoal: formData.trainingGoal ?? null,
+				experienceLevel: formData.experienceLevel ?? null,
 				availableDays: formData.availableDays ?? null,
 			})
 			.returning();
-		preferences = created;
+
+		revalidatePath("/settings");
+
+		return { success: true, preferences: created };
 	}
 
-	revalidatePath("/settings");
+	return { success: true, preferences: existing };
+}
 
-	return { success: true, preferences };
+function buildUpdateData(
+	formData: UserPreferencesUpdate,
+): Partial<typeof userPreferences.$inferInsert> {
+	const updateData: Partial<typeof userPreferences.$inferInsert> = {};
+
+	if (formData.units !== undefined) {
+		updateData.units = formData.units;
+	}
+	if (formData.restTimerDefault !== undefined) {
+		updateData.restTimerDefault = formData.restTimerDefault;
+	}
+	if (formData.trainingGoal !== undefined) {
+		updateData.trainingGoal = formData.trainingGoal;
+	}
+	if (formData.experienceLevel !== undefined) {
+		updateData.experienceLevel = formData.experienceLevel;
+	}
+	if (formData.availableDays !== undefined) {
+		updateData.availableDays = formData.availableDays;
+	}
+
+	return updateData;
 }
