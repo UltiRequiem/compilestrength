@@ -2,13 +2,12 @@
 
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import { getDb } from "@/db";
+import { db } from "@/db";
 import { userPreferences } from "@/db/schema";
 import { requireAuth } from "@/lib/auth-utils";
 
 export async function getUserPreferences() {
 	const session = await requireAuth();
-	const db = getDb();
 
 	const preferences = await db.query.userPreferences.findFirst({
 		where: eq(userPreferences.userId, session.user.id),
@@ -21,7 +20,7 @@ export async function updateUserProfile(_formData: {
 	name: string;
 	bio?: string;
 }) {
-	const _session = await requireAuth();
+	await requireAuth();
 
 	// Note: Better Auth manages the user table, so we can't directly update it
 	// We would need to use Better Auth's API to update the user
@@ -38,7 +37,6 @@ export async function updateUserPreferences(formData: {
 	availableDays?: number;
 }) {
 	const session = await requireAuth();
-	const db = getDb();
 
 	// Check if preferences exist
 	const existing = await db.query.userPreferences.findFirst({
