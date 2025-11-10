@@ -32,7 +32,6 @@ import {
 } from "@/providers/user-preferences-store-provider";
 import { updateUserPreferences } from "./actions";
 
-
 export default function SettingsPage() {
 	const { session, isPending } = useRequireAuth();
 	const [saving, setSaving] = useState(false);

@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { CompilerLayout } from './components/CompilerLayout';
+import { CompilerLayout } from "./components/CompilerLayout";
 
 export default function CompilerPage() {
-  return <CompilerLayout />;
+	return <CompilerLayout />;
 }

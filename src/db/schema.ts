@@ -200,7 +200,9 @@ export const workoutRoutines = pgTable(
 	},
 	(table) => ({
 		userIdIdx: index("WorkoutRoutine_userId_idx").on(table.userId),
-		conversationIdIdx: index("WorkoutRoutine_conversationId_idx").on(table.conversationId),
+		conversationIdIdx: index("WorkoutRoutine_conversationId_idx").on(
+			table.conversationId,
+		),
 	}),
 );
 
