@@ -10,7 +10,7 @@ import {
 	TrendingDown,
 } from "lucide-react";
 import { useState } from "react";
-import { Sidebar } from "@/components/dashboard/sidebar";
+import { AppLayout } from "@/components/layout/app-layout";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -43,6 +43,7 @@ export default function DebuggerPage() {
 
 	const issues = [
 		{
+			id: "issue-progressive-overload",
 			severity: "critical",
 			title: "No Progressive Overload Detected",
 			description: "Your bench press weight hasn't increased in 6 weeks",
@@ -54,6 +55,7 @@ export default function DebuggerPage() {
 			trend: "flat",
 		},
 		{
+			id: "issue-training-frequency",
 			severity: "warning",
 			title: "Low Training Frequency",
 			description: "You're hitting chest 1x per week but goal is hypertrophy",
@@ -65,6 +67,7 @@ export default function DebuggerPage() {
 			trend: "down",
 		},
 		{
+			id: "issue-fatigue-accumulation",
 			severity: "info",
 			title: "High Fatigue Accumulation",
 			description: "Your RPE has been 9-10 for 3 weeks straight",
@@ -78,19 +81,27 @@ export default function DebuggerPage() {
 	];
 
 	const workingWell = [
-		"Great frequency on squats (3x/week)",
-		"Consistent progressive overload on deadlift",
-		"Good exercise variety for back",
-		"Adequate rest between sessions",
+		{
+			id: "working-squat-frequency",
+			text: "Great frequency on squats (3x/week)",
+		},
+		{
+			id: "working-deadlift-overload",
+			text: "Consistent progressive overload on deadlift",
+		},
+		{ id: "working-back-variety", text: "Good exercise variety for back" },
+		{ id: "working-rest-sessions", text: "Adequate rest between sessions" },
 	];
 
 	const previousAnalyses = [
 		{
+			id: "analysis-oct-28",
 			date: "Oct 28, 2024",
 			issuesFound: 2,
 			issuesResolved: 1,
 		},
 		{
+			id: "analysis-oct-15",
 			date: "Oct 15, 2024",
 			issuesFound: 3,
 			issuesResolved: 2,
@@ -98,22 +109,18 @@ export default function DebuggerPage() {
 	];
 
 	return (
-		<div className="flex min-h-screen">
-			<Sidebar />
-
-			<main className="ml-64 flex-1">
-				<div className="grid-background min-h-screen p-8">
-					<div className="mx-auto max-w-6xl">
-						{/* Header */}
-						<div className="mb-8">
-							<h1 className="text-3xl font-bold">Gains Debugger</h1>
-							<p className="text-muted-foreground">
-								Stack Trace for Your Progress
-							</p>
-							<p className="text-sm text-muted-foreground">
-								Last analyzed: 2 hours ago
-							</p>
-						</div>
+		<AppLayout>
+			<div className="mx-auto max-w-6xl">
+				{/* Header */}
+				<div className="mb-8">
+					<h1 className="text-3xl font-bold">Gains Debugger</h1>
+					<p className="text-muted-foreground">
+						Stack Trace for Your Progress
+					</p>
+					<p className="text-sm text-muted-foreground">
+						Last analyzed: 2 hours ago
+					</p>
+				</div>
 
 						{/* Run Analysis Button */}
 						<Card className="mb-8 border-primary/50 glow-green-hover">
@@ -176,9 +183,9 @@ export default function DebuggerPage() {
 								<div className="mb-8 space-y-6">
 									<h2 className="text-2xl font-bold">Issues Found</h2>
 
-									{issues.map((issue, idx) => (
+									{issues.map((issue) => (
 										<Card
-											key={idx}
+											key={issue.id}
 											className={`${
 												issue.severity === "critical"
 													? "border-destructive/50"
@@ -237,11 +244,8 @@ export default function DebuggerPage() {
 														<p className="mb-2 font-semibold text-primary">
 															Stack Trace:
 														</p>
-														{issue.details.map((detail, detailIdx) => (
-															<p
-																key={detailIdx}
-																className="text-muted-foreground"
-															>
+														{issue.details.map((detail) => (
+															<p key={detail} className="text-muted-foreground">
 																<span className="text-primary">{">"}</span>{" "}
 																{detail}
 															</p>
@@ -279,13 +283,13 @@ export default function DebuggerPage() {
 									</CardHeader>
 									<CardContent>
 										<div className="grid gap-3 md:grid-cols-2">
-											{workingWell.map((item, idx) => (
+											{workingWell.map((item) => (
 												<div
-													key={idx}
+													key={item.id}
 													className="flex items-start gap-3 rounded-lg border border-primary/20 p-3"
 												>
 													<CheckCircle className="h-4 w-4 mt-0.5 text-primary flex-shrink-0" />
-													<p className="text-sm">{item}</p>
+													<p className="text-sm">{item.text}</p>
 												</div>
 											))}
 										</div>
@@ -357,9 +361,9 @@ export default function DebuggerPage() {
 									</CardHeader>
 									<CardContent>
 										<div className="space-y-3">
-											{previousAnalyses.map((analysis, idx) => (
+											{previousAnalyses.map((analysis) => (
 												<div
-													key={idx}
+													key={analysis.id}
 													className="flex items-center justify-between rounded-lg border border-border p-4 card-hover"
 												>
 													<div>
@@ -379,9 +383,7 @@ export default function DebuggerPage() {
 								</Card>
 							</>
 						)}
-					</div>
-				</div>
-			</main>
-		</div>
+			</div>
+		</AppLayout>
 	);
 }
