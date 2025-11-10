@@ -38,6 +38,7 @@ export function ChatPanel() {
   const [input, setInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const processedRoutinesRef = useRef<Set<string>>(new Set());
   const {
     setIsGenerating,
     setRoutine,
@@ -47,6 +48,30 @@ export function ChatPanel() {
 
   // Handle tool result data from API
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // Function to save routine to database
+  const saveRoutineToDatabase = async (routine: WorkoutRoutine) => {
+    try {
+      console.log('💾 Saving routine to database:', routine.name);
+
+      const response = await fetch('/api/compiler/save-routine', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ routine }),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log('✅ Routine saved to database successfully:', result.programId);
+      } else {
+        console.error('❌ Failed to save routine to database:', response.statusText);
+      }
+    } catch (error) {
+      console.error('❌ Error saving routine to database:', error);
+    }
+  };
+
   const handleToolResult = (data: { toolName: string; result: any }) => {
     console.log('=== HANDLING TOOL RESULT ===');
     console.log('Tool name:', data.toolName);
@@ -66,10 +91,22 @@ export function ChatPanel() {
 
       case 'createWorkoutRoutine':
         if (data.result && data.result.routine) {
-          console.log('🏋️ Creating workout routine in store:', data.result.routine);
-          console.log('🏋️ Routine has', data.result.routine.days?.length || 0, 'days');
-          setRoutine(data.result.routine as WorkoutRoutine);
+          const routine = data.result.routine as WorkoutRoutine;
+          console.log('🏋️ Creating workout routine in store:', routine);
+          console.log('🏋️ Routine has', routine.days?.length || 0, 'days');
+          setRoutine(routine);
           console.log('✅ Workout routine updated in store');
+
+          // Only save to database if we haven't already saved this routine
+          // Use both ID and name for more robust duplicate detection
+          const routineKey = `${routine.id}-${routine.name}`;
+          if (!processedRoutinesRef.current.has(routineKey)) {
+            console.log('💾 New routine detected, saving to database');
+            processedRoutinesRef.current.add(routineKey);
+            saveRoutineToDatabase(routine);
+          } else {
+            console.log('🔄 Routine already processed, skipping database save');
+          }
         } else {
           console.log('❌ No routine data found in result');
           console.log('Available keys in result:', Object.keys(data.result || {}));

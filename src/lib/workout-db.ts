@@ -7,6 +7,21 @@ export async function saveWorkoutRoutineToDb(routine: WorkoutRoutine, userId: st
   console.log('💾 Saving workout routine to database:', routine.name);
 
   try {
+    // Check if a program with the same name and user already exists
+    const existingProgram = await db
+      .select()
+      .from(workoutPrograms)
+      .where(and(
+        eq(workoutPrograms.userId, userId),
+        eq(workoutPrograms.name, routine.name)
+      ))
+      .limit(1);
+
+    if (existingProgram.length > 0) {
+      console.log('⚠️ Workout routine already exists, skipping save');
+      return existingProgram[0];
+    }
+
     // First, create the workout program
     const [program] = await db.insert(workoutPrograms).values({
       userId,
