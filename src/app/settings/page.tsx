@@ -46,8 +46,8 @@ export default function SettingsPage() {
 					if (prefs) {
 						setUnits(prefs.units || "lbs");
 					}
-				} catch (error) {
-					console.error("Failed to load preferences:", error);
+				} catch {
+					// Failed to load preferences - user will see defaults
 				}
 			}
 		};
@@ -65,8 +65,7 @@ export default function SettingsPage() {
 			setPreferences(result.preferences);
 			setSaveMessage("Preferences saved successfully!");
 			setTimeout(() => setSaveMessage(""), 3000);
-		} catch (_error) {
-			console.error("Failed to save preferences", _error);
+		} catch {
 			setSaveMessage("Failed to save preferences");
 		} finally {
 			setSaving(false);

@@ -66,36 +66,42 @@ export default function GitGainsPage() {
 
 	const prs = [
 		{
+			id: "pr-squat-nov-4",
 			exercise: "Squat",
 			record: "315 lbs × 5",
 			date: "Nov 4, 2024",
 			hasVideo: true,
 		},
 		{
+			id: "pr-bench-nov-7",
 			exercise: "Bench Press",
 			record: "225 lbs × 8",
 			date: "Nov 7, 2024",
 			hasVideo: false,
 		},
 		{
+			id: "pr-deadlift-nov-1",
 			exercise: "Deadlift",
 			record: "405 lbs × 3",
 			date: "Nov 1, 2024",
 			hasVideo: true,
 		},
 		{
+			id: "pr-ohp-oct-28",
 			exercise: "Overhead Press",
 			record: "155 lbs × 6",
 			date: "Oct 28, 2024",
 			hasVideo: false,
 		},
 		{
+			id: "pr-row-nov-4",
 			exercise: "Barbell Row",
 			record: "185 lbs × 10",
 			date: "Nov 4, 2024",
 			hasVideo: false,
 		},
 		{
+			id: "pr-pullups-oct-30",
 			exercise: "Pull-ups",
 			record: "BW+45 lbs × 8",
 			date: "Oct 30, 2024",
@@ -105,6 +111,7 @@ export default function GitGainsPage() {
 
 	const insights = [
 		{
+			id: "insight-improved-exercise",
 			title: "Most Improved Exercise",
 			value: "Deadlift +15%",
 			period: "in 3 months",
@@ -112,6 +119,7 @@ export default function GitGainsPage() {
 			color: "text-primary",
 		},
 		{
+			id: "insight-longest-streak",
 			title: "Longest Streak",
 			value: "21 days",
 			period: "consecutive training",
@@ -119,6 +127,7 @@ export default function GitGainsPage() {
 			color: "text-primary",
 		},
 		{
+			id: "insight-total-volume",
 			title: "Total Volume This Month",
 			value: "485,000 lbs",
 			period: "+12% from last month",
@@ -156,8 +165,8 @@ export default function GitGainsPage() {
 
 						{/* Insights Cards */}
 						<div className="mb-8 grid gap-4 md:grid-cols-3">
-							{insights.map((insight, idx) => (
-								<Card key={idx} className="card-hover border-primary/20">
+							{insights.map((insight) => (
+								<Card key={insight.id} className="card-hover border-primary/20">
 									<CardContent className="p-6">
 										<div className="flex items-start gap-4">
 											<div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
@@ -337,9 +346,9 @@ export default function GitGainsPage() {
 									</CardHeader>
 									<CardContent>
 										<div className="space-y-3">
-											{prs.map((pr, idx) => (
+											{prs.map((pr) => (
 												<div
-													key={idx}
+													key={pr.id}
 													className="flex items-start justify-between rounded-lg border border-border p-3 card-hover"
 												>
 													<div className="flex-1">

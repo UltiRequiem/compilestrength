@@ -50,7 +50,6 @@ export default function SignUpPage() {
 				},
 			);
 		} catch (err) {
-			console.error("Sign up error:", err);
 			setError(
 				err instanceof Error ? err.message : "An unexpected error occurred",
 			);

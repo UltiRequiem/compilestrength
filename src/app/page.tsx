@@ -194,9 +194,9 @@ export default async function DashboardPage() {
 							<Card className="border-primary/20">
 								<CardContent className="p-0">
 									<div className="divide-y divide-border">
-										{recentActivity.map((activity, index) => (
+										{recentActivity.map((activity) => (
 											<div
-												key={index}
+												key={`${activity.exercise}-${activity.date}-${activity.weight}`}
 												className="flex items-center justify-between p-4 hover:bg-accent/50 transition-colors"
 											>
 												<div className="flex-1">
