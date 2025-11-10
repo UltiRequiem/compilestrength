@@ -33,8 +33,7 @@ export async function POST(req: Request) {
         toolResults.forEach((toolResult, index) => {
           console.log(`Tool result ${index}:`, {
             toolName: toolResult.toolName,
-            result: toolResult.result,
-            args: toolResult.args,
+            output: toolResult.output,
             fullObject: toolResult
           });
         });
@@ -46,27 +45,6 @@ export async function POST(req: Request) {
       onError: (error) => {
         console.error('Compiler chat error:', error);
         return 'I encountered an issue while generating your workout. Please try again or provide more specific information about your goals.';
-      },
-      data: ({ steps }) => {
-        // Extract tool results from all steps and flatten them
-        const allToolResults = steps.flatMap(step => step.toolResults || []);
-
-        console.log('Sending data to client:', allToolResults.length, 'tool results');
-
-        // Return each tool result individually
-        const results: any[] = [];
-        allToolResults.forEach(toolResult => {
-          if (toolResult.output) {
-            console.log('Preparing tool result for client:', toolResult.toolName, toolResult.output);
-            results.push({
-              type: 'tool-result-data',
-              toolName: toolResult.toolName,
-              result: toolResult.output,
-            });
-          }
-        });
-
-        return results;
       },
     });
 

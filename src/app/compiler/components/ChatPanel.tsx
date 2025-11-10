@@ -18,21 +18,6 @@ export function ChatPanel() {
     onError: (error) => {
       console.error('Chat error:', error);
     },
-    onData: (data) => {
-      // Handle tool result data for store updates
-      console.log('📨 Received data from server:', data);
-
-      // Check if this is our tool result data
-      if (data && data.type === 'tool-result-data') {
-        console.log('🔧 Processing tool result data:', data);
-        handleToolResult({
-          toolName: data.toolName,
-          result: data.result
-        });
-      } else {
-        console.log('❓ Unhandled data type:', data?.type);
-      }
-    }
   });
 
   const [input, setInput] = useState('');
@@ -62,7 +47,7 @@ export function ChatPanel() {
       });
 
       if (response.ok) {
-        const result = await response.json();
+        const result = await response.json() as { success: boolean; programId: string; message: string };
         console.log('✅ Routine saved to database successfully:', result.programId);
       } else {
         console.error('❌ Failed to save routine to database:', response.statusText);
