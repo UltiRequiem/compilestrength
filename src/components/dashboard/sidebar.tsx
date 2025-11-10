@@ -9,6 +9,7 @@ import {
 	Settings,
 	User,
 	Wrench,
+	Zap,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -31,6 +32,7 @@ import { cn } from "@/lib/utils";
 
 const navigation = [
 	{ name: "Dashboard", href: "/", icon: Home },
+	{ name: "AI Compiler", href: "/compiler", icon: Zap, badge: "New" },
 	{ name: "Workout Builder", href: "/workout-builder", icon: Wrench },
 	{ name: "My Programs", href: "/programs", icon: FolderOpen },
 	{ name: "GitGains", href: "/gitgains", icon: GitBranch },
@@ -94,7 +96,14 @@ export function AppSidebar() {
 										>
 											<Link href={item.href}>
 												<item.icon className="h-6 w-6" />
-												<span>{item.name}</span>
+												<span className="flex items-center gap-2">
+													{item.name}
+													{item.badge && (
+														<Badge className="bg-primary text-[10px] px-1.5 py-0">
+															{item.badge}
+														</Badge>
+													)}
+												</span>
 											</Link>
 										</SidebarMenuButton>
 									</SidebarMenuItem>

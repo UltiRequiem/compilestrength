@@ -85,7 +85,9 @@ export const updateUserProfile = tool({
 		// This will be called by the API route to update the Zustand store
 		return {
 			success: true,
-			message: `Updated user profile with ${profile.experience} experience level targeting ${profile.goals.join(", ")}`,
+			message: `Updated user profile with ${profile.experience} experience level targeting ${profile.goals.join(
+				", ",
+			)}`,
 			profile,
 		};
 	},

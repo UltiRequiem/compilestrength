@@ -190,7 +190,10 @@ export function DashboardClient({
 				<div>
 					<h2 className="mb-4 text-2xl font-bold">Quick Actions</h2>
 					<div className="space-y-3">
-						<Button className="w-full justify-start text-left h-auto py-4">
+						<Button
+							className="w-full justify-start text-left h-auto py-4"
+							onClick={() => (window.location.href = "/compiler")}
+						>
 							<Sparkles className="h-5 w-5" />
 							<div className="flex-1">
 								<div className="font-semibold">Generate New Program</div>

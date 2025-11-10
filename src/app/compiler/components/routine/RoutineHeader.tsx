@@ -37,7 +37,9 @@ export function RoutineHeader({ routine }: RoutineHeaderProps) {
 				</div>
 
 				<div
-					className={`px-2 py-1 border rounded text-xs font-mono ${getDifficultyColor(routine.difficulty)}`}
+					className={`px-2 py-1 border rounded text-xs font-mono ${getDifficultyColor(
+						routine.difficulty,
+					)}`}
 				>
 					{routine.difficulty.toUpperCase()}
 				</div>
