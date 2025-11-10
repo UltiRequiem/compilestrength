@@ -20,6 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useRequireAuth } from "@/lib/auth-client";
 import { getUserPreferences, updateUserPreferences } from "./actions";
+import { useUnits, useRestTimerDefault, useTrainingGoal, useExperienceLevel, useSetUnits, useSetRestTimerDefault, useSetTrainingGoal, useSetExperienceLevel, useSetPreferences } from "@/providers/user-preferences-store-provider";
 
 type UserPreferences = {
 	userId: string;
@@ -32,27 +33,21 @@ type UserPreferences = {
 
 export default function SettingsPage() {
 	const { session, isPending } = useRequireAuth();
-	const [preferences, setPreferences] = useState<UserPreferences | null>(null);
 	const [saving, setSaving] = useState(false);
-	const [units, setUnits] = useState("lbs");
 	const [saveMessage, setSaveMessage] = useState("");
 
-	useEffect(() => {
-		const loadPreferences = async () => {
-			if (session) {
-				try {
-					const prefs = await getUserPreferences();
-					setPreferences(prefs ?? null);
-					if (prefs) {
-						setUnits(prefs.units || "lbs");
-					}
-				} catch {
-					// Failed to load preferences - user will see defaults
-				}
-			}
-		};
-		loadPreferences();
-	}, [session]);
+	// Use global state from Zustand
+	const units = useUnits();
+	const restTimerDefault = useRestTimerDefault();
+	const trainingGoal = useTrainingGoal();
+	const experienceLevel = useExperienceLevel();
+
+	// Use individual action hooks to avoid infinite loop
+	const setUnits = useSetUnits();
+	const setRestTimerDefault = useSetRestTimerDefault();
+	const setTrainingGoal = useSetTrainingGoal();
+	const setExperienceLevel = useSetExperienceLevel();
+	const setPreferences = useSetPreferences();
 
 	const handleSavePreferences = async () => {
 		setSaving(true);
@@ -60,9 +55,20 @@ export default function SettingsPage() {
 		try {
 			const result = await updateUserPreferences({
 				units,
-				restTimerDefault: preferences?.restTimerDefault || 90,
+				restTimerDefault,
+				trainingGoal,
+				experienceLevel,
 			});
-			setPreferences(result.preferences);
+
+			// Update global state with saved preferences
+			setPreferences({
+				units: result.preferences.units as 'lbs' | 'kg',
+				restTimerDefault: result.preferences.restTimerDefault,
+				trainingGoal: result.preferences.trainingGoal,
+				experienceLevel: result.preferences.experienceLevel,
+				availableDays: result.preferences.availableDays,
+			});
+
 			setSaveMessage("Preferences saved successfully!");
 			setTimeout(() => setSaveMessage(""), 3000);
 		} catch {
@@ -200,7 +206,8 @@ export default function SettingsPage() {
 								<Label>Rest Timer Default (seconds)</Label>
 								<Input
 									type="number"
-									defaultValue={preferences?.restTimerDefault || 90}
+									value={restTimerDefault}
+									onChange={(e) => setRestTimerDefault(Number(e.target.value))}
 									placeholder="90"
 								/>
 							</div>
@@ -210,7 +217,8 @@ export default function SettingsPage() {
 							<div className="space-y-2">
 								<Label>Training Goal</Label>
 								<Input
-									defaultValue={preferences?.trainingGoal || ""}
+									value={trainingGoal || ""}
+									onChange={(e) => setTrainingGoal(e.target.value || null)}
 									placeholder="strength, hypertrophy, endurance"
 								/>
 							</div>
@@ -218,7 +226,8 @@ export default function SettingsPage() {
 							<div className="space-y-2">
 								<Label>Experience Level</Label>
 								<Input
-									defaultValue={preferences?.experienceLevel || ""}
+									value={experienceLevel || ""}
+									onChange={(e) => setExperienceLevel(e.target.value || null)}
 									placeholder="beginner, intermediate, advanced"
 								/>
 							</div>

@@ -18,6 +18,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useRequireAuth } from "@/lib/auth-client";
+import { useUnits, useRestTimerDefault } from "@/providers/user-preferences-store-provider";
+import { convertWeight, formatWeight } from "@/stores/user-preferences-store";
 
 const formatTime = (seconds: number) => {
 	const mins = Math.floor(seconds / 60);
@@ -31,6 +33,10 @@ export default function LogWorkoutPage() {
 	const [isRunning, setIsRunning] = useState(true);
 	const [restTimer, setRestTimer] = useState<number | null>(null);
 	const [isResting, setIsResting] = useState(false);
+
+	// Use global preferences
+	const units = useUnits();
+	const defaultRestTime = useRestTimerDefault();
 
 	useEffect(() => {
 		let interval: NodeJS.Timeout;
@@ -60,24 +66,24 @@ export default function LogWorkoutPage() {
 			id: 1,
 			name: "Bench Press",
 			target: "4 sets × 6-8 reps @ RPE 8",
-			lastTime: "185 lbs × 8, 8, 7, 7",
+			lastTime: `${formatWeight(convertWeight(185, 'lbs', units), units)} × 8, 8, 7, 7`,
 			sets: [
-				{ number: 1, weight: 185, reps: 8, rpe: 8, completed: true },
-				{ number: 2, weight: 185, reps: 8, rpe: 8, completed: true },
-				{ number: 3, weight: 185, reps: null, rpe: null, completed: false },
-				{ number: 4, weight: 185, reps: null, rpe: null, completed: false },
+				{ number: 1, weight: convertWeight(185, 'lbs', units), reps: 8, rpe: 8, completed: true },
+				{ number: 2, weight: convertWeight(185, 'lbs', units), reps: 8, rpe: 8, completed: true },
+				{ number: 3, weight: convertWeight(185, 'lbs', units), reps: null, rpe: null, completed: false },
+				{ number: 4, weight: convertWeight(185, 'lbs', units), reps: null, rpe: null, completed: false },
 			],
 		},
 		{
 			id: 2,
 			name: "Barbell Row",
 			target: "4 sets × 8-10 reps @ RPE 8",
-			lastTime: "155 lbs × 10, 10, 9, 8",
+			lastTime: `${formatWeight(convertWeight(155, 'lbs', units), units)} × 10, 10, 9, 8`,
 			sets: [
-				{ number: 1, weight: 155, reps: null, rpe: null, completed: false },
-				{ number: 2, weight: 155, reps: null, rpe: null, completed: false },
-				{ number: 3, weight: 155, reps: null, rpe: null, completed: false },
-				{ number: 4, weight: 155, reps: null, rpe: null, completed: false },
+				{ number: 1, weight: convertWeight(155, 'lbs', units), reps: null, rpe: null, completed: false },
+				{ number: 2, weight: convertWeight(155, 'lbs', units), reps: null, rpe: null, completed: false },
+				{ number: 3, weight: convertWeight(155, 'lbs', units), reps: null, rpe: null, completed: false },
+				{ number: 4, weight: convertWeight(155, 'lbs', units), reps: null, rpe: null, completed: false },
 			],
 		},
 	];
@@ -210,7 +216,7 @@ export default function LogWorkoutPage() {
 																Set
 															</th>
 															<th className="p-2 text-left font-semibold">
-																Weight (lbs)
+																Weight ({units})
 															</th>
 															<th className="p-2 text-left font-semibold">
 																Reps
@@ -306,10 +312,10 @@ export default function LogWorkoutPage() {
 												<Button
 													variant="outline"
 													size="sm"
-													onClick={() => startRest(150)}
+													onClick={() => startRest(defaultRestTime)}
 												>
 													<Clock className="h-3 w-3" />
-													Rest 2:30
+													Rest {formatTime(defaultRestTime)}
 												</Button>
 												<Button variant="outline" size="sm">
 													<Plus className="h-3 w-3" />
@@ -317,10 +323,10 @@ export default function LogWorkoutPage() {
 												</Button>
 												<div className="flex-1" />
 												<Button variant="outline" size="sm">
-													-5 lbs
+													-{units === 'lbs' ? '5' : '2.5'} {units}
 												</Button>
 												<Button variant="outline" size="sm">
-													+5 lbs
+													+{units === 'lbs' ? '5' : '2.5'} {units}
 												</Button>
 											</div>
 										</div>
