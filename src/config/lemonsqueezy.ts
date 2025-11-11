@@ -17,7 +17,7 @@ export function configureLemonSqueezy() {
 
 	lemonSqueezySetup({
 		apiKey,
-		onError: (error) => {
+		onError(error) {
 			console.error("LemonSqueezy API Error:", error);
 			throw new Error(`LemonSqueezy API error: ${error.message}`);
 		},
