@@ -1,7 +1,13 @@
 import Link from "next/link";
+import { headers } from "next/headers";
 import { Button } from "@/components/ui/button";
+import { auth } from "@/lib/auth";
 
-export default function LandingPage() {
+export default async function LandingPage() {
+	const session = await auth.api.getSession({
+		headers: await headers(),
+	});
+
 	return (
 		<div className="min-h-screen bg-black text-green-400 font-mono">
 			{/* Navbar */}
@@ -18,14 +24,22 @@ export default function LandingPage() {
 						>
 							Tools
 						</Link>
-						<Link href="/login">
-							<Button variant="outline" size="sm">
-								Login
-							</Button>
-						</Link>
-						<Link href="/signup">
-							<Button size="sm">Sign Up</Button>
-						</Link>
+						{session ? (
+							<Link href="/app">
+								<Button size="sm">Dashboard</Button>
+							</Link>
+						) : (
+							<>
+								<Link href="/login">
+									<Button variant="outline" size="sm">
+										Login
+									</Button>
+								</Link>
+								<Link href="/signup">
+									<Button size="sm">Sign Up</Button>
+								</Link>
+							</>
+						)}
 					</div>
 				</div>
 			</nav>
