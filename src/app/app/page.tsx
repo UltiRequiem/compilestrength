@@ -10,6 +10,51 @@ import {
 } from "@/db/schema";
 import { requireAuth } from "@/lib/auth-utils";
 
+interface Exercise {
+	id: string;
+	name: string;
+	muscleGroups: string[];
+	equipment: string | null;
+	sets: number;
+	reps: string;
+	restPeriod: number | null;
+	notes: string;
+	order: number;
+	weight?: number;
+}
+
+interface WorkoutDay {
+	id: string;
+	name: string;
+	type: string;
+	dayNumber: number;
+	exercises: Exercise[];
+}
+
+// Type guards for runtime validation
+function isWorkoutDay(value: unknown): value is WorkoutDay {
+	if (typeof value !== "object" || value === null) return false;
+	const day = value as Record<string, unknown>;
+	return (
+		typeof day.id === "string" &&
+		typeof day.name === "string" &&
+		typeof day.type === "string" &&
+		typeof day.dayNumber === "number" &&
+		Array.isArray(day.exercises)
+	);
+}
+
+function isExercise(value: unknown): value is Exercise {
+	if (typeof value !== "object" || value === null) return false;
+	const exercise = value as Record<string, unknown>;
+	return (
+		typeof exercise.id === "string" &&
+		typeof exercise.name === "string" &&
+		typeof exercise.sets === "number" &&
+		typeof exercise.reps === "string"
+	);
+}
+
 // Cached function to get user routines - cache for 5 minutes
 const getCachedUserRoutines = unstable_cache(
 	async (userId: string) => {
@@ -130,7 +175,8 @@ export default async function DashboardPage() {
 			? // If user has routines, show the first routine's days
 				userRoutines[0].days
 					.slice(0, 7)
-					.map((day: any, index: number) => ({
+					.filter(isWorkoutDay)
+					.map((day, index) => ({
 						day:
 							["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"][index] ||
 							`Day ${index + 1}`,
