@@ -23,7 +23,12 @@ import { webhookHasData, webhookHasMeta } from "@/lib/lemonsqueezy-typeguards";
 
 type NewPlan = typeof plans.$inferInsert;
 type NewSubscription = typeof subscriptions.$inferInsert;
-type NewWebhookEvent = typeof webhookEvents.$inferInsert;
+
+interface SubscriptionItem {
+	id: number;
+	price_id: number;
+	is_usage_based: boolean;
+}
 
 /**
  * Sync plans from LemonSqueezy to the database
@@ -251,7 +256,8 @@ export async function processWebhookEvent(webhookEventId: string) {
 			if (plan.length < 1) {
 				processingError = `Plan with variantId ${variantId} not found.`;
 			} else {
-				const priceId = (attributes.first_subscription_item as any).price_id;
+				const subscriptionItem = attributes.first_subscription_item as SubscriptionItem;
+				const priceId = subscriptionItem.price_id;
 
 				// Get the price data from Lemon Squeezy.
 				const priceData = await getPrice(priceId);
@@ -259,8 +265,7 @@ export async function processWebhookEvent(webhookEventId: string) {
 					processingError = `Failed to get the price data for the subscription ${eventBody.data.id}.`;
 				}
 
-				const isUsageBased = (attributes.first_subscription_item as any)
-					.is_usage_based;
+				const isUsageBased = subscriptionItem.is_usage_based;
 				const price = isUsageBased
 					? priceData.data?.data.attributes.unit_price_decimal
 					: priceData.data?.data.attributes.unit_price;
@@ -277,9 +282,8 @@ export async function processWebhookEvent(webhookEventId: string) {
 					trialEndsAt: attributes.trial_ends_at as string,
 					price: price?.toString() ?? "",
 					isPaused: false,
-					subscriptionItemId: (attributes.first_subscription_item as any).id,
-					isUsageBased: (attributes.first_subscription_item as any)
-						.is_usage_based,
+					subscriptionItemId: subscriptionItem.id,
+					isUsageBased: subscriptionItem.is_usage_based,
 					userId: eventBody.meta.custom_data?.user_id ?? "",
 					planId: plan[0].id,
 				};
