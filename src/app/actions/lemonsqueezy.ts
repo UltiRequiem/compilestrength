@@ -420,7 +420,6 @@ export async function unpauseUserSubscription(id: string) {
 		pause: null,
 	});
 
-	// Update the db
 	try {
 		await db
 			.update(subscriptions)
@@ -515,6 +514,7 @@ export async function changePlan(currentPlanId: string, newPlanId: string) {
 			})
 			.where(eq(subscriptions.lemonSqueezyId, subscription.lemonSqueezyId));
 	} catch (_error) {
+		console.error(_error);
 		throw new Error(
 			`Failed to update Subscription #${subscription.lemonSqueezyId} in the database.`,
 		);

@@ -32,7 +32,10 @@ export async function POST(request: Request) {
 
 	// Type guard to check if the object has a 'meta' property.
 	if (webhookHasMeta(data)) {
-		const webhookEventId = await storeWebhookEvent(data.meta.event_name, data);
+		const webhookEventId = await storeWebhookEvent(
+			data.meta.event_name,
+			data as unknown as Record<string, unknown>,
+		);
 
 		// Non-blocking call to process the webhook event.
 		// We return 200 immediately so LemonSqueezy knows we received it
