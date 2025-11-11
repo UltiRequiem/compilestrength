@@ -26,7 +26,7 @@ export default function LoginPage() {
 				},
 				{
 					onSuccess: () => {
-						router.push("/");
+						router.push("/app");
 					},
 					onError: (ctx) => {
 						setError(ctx.error.message || "Failed to sign in");

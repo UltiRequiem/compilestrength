@@ -31,14 +31,14 @@ import { signOut, useSession } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 
 const navigation = [
-	{ name: "Dashboard", href: "/", icon: Home },
-	{ name: "AI Compiler", href: "/compiler", icon: Zap, badge: "New" },
-	{ name: "Workout Builder", href: "/workout-builder", icon: Wrench },
-	{ name: "My Programs", href: "/programs", icon: FolderOpen },
-	{ name: "GitGains", href: "/gitgains", icon: GitBranch },
-	{ name: "Gains Debugger", href: "/debugger", icon: Bug },
-	{ name: "The Coach", href: "/coach", icon: User },
-	{ name: "Settings", href: "/settings", icon: Settings },
+	{ name: "Dashboard", href: "/app", icon: Home },
+	{ name: "AI Compiler", href: "/app/compiler", icon: Zap, badge: "New" },
+	{ name: "Workout Builder", href: "/app/workout-builder", icon: Wrench },
+	{ name: "My Programs", href: "/app/programs", icon: FolderOpen },
+	{ name: "GitGains", href: "/app/gitgains", icon: GitBranch },
+	{ name: "Gains Debugger", href: "/app/debugger", icon: Bug },
+	{ name: "The Coach", href: "/app/coach", icon: User },
+	{ name: "Settings", href: "/app/settings", icon: Settings },
 ];
 
 export function AppSidebar() {

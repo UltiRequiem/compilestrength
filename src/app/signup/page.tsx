@@ -42,7 +42,7 @@ export default function SignUpPage() {
 				},
 				{
 					onSuccess: () => {
-						router.push("/");
+						router.push("/app");
 					},
 					onError: (ctx) => {
 						setError(ctx.error.message || "Failed to create account");
