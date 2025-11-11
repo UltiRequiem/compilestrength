@@ -18,15 +18,15 @@ export async function UsageDisplay() {
 
 	const compilePercentage = calculatePercentage(
 		usage.compilesUsed,
-		usage.compilesLimit
+		usage.compilesLimit,
 	);
 	const editPercentage = calculatePercentage(
 		usage.routineEditsUsed,
-		usage.routineEditsLimit
+		usage.routineEditsLimit,
 	);
 	const messagePercentage = calculatePercentage(
 		usage.aiMessagesUsed,
-		usage.aiMessagesLimit
+		usage.aiMessagesLimit,
 	);
 
 	const resetsAt = new Date(usage.periodEnd).toLocaleDateString();

@@ -144,7 +144,7 @@ export function SubscriptionCard({
 								)}
 								<DropdownMenuItem
 									onClick={async () => {
-										await loadUrls();
+										const localUrls = await loadUrls();
 										if (localUrls?.customer_portal) {
 											window.open(localUrls.customer_portal, "_blank");
 										}
@@ -154,7 +154,7 @@ export function SubscriptionCard({
 								</DropdownMenuItem>
 								<DropdownMenuItem
 									onClick={async () => {
-										await loadUrls();
+										const localUrls = await loadUrls();
 										if (localUrls?.update_payment_method) {
 											window.open(localUrls.update_payment_method, "_blank");
 										}

@@ -443,11 +443,13 @@ export async function getSubscriptionURLs(id: string) {
 	// Verify subscription ownership before accessing external API
 	const userSubscriptions = await getUserSubscriptions();
 	const ownedSubscription = userSubscriptions.find(
-		(sub) => sub.lemonSqueezyId === id
+		(sub) => sub.lemonSqueezyId === id,
 	);
 
 	if (!ownedSubscription) {
-		throw new Error("Unauthorized: Subscription does not belong to current user");
+		throw new Error(
+			"Unauthorized: Subscription does not belong to current user",
+		);
 	}
 
 	const subscription = await getSubscription(id);
