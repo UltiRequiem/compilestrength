@@ -22,6 +22,7 @@ import { auth } from "@/lib/auth";
 import { webhookHasData, webhookHasMeta } from "@/lib/lemonsqueezy-typeguards";
 
 type NewPlan = typeof plans.$inferInsert;
+type Plan = typeof plans.$inferSelect;
 type NewSubscription = typeof subscriptions.$inferInsert;
 
 interface SubscriptionItem {
@@ -37,21 +38,22 @@ export async function syncPlans() {
 	configureLemonSqueezy();
 
 	// Fetch all the variants from the database.
-	const productVariants: NewPlan[] = await db.select().from(plans);
+	const productVariants: Plan[] = await db.select().from(plans);
 
 	// Helper function to add a variant to the productVariants array and sync it with the database.
 	async function _addVariant(variant: NewPlan) {
 		console.log(`Syncing variant ${variant.name} with the database...`);
 
 		// Sync the variant with the plan in the database.
-		await db
+		const [insertedPlan] = await db
 			.insert(plans)
 			.values(variant)
-			.onConflictDoUpdate({ target: plans.variantId, set: variant });
+			.onConflictDoUpdate({ target: plans.variantId, set: variant })
+			.returning();
 
 		console.log(`${variant.name} synced with the database...`);
 
-		productVariants.push(variant);
+		productVariants.push(insertedPlan);
 	}
 
 	// Fetch products from the Lemon Squeezy store.
