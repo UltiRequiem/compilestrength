@@ -36,7 +36,9 @@ export async function POST(request: Request) {
 
 		// Non-blocking call to process the webhook event.
 		// We return 200 immediately so LemonSqueezy knows we received it
-		void processWebhookEvent(webhookEventId);
+		void processWebhookEvent(webhookEventId).catch((err) => {
+			console.error("Error processing LemonSqueezy webhook event", webhookEventId, err);
+		});
 
 		return new Response("OK", { status: 200 });
 	}
