@@ -193,7 +193,7 @@ export function DashboardClient({
 						<Button
 							className="w-full justify-start text-left h-auto py-4"
 							onClick={() => {
-								window.location.href = "/compiler";
+								window.location.href = "/app/compiler";
 							}}
 						>
 							<Sparkles className="h-5 w-5" />
@@ -208,6 +208,9 @@ export function DashboardClient({
 						<Button
 							variant="outline"
 							className="w-full justify-start text-left h-auto py-4 border-primary/50 hover:bg-primary/10"
+							onClick={() => {
+								window.location.href = "/app/log-workout";
+							}}
 						>
 							<Play className="h-5 w-5 text-primary" />
 							<div className="flex-1">
@@ -221,6 +224,9 @@ export function DashboardClient({
 						<Button
 							variant="outline"
 							className="w-full justify-start text-left h-auto py-4 border-primary/50 hover:bg-primary/10"
+							onClick={() => {
+								window.location.href = "/app/debugger";
+							}}
 						>
 							<Bug className="h-5 w-5 text-primary" />
 							<div className="flex-1">
