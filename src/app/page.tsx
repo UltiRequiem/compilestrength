@@ -12,7 +12,10 @@ export default function LandingPage() {
 						<span className="text-white">strength</span>
 					</Link>
 					<div className="flex items-center gap-4">
-						<Link href="/tools" className="hover:text-green-300 transition-colors">
+						<Link
+							href="/tools"
+							className="hover:text-green-300 transition-colors"
+						>
 							Tools
 						</Link>
 						<Link href="/login">

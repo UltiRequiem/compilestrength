@@ -89,7 +89,9 @@ export default function ToolsPage() {
 
 				{/* CTA */}
 				<div className="mt-16 border border-green-400/20 p-8 rounded-lg text-center">
-					<h2 className="text-2xl font-bold mb-3">Want more advanced features?</h2>
+					<h2 className="text-2xl font-bold mb-3">
+						Want more advanced features?
+					</h2>
 					<p className="text-gray-400 mb-6">
 						Get AI-powered workout programs, progress tracking, and more
 					</p>

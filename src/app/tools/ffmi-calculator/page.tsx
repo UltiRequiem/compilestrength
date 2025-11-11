@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -247,9 +247,9 @@ export default function FFMICalculator() {
 							Why Adjusted FFMI?
 						</h3>
 						<p>
-							Adjusted FFMI normalizes scores to a standard height of 1.8m (5'11"),
-							allowing for fair comparison between individuals of different
-							heights.
+							Adjusted FFMI normalizes scores to a standard height of 1.8m
+							(5'11"), allowing for fair comparison between individuals of
+							different heights.
 						</p>
 					</div>
 				</div>
