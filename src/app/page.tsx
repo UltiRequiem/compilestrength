@@ -91,7 +91,7 @@ export default function LandingPage() {
 						Ready to compile your gains?
 					</h2>
 					<p className="text-gray-400 mb-6">
-						Start your 7-day free trial — payment details collected at checkout.
+						Start your 7-day free trial — Cancel anytime.
 					</p>
 					<Link href="/signup">
 						<Button size="lg">Get Started</Button>
