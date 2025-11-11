@@ -38,7 +38,7 @@ export function SubscriptionCard({
 	plan,
 }: {
 	subscription: Subscription;
-	plan: Plan;
+	plan: Plan | null;
 }) {
 	const [loading, setLoading] = useState(false);
 	const [urls, setUrls] =
@@ -47,12 +47,14 @@ export function SubscriptionCard({
 	const status = subscription.status as SubscriptionStatus;
 	const { hasAccess, message, type } = getSubscriptionMessage(subscription);
 
-	// Load URLs when needed
+	// Load URLs when needed and return them
 	const loadUrls = async () => {
 		if (!urls) {
 			const loadedUrls = await getSubscriptionURLs(subscription.lemonSqueezyId);
 			setUrls(loadedUrls);
+			return loadedUrls;
 		}
+		return urls;
 	};
 
 	const handleCancel = async () => {
@@ -104,7 +106,7 @@ export function SubscriptionCard({
 				<div className="flex items-start justify-between">
 					<div>
 						<CardTitle>
-							{plan.productName} - {plan.name}
+							{plan?.productName || "Unknown Plan"} - {plan?.name || "Unknown"}
 						</CardTitle>
 						<CardDescription className="mt-2">
 							<span
@@ -143,8 +145,8 @@ export function SubscriptionCard({
 								<DropdownMenuItem
 									onClick={async () => {
 										await loadUrls();
-										if (urls?.customer_portal) {
-											window.open(urls.customer_portal, "_blank");
+										if (localUrls?.customer_portal) {
+											window.open(localUrls.customer_portal, "_blank");
 										}
 									}}
 								>
@@ -153,8 +155,8 @@ export function SubscriptionCard({
 								<DropdownMenuItem
 									onClick={async () => {
 										await loadUrls();
-										if (urls?.update_payment_method) {
-											window.open(urls.update_payment_method, "_blank");
+										if (localUrls?.update_payment_method) {
+											window.open(localUrls.update_payment_method, "_blank");
 										}
 									}}
 								>
@@ -177,7 +179,7 @@ export function SubscriptionCard({
 					<div>
 						<p className="text-muted-foreground">Price</p>
 						<p className="font-medium">
-							{formatPrice(subscription.price, plan.interval)}
+							{formatPrice(subscription.price, plan?.interval ?? null)}
 						</p>
 					</div>
 					<div>

@@ -70,6 +70,6 @@
 		"lint": "next lint",
 		"preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
 		"start": "next start",
-		"ngrok": "ngrok http --domain=goblin-mature-annually.ngrok-free.app 3000"
+		"ngrok": "ngrok http --domain=${NGROK_DOMAIN:-goblin-mature-annually.ngrok-free.app} 3000"
 	}
 }

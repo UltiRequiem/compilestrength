@@ -123,6 +123,20 @@ bun run scripts/reset-db.ts        # Reset database (drops all tables)
 npx @better-auth/cli generate      # Regenerate auth schema
 ```
 
+### Webhook Testing (Development)
+
+```bash
+npm run ngrok        # Start ngrok tunnel for webhook testing
+```
+
+To use ngrok for testing LemonSqueezy webhooks:
+1. Add `NGROK_DOMAIN=your-subdomain.ngrok-free.app` to your `.env` file
+2. Run `npm run dev` in one terminal
+3. Run `npm run ngrok` in another terminal
+4. Configure LemonSqueezy webhook to: `https://your-subdomain.ngrok-free.app/api/webhooks/lemonsqueezy`
+
+See [docs/NGROK_SETUP.md](docs/NGROK_SETUP.md) for detailed instructions.
+
 ### Deployment
 
 ```bash
@@ -149,6 +163,7 @@ npm run cf-typegen   # Generate Cloudflare Types
 
 **Optional:**
 - `OPENAI_API_KEY` - Optional, for AI workout compiler features
+- `NGROK_DOMAIN` - Optional, your ngrok static domain for webhook testing (e.g., `your-subdomain.ngrok-free.app`)
 
 ### Environment Setup
 
@@ -157,6 +172,7 @@ npm run cf-typegen   # Generate Cloudflare Types
 3. Set `NEXT_PUBLIC_*` variables in `wrangler.jsonc` under `vars` section
 4. Note: `.env` is used for local dev, secrets must be set in Cloudflare for
    production
+5. For webhook testing, add `NGROK_DOMAIN` to `.env` and run `npm run ngrok`
 
 ## Cloudflare Workers Specific
 

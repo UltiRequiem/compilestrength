@@ -11,6 +11,7 @@ export const env = createEnv({
 		LEMONSQUEEZY_STORE_ID: z.string().min(1),
 		LEMONSQUEEZY_WEBHOOK_SECRET: z.string().min(1),
 		LEMONSQUEEZY_WEBHOOK_URL: z.url().optional(),
+		NGROK_DOMAIN: z.string().min(1).optional(),
 	},
 	client: {
 		NEXT_PUBLIC_BETTER_AUTH_URL: z.url().default("http://localhost:3000"),
@@ -25,6 +26,7 @@ export const env = createEnv({
 		BETTER_AUTH_SECRET: process.env.BETTER_AUTH_SECRET,
 		BETTER_AUTH_URL: process.env.BETTER_AUTH_URL,
 		NEXT_PUBLIC_BETTER_AUTH_URL: process.env.NEXT_PUBLIC_BETTER_AUTH_URL,
+		NGROK_DOMAIN: process.env.NGROK_DOMAIN,
 	},
 	skipValidation: !!process.env.SKIP_ENV_VALIDATION,
 });

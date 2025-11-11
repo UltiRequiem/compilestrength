@@ -28,6 +28,9 @@ export function Plan({ plan }: { plan: Plan }) {
 
 			if (checkoutUrl) {
 				router.push(checkoutUrl);
+			} else {
+				// Handle undefined checkout URL
+				alert("Unable to create checkout link, please try again.");
 			}
 		} catch (error) {
 			console.error("Error creating checkout:", error);

@@ -9,11 +9,25 @@ export async function UsageDisplay() {
 		return null;
 	}
 
-	const compilePercentage = (usage.compilesUsed / usage.compilesLimit) * 100;
-	const editPercentage =
-		(usage.routineEditsUsed / usage.routineEditsLimit) * 100;
-	const messagePercentage =
-		(usage.aiMessagesUsed / usage.aiMessagesLimit) * 100;
+	// Safe percentage calculation with guards against zero/non-positive limits
+	const calculatePercentage = (used: number, limit: number): number => {
+		if (limit <= 0) return 0; // Treat non-positive limits as 0%
+		const percentage = (used / limit) * 100;
+		return Math.min(100, Math.max(0, percentage)); // Clamp between 0-100
+	};
+
+	const compilePercentage = calculatePercentage(
+		usage.compilesUsed,
+		usage.compilesLimit
+	);
+	const editPercentage = calculatePercentage(
+		usage.routineEditsUsed,
+		usage.routineEditsLimit
+	);
+	const messagePercentage = calculatePercentage(
+		usage.aiMessagesUsed,
+		usage.aiMessagesLimit
+	);
 
 	const resetsAt = new Date(usage.periodEnd).toLocaleDateString();
 

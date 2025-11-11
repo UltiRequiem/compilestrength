@@ -1,7 +1,8 @@
-import { eq } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 import { getUserSubscriptions } from "@/app/actions/lemonsqueezy";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { db, plans } from "@/db/schema";
+import { db } from "@/db";
+import { plans } from "@/db/schema";
 import { SubscriptionCard } from "./subscription-card";
 
 export async function Subscriptions() {
@@ -23,21 +24,21 @@ export async function Subscriptions() {
 		);
 	}
 
-	// Get plan details for all subscriptions
-	const subscriptionsWithPlans = await Promise.all(
-		userSubscriptions.map(async (sub) => {
-			const plan = await db
-				.select()
-				.from(plans)
-				.where(eq(plans.id, sub.planId))
-				.limit(1);
+	// Get plan details for all subscriptions in a single query
+	const planIds = userSubscriptions.map((sub) => sub.planId);
+	const allPlans = await db
+		.select()
+		.from(plans)
+		.where(inArray(plans.id, planIds));
 
-			return {
-				...sub,
-				plan: plan[0],
-			};
-		}),
-	);
+	// Create a map of planId -> plan for fast lookup
+	const planMap = new Map(allPlans.map((plan) => [plan.id, plan]));
+
+	// Attach plan to each subscription
+	const subscriptionsWithPlans = userSubscriptions.map((sub) => ({
+		...sub,
+		plan: planMap.get(sub.planId) || null,
+	}));
 
 	// Sort: active first, then on_trial, then others
 	const sortedSubscriptions = subscriptionsWithPlans.sort((a, b) => {

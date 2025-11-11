@@ -113,8 +113,11 @@ export function getSubscriptionMessage(
  */
 export function formatPrice(price: string | number, interval?: string | null) {
 	const numPrice =
-		typeof price === "string" ? Number.parseInt(price, 10) : price;
-	const dollars = (numPrice / 100).toFixed(2);
+		typeof price === "string" ? Number.parseFloat(price) : price;
+
+	// Fallback to 0 for invalid numbers
+	const validPrice = Number.isNaN(numPrice) ? 0 : numPrice;
+	const dollars = (validPrice / 100).toFixed(2);
 
 	if (interval) {
 		return `$${dollars}/${interval}`;

@@ -21,10 +21,11 @@ export async function Plans() {
 		);
 	}
 
-	// Sort plans by sort field
+	// Sort plans by sort field (null/undefined values go to end)
 	const sortedPlans = allPlans.sort((a, b) => {
-		if (a.sort === null || b.sort === null) return 0;
-		return (a.sort ?? 0) - (b.sort ?? 0);
+		const aSort = a.sort ?? Number.MAX_SAFE_INTEGER;
+		const bSort = b.sort ?? Number.MAX_SAFE_INTEGER;
+		return aSort - bSort;
 	});
 
 	return (
