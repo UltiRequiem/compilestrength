@@ -439,6 +439,17 @@ export async function unpauseUserSubscription(id: string) {
  */
 export async function getSubscriptionURLs(id: string) {
 	configureLemonSqueezy();
+
+	// Verify subscription ownership before accessing external API
+	const userSubscriptions = await getUserSubscriptions();
+	const ownedSubscription = userSubscriptions.find(
+		(sub) => sub.lemonSqueezyId === id
+	);
+
+	if (!ownedSubscription) {
+		throw new Error("Unauthorized: Subscription does not belong to current user");
+	}
+
 	const subscription = await getSubscription(id);
 
 	if (subscription.error) {

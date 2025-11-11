@@ -32,14 +32,20 @@ export default function FFMICalculator() {
 		const weightKg = unit === "imperial" ? w * 0.453592 : w;
 		const heightM = unit === "imperial" ? h * 0.0254 : h / 100;
 
-		// Calculate fat-free mass
-		const fatFreeMass = weightKg * (1 - bf / 100);
+		// Calculate fat-free mass in kg
+		const fatFreeMassKg = weightKg * (1 - bf / 100);
 
 		// Calculate FFMI
-		const ffmi = fatFreeMass / (heightM * heightM);
+		const ffmi = fatFreeMassKg / (heightM * heightM);
 
 		// Calculate adjusted FFMI (normalized to 1.8m height)
 		const adjustedFFMI = ffmi + 6.1 * (1.8 - heightM);
+
+		// Convert fat-free mass to display units
+		const fatFreeMassDisplay =
+			unit === "imperial"
+				? fatFreeMassKg * 2.20462 // Convert kg to lbs
+				: fatFreeMassKg;
 
 		// Determine category
 		let category = "";
@@ -62,7 +68,7 @@ export default function FFMICalculator() {
 		setResult({
 			ffmi: Number(ffmi.toFixed(1)),
 			adjustedFFMI: Number(adjustedFFMI.toFixed(1)),
-			fatFreeMass: Number(fatFreeMass.toFixed(1)),
+			fatFreeMass: Number(fatFreeMassDisplay.toFixed(1)),
 			category,
 		});
 	};

@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { unstable_cache } from "next/cache";
 import { DashboardClient } from "@/components/dashboard/dashboard-client";
 import { db } from "@/db";
@@ -21,7 +21,7 @@ const getCachedUserRoutines = unstable_cache(
 				.select()
 				.from(workoutPrograms)
 				.where(eq(workoutPrograms.userId, userId))
-				.orderBy(workoutPrograms.createdAt)
+				.orderBy(desc(workoutPrograms.createdAt))
 				.limit(1); // Only get the most recent routine for dashboard
 
 			console.log("✅ Found", programs.length, "workout programs");
