@@ -12,7 +12,6 @@ import {
 	User,
 } from "lucide-react";
 import { useState } from "react";
-import { AppLayout } from "@/components/layout/app-layout";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -101,7 +100,7 @@ export default function SettingsPage() {
 	}
 
 	return (
-		<AppLayout>
+		<>
 			<div className="mx-auto max-w-4xl">
 				{/* Header */}
 				<div className="mb-8">
@@ -524,6 +523,6 @@ export default function SettingsPage() {
 					</Card>
 				</div>
 			</div>
-		</AppLayout>
+		</>
 	);
 }

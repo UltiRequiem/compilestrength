@@ -1,7 +1,6 @@
 import { Suspense } from "react";
 import { Plans } from "@/components/billing/plans";
 import { Subscriptions } from "@/components/billing/subscriptions";
-import { AppLayout } from "@/components/layout/app-layout";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { requireAuth } from "@/lib/auth-utils";
 
@@ -11,7 +10,7 @@ export default async function BillingPage() {
 	const _session = await requireAuth();
 
 	return (
-		<AppLayout>
+		<>
 			<div className="mb-8">
 				<h1 className="text-3xl font-bold mb-2">Billing</h1>
 				<p className="text-muted-foreground">
@@ -46,6 +45,6 @@ export default async function BillingPage() {
 					<Plans />
 				</Suspense>
 			</div>
-		</AppLayout>
+		</>
 	);
 }
