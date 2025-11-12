@@ -118,278 +118,274 @@ export default function DebuggerPage() {
 	];
 
 	return (
-		<>
-			<div className="mx-auto max-w-6xl">
-				{/* Header */}
-				<div className="mb-8">
-					<h1 className="text-3xl font-bold">Gains Debugger</h1>
-					<p className="text-muted-foreground">Stack Trace for Your Progress</p>
-					<p className="text-sm text-muted-foreground">
-						Last analyzed: 2 hours ago
-					</p>
-				</div>
+		<div className="mx-auto max-w-6xl">
+			{/* Header */}
+			<div className="mb-8">
+				<h1 className="text-3xl font-bold">Gains Debugger</h1>
+				<p className="text-muted-foreground">Stack Trace for Your Progress</p>
+				<p className="text-sm text-muted-foreground">
+					Last analyzed: 2 hours ago
+				</p>
+			</div>
 
-				{/* Run Analysis Button */}
-				<Card className="mb-8 border-primary/50 glow-green-hover">
-					<CardContent className="p-6">
-						<div className="flex items-center justify-between">
-							<div>
-								<h3 className="font-semibold text-lg">
-									Run Comprehensive Analysis
-								</h3>
-								<p className="text-sm text-muted-foreground">
-									Analyze your training history to identify bottlenecks and
-									plateaus
+			{/* Run Analysis Button */}
+			<Card className="mb-8 border-primary/50 glow-green-hover">
+				<CardContent className="p-6">
+					<div className="flex items-center justify-between">
+						<div>
+							<h3 className="font-semibold text-lg">
+								Run Comprehensive Analysis
+							</h3>
+							<p className="text-sm text-muted-foreground">
+								Analyze your training history to identify bottlenecks and
+								plateaus
+							</p>
+						</div>
+						<Button size="lg" onClick={handleAnalysis}>
+							<PlayCircle className="h-5 w-5" />
+							Run Analysis
+						</Button>
+					</div>
+				</CardContent>
+			</Card>
+
+			{/* Analysis Status */}
+			{isAnalyzing && (
+				<Card className="mb-8 border-primary/50 glow-green">
+					<CardContent className="p-8">
+						<div className="space-y-4">
+							<div className="flex items-center gap-3 text-primary">
+								<Loader2 className="h-5 w-5 animate-spin" />
+								<p className="terminal-text font-semibold">
+									{">"} Analyzing workout history...
 								</p>
 							</div>
-							<Button size="lg" onClick={handleAnalysis}>
-								<PlayCircle className="h-5 w-5" />
-								Run Analysis
-							</Button>
+							<div className="flex items-center gap-3 text-primary">
+								<Loader2 className="h-5 w-5 animate-spin" />
+								<p className="terminal-text font-semibold">
+									{">"} Checking progressive overload...
+								</p>
+							</div>
+							<div className="flex items-center gap-3 text-primary">
+								<Loader2 className="h-5 w-5 animate-spin" />
+								<p className="terminal-text font-semibold">
+									{">"} Evaluating volume and frequency...
+								</p>
+							</div>
+							<div className="flex items-center gap-3 text-primary">
+								<Loader2 className="h-5 w-5 animate-spin" />
+								<p className="terminal-text font-semibold">
+									{">"} Identifying potential issues...
+								</p>
+							</div>
 						</div>
 					</CardContent>
 				</Card>
+			)}
 
-				{/* Analysis Status */}
-				{isAnalyzing && (
-					<Card className="mb-8 border-primary/50 glow-green">
-						<CardContent className="p-8">
-							<div className="space-y-4">
-								<div className="flex items-center gap-3 text-primary">
-									<Loader2 className="h-5 w-5 animate-spin" />
-									<p className="terminal-text font-semibold">
-										{">"} Analyzing workout history...
-									</p>
-								</div>
-								<div className="flex items-center gap-3 text-primary">
-									<Loader2 className="h-5 w-5 animate-spin" />
-									<p className="terminal-text font-semibold">
-										{">"} Checking progressive overload...
-									</p>
-								</div>
-								<div className="flex items-center gap-3 text-primary">
-									<Loader2 className="h-5 w-5 animate-spin" />
-									<p className="terminal-text font-semibold">
-										{">"} Evaluating volume and frequency...
-									</p>
-								</div>
-								<div className="flex items-center gap-3 text-primary">
-									<Loader2 className="h-5 w-5 animate-spin" />
-									<p className="terminal-text font-semibold">
-										{">"} Identifying potential issues...
-									</p>
-								</div>
+			{/* Issues Found */}
+			{analysisComplete && !isAnalyzing && (
+				<>
+					<div className="mb-8 space-y-6">
+						<h2 className="text-2xl font-bold">Issues Found</h2>
+
+						{issues.map((issue) => (
+							<Card
+								key={issue.id}
+								className={`${
+									issue.severity === "critical"
+										? "border-destructive/50"
+										: issue.severity === "warning"
+											? "border-yellow-500/50"
+											: "border-blue-500/50"
+								}`}
+							>
+								<CardHeader>
+									<div className="flex items-start gap-4">
+										<div
+											className={`flex h-10 w-10 items-center justify-center rounded-lg ${
+												issue.severity === "critical"
+													? "bg-destructive/10"
+													: issue.severity === "warning"
+														? "bg-yellow-500/10"
+														: "bg-blue-500/10"
+											}`}
+										>
+											<AlertTriangle
+												className={`h-5 w-5 ${
+													issue.severity === "critical"
+														? "text-destructive"
+														: issue.severity === "warning"
+															? "text-yellow-500"
+															: "text-blue-500"
+												}`}
+											/>
+										</div>
+										<div className="flex-1">
+											<div className="mb-2 flex items-center gap-2">
+												<Badge
+													variant={
+														issue.severity === "critical"
+															? "destructive"
+															: "secondary"
+													}
+													className="text-xs"
+												>
+													{issue.severity.toUpperCase()}
+												</Badge>
+												<CardTitle className="text-lg">{issue.title}</CardTitle>
+											</div>
+											<p className="text-muted-foreground">
+												{issue.description}
+											</p>
+										</div>
+									</div>
+								</CardHeader>
+								<CardContent>
+									<div className="space-y-4">
+										{/* Stack Trace */}
+										<div className="rounded-lg bg-secondary p-4 terminal-text text-sm">
+											<p className="mb-2 font-semibold text-primary">
+												Stack Trace:
+											</p>
+											{issue.details.map((detail) => (
+												<p key={detail} className="text-muted-foreground">
+													<span className="text-primary">{">"}</span> {detail}
+												</p>
+											))}
+										</div>
+
+										{/* Graph placeholder */}
+										<div className="flex h-32 items-center justify-center rounded-lg border-2 border-dashed border-border">
+											<p className="text-sm text-muted-foreground">
+												Trend visualization: {issue.trend}
+											</p>
+										</div>
+
+										{/* Action Button */}
+										<Button className="w-full">
+											{issue.severity === "critical"
+												? "Apply Fix"
+												: issue.severity === "warning"
+													? "Generate New Program"
+													: "Schedule Deload"}
+										</Button>
+									</div>
+								</CardContent>
+							</Card>
+						))}
+					</div>
+
+					{/* What's Working Well */}
+					<Card className="mb-8 border-primary/50">
+						<CardHeader>
+							<CardTitle className="flex items-center gap-2">
+								<CheckCircle className="h-5 w-5 text-primary" />
+								What&apos;s Working Well
+							</CardTitle>
+						</CardHeader>
+						<CardContent>
+							<div className="grid gap-3 md:grid-cols-2">
+								{workingWell.map((item) => (
+									<div
+										key={item.id}
+										className="flex items-start gap-3 rounded-lg border border-primary/20 p-3"
+									>
+										<CheckCircle className="h-4 w-4 mt-0.5 text-primary flex-shrink-0" />
+										<p className="text-sm">{item.text}</p>
+									</div>
+								))}
 							</div>
 						</CardContent>
 					</Card>
-				)}
 
-				{/* Issues Found */}
-				{analysisComplete && !isAnalyzing && (
-					<>
-						<div className="mb-8 space-y-6">
-							<h2 className="text-2xl font-bold">Issues Found</h2>
-
-							{issues.map((issue) => (
-								<Card
-									key={issue.id}
-									className={`${
-										issue.severity === "critical"
-											? "border-destructive/50"
-											: issue.severity === "warning"
-												? "border-yellow-500/50"
-												: "border-blue-500/50"
-									}`}
-								>
-									<CardHeader>
-										<div className="flex items-start gap-4">
-											<div
-												className={`flex h-10 w-10 items-center justify-center rounded-lg ${
-													issue.severity === "critical"
-														? "bg-destructive/10"
-														: issue.severity === "warning"
-															? "bg-yellow-500/10"
-															: "bg-blue-500/10"
-												}`}
-											>
-												<AlertTriangle
-													className={`h-5 w-5 ${
-														issue.severity === "critical"
-															? "text-destructive"
-															: issue.severity === "warning"
-																? "text-yellow-500"
-																: "text-blue-500"
-													}`}
-												/>
-											</div>
-											<div className="flex-1">
-												<div className="mb-2 flex items-center gap-2">
-													<Badge
-														variant={
-															issue.severity === "critical"
-																? "destructive"
-																: "secondary"
-														}
-														className="text-xs"
-													>
-														{issue.severity.toUpperCase()}
-													</Badge>
-													<CardTitle className="text-lg">
-														{issue.title}
-													</CardTitle>
-												</div>
-												<p className="text-muted-foreground">
-													{issue.description}
-												</p>
-											</div>
+					{/* Debugging Tools */}
+					<Card className="mb-8 border-primary/20">
+						<CardHeader>
+							<CardTitle>Debugging Tools</CardTitle>
+						</CardHeader>
+						<CardContent>
+							<div className="grid gap-3 md:grid-cols-2">
+								<Button variant="outline" className="h-auto py-4">
+									<div className="flex flex-col items-start text-left">
+										<div className="flex items-center gap-2 font-semibold">
+											<Activity className="h-4 w-4" />
+											Exercise-Specific Analysis
 										</div>
-									</CardHeader>
-									<CardContent>
-										<div className="space-y-4">
-											{/* Stack Trace */}
-											<div className="rounded-lg bg-secondary p-4 terminal-text text-sm">
-												<p className="mb-2 font-semibold text-primary">
-													Stack Trace:
-												</p>
-												{issue.details.map((detail) => (
-													<p key={detail} className="text-muted-foreground">
-														<span className="text-primary">{">"}</span> {detail}
-													</p>
-												))}
-											</div>
+										<span className="text-xs text-muted-foreground">
+											Deep dive into individual exercises
+										</span>
+									</div>
+								</Button>
 
-											{/* Graph placeholder */}
-											<div className="flex h-32 items-center justify-center rounded-lg border-2 border-dashed border-border">
-												<p className="text-sm text-muted-foreground">
-													Trend visualization: {issue.trend}
-												</p>
-											</div>
-
-											{/* Action Button */}
-											<Button className="w-full">
-												{issue.severity === "critical"
-													? "Apply Fix"
-													: issue.severity === "warning"
-														? "Generate New Program"
-														: "Schedule Deload"}
-											</Button>
+								<Button variant="outline" className="h-auto py-4">
+									<div className="flex flex-col items-start text-left">
+										<div className="flex items-center gap-2 font-semibold">
+											<TrendingDown className="h-4 w-4" />
+											Compare to Similar Athletes
 										</div>
-									</CardContent>
-								</Card>
-							))}
-						</div>
+										<span className="text-xs text-muted-foreground">
+											Benchmark against peer data
+										</span>
+									</div>
+								</Button>
 
-						{/* What's Working Well */}
-						<Card className="mb-8 border-primary/50">
-							<CardHeader>
-								<CardTitle className="flex items-center gap-2">
-									<CheckCircle className="h-5 w-5 text-primary" />
-									What&apos;s Working Well
-								</CardTitle>
-							</CardHeader>
-							<CardContent>
-								<div className="grid gap-3 md:grid-cols-2">
-									{workingWell.map((item) => (
-										<div
-											key={item.id}
-											className="flex items-start gap-3 rounded-lg border border-primary/20 p-3"
-										>
-											<CheckCircle className="h-4 w-4 mt-0.5 text-primary flex-shrink-0" />
-											<p className="text-sm">{item.text}</p>
+								<Button variant="outline" className="h-auto py-4">
+									<div className="flex flex-col items-start text-left">
+										<div className="flex items-center gap-2 font-semibold">
+											<PlayCircle className="h-4 w-4" />
+											Simulate Program Changes
 										</div>
-									))}
-								</div>
-							</CardContent>
-						</Card>
+										<span className="text-xs text-muted-foreground">
+											What-if analysis tool
+										</span>
+									</div>
+								</Button>
 
-						{/* Debugging Tools */}
-						<Card className="mb-8 border-primary/20">
-							<CardHeader>
-								<CardTitle>Debugging Tools</CardTitle>
-							</CardHeader>
-							<CardContent>
-								<div className="grid gap-3 md:grid-cols-2">
-									<Button variant="outline" className="h-auto py-4">
-										<div className="flex flex-col items-start text-left">
-											<div className="flex items-center gap-2 font-semibold">
-												<Activity className="h-4 w-4" />
-												Exercise-Specific Analysis
-											</div>
-											<span className="text-xs text-muted-foreground">
-												Deep dive into individual exercises
-											</span>
+								<Button variant="outline" className="h-auto py-4">
+									<div className="flex flex-col items-start text-left">
+										<div className="flex items-center gap-2 font-semibold">
+											<Calendar className="h-4 w-4" />
+											Export Report as PDF
 										</div>
-									</Button>
+										<span className="text-xs text-muted-foreground">
+											Save full analysis report
+										</span>
+									</div>
+								</Button>
+							</div>
+						</CardContent>
+					</Card>
 
-									<Button variant="outline" className="h-auto py-4">
-										<div className="flex flex-col items-start text-left">
-											<div className="flex items-center gap-2 font-semibold">
-												<TrendingDown className="h-4 w-4" />
-												Compare to Similar Athletes
-											</div>
-											<span className="text-xs text-muted-foreground">
-												Benchmark against peer data
-											</span>
+					{/* Historical Debug Logs */}
+					<Card className="border-primary/20">
+						<CardHeader>
+							<CardTitle>Previous Analyses</CardTitle>
+						</CardHeader>
+						<CardContent>
+							<div className="space-y-3">
+								{previousAnalyses.map((analysis) => (
+									<div
+										key={analysis.id}
+										className="flex items-center justify-between rounded-lg border border-border p-4 card-hover"
+									>
+										<div>
+											<p className="font-semibold">{analysis.date}</p>
+											<p className="text-sm text-muted-foreground">
+												{analysis.issuesFound} issues found,{" "}
+												{analysis.issuesResolved} resolved
+											</p>
 										</div>
-									</Button>
-
-									<Button variant="outline" className="h-auto py-4">
-										<div className="flex flex-col items-start text-left">
-											<div className="flex items-center gap-2 font-semibold">
-												<PlayCircle className="h-4 w-4" />
-												Simulate Program Changes
-											</div>
-											<span className="text-xs text-muted-foreground">
-												What-if analysis tool
-											</span>
-										</div>
-									</Button>
-
-									<Button variant="outline" className="h-auto py-4">
-										<div className="flex flex-col items-start text-left">
-											<div className="flex items-center gap-2 font-semibold">
-												<Calendar className="h-4 w-4" />
-												Export Report as PDF
-											</div>
-											<span className="text-xs text-muted-foreground">
-												Save full analysis report
-											</span>
-										</div>
-									</Button>
-								</div>
-							</CardContent>
-						</Card>
-
-						{/* Historical Debug Logs */}
-						<Card className="border-primary/20">
-							<CardHeader>
-								<CardTitle>Previous Analyses</CardTitle>
-							</CardHeader>
-							<CardContent>
-								<div className="space-y-3">
-									{previousAnalyses.map((analysis) => (
-										<div
-											key={analysis.id}
-											className="flex items-center justify-between rounded-lg border border-border p-4 card-hover"
-										>
-											<div>
-												<p className="font-semibold">{analysis.date}</p>
-												<p className="text-sm text-muted-foreground">
-													{analysis.issuesFound} issues found,{" "}
-													{analysis.issuesResolved} resolved
-												</p>
-											</div>
-											<Button variant="ghost" size="sm">
-												View
-											</Button>
-										</div>
-									))}
-								</div>
-							</CardContent>
-						</Card>
-					</>
-				)}
-			</div>
-		</>
+										<Button variant="ghost" size="sm">
+											View
+										</Button>
+									</div>
+								))}
+							</div>
+						</CardContent>
+					</Card>
+				</>
+			)}
+		</div>
 	);
 }
