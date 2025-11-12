@@ -10,7 +10,6 @@ import {
 	TrendingDown,
 } from "lucide-react";
 import { useState } from "react";
-import { AppLayout } from "@/components/layout/app-layout";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -119,7 +118,7 @@ export default function DebuggerPage() {
 	];
 
 	return (
-		<AppLayout>
+		<>
 			<div className="mx-auto max-w-6xl">
 				{/* Header */}
 				<div className="mb-8">
@@ -391,6 +390,6 @@ export default function DebuggerPage() {
 					</>
 				)}
 			</div>
-		</AppLayout>
+		</>
 	);
 }

@@ -10,7 +10,6 @@ import {
 	TrendingUp,
 } from "lucide-react";
 import { useState } from "react";
-import { AppLayout } from "@/components/layout/app-layout";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -108,7 +107,7 @@ export default function CoachPage() {
 	];
 
 	return (
-		<AppLayout>
+		<>
 			<div className="flex h-screen -m-8">
 				{/* Left Sidebar - Coach Selection */}
 				<div className="w-80 border-r border-border bg-sidebar">
@@ -330,6 +329,6 @@ export default function CoachPage() {
 					</div>
 				</div>
 			</div>
-		</AppLayout>
+		</>
 	);
 }

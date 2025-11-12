@@ -9,7 +9,6 @@ import {
 	Star,
 	TrendingUp,
 } from "lucide-react";
-import { AppLayout } from "@/components/layout/app-layout";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -164,7 +163,7 @@ export default function GitGainsPage() {
 	];
 
 	return (
-		<AppLayout>
+		<>
 			<div className="mx-auto max-w-7xl">
 				{/* Header */}
 				<div className="mb-8 flex items-center justify-between">
@@ -403,6 +402,6 @@ export default function GitGainsPage() {
 					</div>
 				</div>
 			</div>
-		</AppLayout>
+		</>
 	);
 }

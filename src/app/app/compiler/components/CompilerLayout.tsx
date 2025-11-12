@@ -2,7 +2,6 @@
 
 import { Dumbbell, MessageSquare } from "lucide-react";
 import { useState } from "react";
-import { AppLayout } from "@/components/layout/app-layout";
 import { AgentSelector } from "./AgentSelector";
 import { ChatPanel } from "./ChatPanel";
 import { RoutinePreview } from "./RoutinePreview";
@@ -11,7 +10,7 @@ export function CompilerLayout() {
 	const [activeTab, setActiveTab] = useState<"chat" | "routine">("chat");
 
 	return (
-		<AppLayout>
+		<>
 			<div className="flex flex-col text-green-400 h-[calc(100vh-7rem)] lg:h-[calc(100vh-10rem)]">
 				{/* Agent Selector at the top */}
 				<div className="border-b border-green-800/30 p-4 shrink-0">
@@ -60,6 +59,6 @@ export function CompilerLayout() {
 					</div>
 				</div>
 			</div>
-		</AppLayout>
+		</>
 	);
 }
