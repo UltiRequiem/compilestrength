@@ -68,8 +68,15 @@ export default function TrainingPreferences({
 						<Input
 							type="number"
 							value={restTimerDefault}
-							onChange={(e) => onRestTimerChange(Number(e.target.value))}
+							onChange={(e) => {
+								const value = Number(e.target.value);
+								if (value >= 0 && value <= 600) {
+									onRestTimerChange(value);
+								}
+							}}
 							placeholder="90"
+							min="0"
+							max="600"
 						/>
 					</div>
 				</div>
