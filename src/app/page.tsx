@@ -25,7 +25,7 @@ export default async function LandingPage() {
 							Tools
 						</Link>
 						{session ? (
-							<Link href="/app">
+							<Link href="/app/dashboard">
 								<Button size="sm">Dashboard</Button>
 							</Link>
 						) : (
