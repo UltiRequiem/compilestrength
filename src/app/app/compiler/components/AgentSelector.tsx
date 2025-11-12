@@ -73,6 +73,7 @@ export function AgentSelector() {
 
 						return (
 							<button
+								type="button"
 								key={agent.id}
 								onClick={() => handleAgentSelect(agent.id)}
 								disabled={!isAvailable}

@@ -1,8 +1,4 @@
-import {
-	integer,
-	pgTable,
-	text,
-} from "drizzle-orm/pg-core";
+import { integer, pgTable, text } from "drizzle-orm/pg-core";
 import { users } from "../auth.schema";
 
 export const userPreferences = pgTable("UserPreferences", {

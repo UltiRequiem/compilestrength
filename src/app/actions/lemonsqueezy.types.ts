@@ -1,4 +1,4 @@
-import { plans, subscriptions } from "@/db/schema";
+import type { plans, subscriptions } from "@/db/schema";
 
 export type NewPlan = typeof plans.$inferInsert;
 export type Plan = typeof plans.$inferSelect;

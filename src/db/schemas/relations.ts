@@ -4,14 +4,14 @@ import { agentConversations } from "./ai.schema";
 import { plans, subscriptions, usageTracking } from "./billing.schema";
 import { userPreferences } from "./user.schema";
 import {
-	workoutPrograms,
-	workoutDays,
 	exercises,
+	personalRecords,
 	programExercises,
+	workoutDays,
+	workoutPrograms,
+	workoutRoutines,
 	workoutSessions,
 	workoutSets,
-	personalRecords,
-	workoutRoutines,
 } from "./workout.schema";
 
 // Workout Relations

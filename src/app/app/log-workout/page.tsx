@@ -31,13 +31,12 @@ import {
 } from "@/providers/user-preferences-store-provider";
 import {
 	Exercise,
-	WorkoutDay,
-	WorkoutProgram,
+	type ExerciseWithSets,
 	Set,
-	ExerciseWithSets,
+	WorkoutDay,
+	type WorkoutProgram,
 } from "./types";
 import { formatTime } from "./utils";
-
 
 export default function LogWorkoutPage() {
 	const { session, isPending } = useRequireAuth();

@@ -1,11 +1,5 @@
 import { createId } from "@paralleldrive/cuid2";
-import {
-	index,
-	json,
-	pgTable,
-	text,
-	timestamp,
-} from "drizzle-orm/pg-core";
+import { index, json, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { users } from "../auth.schema";
 
 export const agentConversations = pgTable(

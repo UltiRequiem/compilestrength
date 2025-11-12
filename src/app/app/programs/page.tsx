@@ -199,6 +199,7 @@ export default function ProgramsPage() {
 												<div className="p-1">
 													{filteredRoutines.map((routine) => (
 														<button
+															type="button"
 															key={routine.id}
 															onClick={() => {
 																setSelectedRoutineId(routine.id);

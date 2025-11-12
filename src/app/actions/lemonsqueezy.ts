@@ -22,11 +22,10 @@ import { auth } from "@/lib/auth";
 import { webhookHasData, webhookHasMeta } from "@/lib/lemonsqueezy-typeguards";
 import type {
 	NewPlan,
-	Plan,
 	NewSubscription,
+	Plan,
 	SubscriptionItem,
 } from "./lemonsqueezy.types";
-
 
 /**
  * Sync plans from LemonSqueezy to the database

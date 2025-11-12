@@ -38,7 +38,8 @@ export interface SidebarMenuSkeletonProps extends React.ComponentProps<"div"> {
 	showIcon?: boolean;
 }
 
-export interface SidebarMenuSubButtonProps extends React.ComponentProps<"button"> {
+export interface SidebarMenuSubButtonProps
+	extends React.ComponentProps<"button"> {
 	asChild?: boolean;
 	size?: "sm" | "md";
 	isActive?: boolean;
@@ -48,6 +49,7 @@ export interface SidebarGroupLabelProps extends React.ComponentProps<"div"> {
 	asChild?: boolean;
 }
 
-export interface SidebarGroupActionProps extends React.ComponentProps<"button"> {
+export interface SidebarGroupActionProps
+	extends React.ComponentProps<"button"> {
 	asChild?: boolean;
 }
