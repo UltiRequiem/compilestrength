@@ -124,6 +124,13 @@ export async function PATCH(request: Request) {
 		};
 		const { sessionId, endTime, notes, completed } = body;
 
+		if (!sessionId) {
+			return NextResponse.json(
+				{ error: "Session ID is required" },
+				{ status: 400 },
+			);
+		}
+
 		const updateData: any = {};
 		if (endTime) updateData.endTime = new Date(endTime);
 		if (notes !== undefined) updateData.notes = notes;

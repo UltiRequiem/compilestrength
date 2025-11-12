@@ -108,7 +108,7 @@ export default function LogWorkoutPage() {
 		try {
 			const response = await fetch("/api/workout-programs");
 			if (response.ok) {
-				const data = await response.json();
+				const data = (await response.json()) as WorkoutProgram[];
 				setPrograms(data);
 				if (data.length > 0) {
 					setSelectedProgram(data[0].id);
@@ -160,7 +160,7 @@ export default function LogWorkoutPage() {
 					setExercises(exercisesWithSets);
 				}
 			} else {
-				const error = await response.json();
+				const error = (await response.json()) as { error?: string };
 				alert(error.error || "Failed to start workout");
 			}
 		} catch (error) {
@@ -195,7 +195,7 @@ export default function LogWorkoutPage() {
 			});
 
 			if (response.ok) {
-				const newSet = await response.json();
+				const newSet = (await response.json()) as { id: string };
 				const newExercises = [...exercises];
 				newExercises[exerciseIdx].completedSets[setIdx] = {
 					...set,
