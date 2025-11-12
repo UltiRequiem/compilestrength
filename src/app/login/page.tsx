@@ -16,7 +16,7 @@ export default function LoginPage() {
 
 	useEffect(() => {
 		if (!isPending && session) {
-			router.push("/app");
+			router.push("/app/dashboard");
 		}
 	}, [session, isPending, router]);
 
@@ -33,7 +33,7 @@ export default function LoginPage() {
 				},
 				{
 					onSuccess: () => {
-						router.push("/app");
+						router.push("/app/dashboard");
 					},
 					onError: (ctx) => {
 						setError(ctx.error.message || "Failed to sign in");

@@ -19,7 +19,7 @@ export default function SignUpPage() {
 	// Redirect if already logged in
 	useEffect(() => {
 		if (!isPending && session) {
-			router.push("/app");
+			router.push("/app/dashboard");
 		}
 	}, [session, isPending, router]);
 
@@ -50,7 +50,7 @@ export default function SignUpPage() {
 				},
 				{
 					onSuccess: () => {
-						router.push("/app");
+						router.push("/app/dashboard");
 					},
 					onError: (ctx) => {
 						setError(ctx.error.message || "Failed to create account");

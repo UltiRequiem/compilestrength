@@ -51,8 +51,7 @@ export default async function LandingPage() {
 						<span className="text-green-400">// </span>Compile Your Strength
 					</h1>
 					<p className="text-xl text-gray-400 max-w-2xl mx-auto">
-						AI-powered workout programming with a terminal aesthetic. Build
-						smarter, train harder, track progress like a developer.
+						Build smarter, train harder, track progress like a scientist.
 					</p>
 					<div className="flex gap-4 justify-center pt-8">
 						<Link href="/signup">
