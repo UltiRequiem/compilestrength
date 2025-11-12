@@ -27,7 +27,7 @@ export const plans = pgTable("Plan", {
 	trialIntervalCount: integer("trialIntervalCount"),
 	sort: integer("sort"),
 	createdAt: timestamp("createdAt").notNull().defaultNow(),
-	updatedAt: timestamp("updatedAt").notNull().defaultNow(),
+	updatedAt: timestamp("updatedAt").notNull().defaultNow().$onUpdate(() => new Date()),
 });
 
 export const subscriptions = pgTable(
@@ -56,7 +56,7 @@ export const subscriptions = pgTable(
 			.notNull()
 			.references(() => plans.id),
 		createdAt: timestamp("createdAt").notNull().defaultNow(),
-		updatedAt: timestamp("updatedAt").notNull().defaultNow(),
+		updatedAt: timestamp("updatedAt").notNull().defaultNow().$onUpdate(() => new Date()),
 	},
 	(table) => ({
 		userIdIdx: index("Subscription_userId_idx").on(table.userId),
@@ -106,7 +106,7 @@ export const usageTracking = pgTable(
 		aiMessagesUsed: integer("aiMessagesUsed").notNull().default(0),
 		aiMessagesLimit: integer("aiMessagesLimit").notNull().default(50),
 		createdAt: timestamp("createdAt").notNull().defaultNow(),
-		updatedAt: timestamp("updatedAt").notNull().defaultNow(),
+		updatedAt: timestamp("updatedAt").notNull().defaultNow().$onUpdate(() => new Date()),
 	},
 	(table) => ({
 		userIdIdx: index("UsageTracking_userId_idx").on(table.userId),
