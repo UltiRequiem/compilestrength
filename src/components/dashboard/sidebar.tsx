@@ -13,6 +13,7 @@ import {
 	User,
 	Wrench,
 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -32,8 +33,9 @@ import {
 	SidebarRail,
 } from "@/components/ui/sidebar";
 import { signOut, useSession } from "@/lib/auth-client";
+import { getGravatarUrl } from "@/lib/gravatar";
 import { isValidSubscription } from "@/lib/subscription-utils";
-import { cn, getInitials } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 
 const navigation = [
 	{ name: "Dashboard", href: "/app/dashboard", icon: Home },
@@ -90,16 +92,19 @@ export function AppSidebar() {
 		<Sidebar collapsible="offcanvas">
 			<SidebarHeader>
 				<div className="flex h-16 items-center gap-2 px-4">
-					<div className="flex h-8 w-8 items-center justify-center rounded bg-primary">
-						<span className="text-lg font-bold text-primary-foreground">
-							CS
-						</span>
+					<div className="flex h-10 w-10 items-center justify-center">
+						<Image
+							src="/logo.png"
+							alt="CompileStrength Logo"
+							width={40}
+							height={40}
+							className="object-contain"
+						/>
 					</div>
 					<div className="flex flex-col group-data-[collapsible=icon]:hidden">
 						<span className="text-sm font-semibold leading-none">
 							CompileStrength
 						</span>
-						<span className="text-xs text-muted-foreground">v1.0.0</span>
 					</div>
 				</div>
 			</SidebarHeader>
@@ -155,11 +160,13 @@ export function AppSidebar() {
 					) : session?.user ? (
 						<>
 							<div className="flex items-center gap-3 rounded-md bg-sidebar-accent p-3">
-								<div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground">
-									<span className="text-sm font-semibold">
-										{getInitials(session.user.name)}
-									</span>
-								</div>
+								<Image
+									src={getGravatarUrl(session.user.email, 40)}
+									alt={`${session.user.name}'s avatar`}
+									width={40}
+									height={40}
+									className="rounded-full"
+								/>
 								<div className="flex-1 min-w-0 group-data-[collapsible=icon]:hidden">
 									<div className="flex items-center gap-2">
 										<p className="truncate text-sm font-medium">

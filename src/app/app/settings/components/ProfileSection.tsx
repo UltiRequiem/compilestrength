@@ -1,10 +1,11 @@
 import { CheckCircle, User } from "lucide-react";
+import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { getInitials } from "@/lib/utils";
+import { getGravatarUrl } from "@/lib/gravatar";
 
 interface ProfileSectionProps {
 	userName: string;
@@ -25,12 +26,29 @@ export default function ProfileSection({
 			</CardHeader>
 			<CardContent className="space-y-4">
 				<div className="flex items-center gap-4">
-					<div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary text-primary-foreground text-2xl font-bold">
-						{getInitials(userName)}
+					<Image
+						src={getGravatarUrl(userEmail, 80)}
+						alt={`${userName}'s avatar`}
+						width={80}
+						height={80}
+						className="rounded-full"
+					/>
+					<div className="space-y-2">
+						<Button variant="outline" size="sm">
+							Change Avatar
+						</Button>
+						<p className="text-xs text-muted-foreground">
+							Profile picture from{" "}
+							<a
+								href="https://gravatar.com"
+								target="_blank"
+								rel="noopener noreferrer"
+								className="text-primary hover:underline"
+							>
+								Gravatar
+							</a>
+						</p>
 					</div>
-					<Button variant="outline" size="sm">
-						Change Avatar
-					</Button>
 				</div>
 
 				<div className="grid gap-4 md:grid-cols-2">

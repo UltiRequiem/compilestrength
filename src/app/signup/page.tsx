@@ -1,6 +1,7 @@
 "use client";
 
-import { Dumbbell, Lock, Mail, User } from "lucide-react";
+import { Lock, Mail, User } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -71,8 +72,14 @@ export default function SignUpPage() {
 			<div className="w-full max-w-md">
 				{/* Header */}
 				<div className="text-center mb-8">
-					<div className="inline-flex items-center gap-2 mb-4">
-						<Dumbbell className="h-8 w-8 text-blue-500" />
+					<div className="inline-flex items-center gap-3 mb-4">
+						<Image
+							src="/logo.png"
+							alt="CompileStrength Logo"
+							width={40}
+							height={40}
+							className="object-contain"
+						/>
 						<h1 className="text-2xl font-bold">CompileStrength</h1>
 					</div>
 					<p className="text-muted-foreground">Create your account</p>

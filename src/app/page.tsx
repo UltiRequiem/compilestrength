@@ -1,4 +1,5 @@
 import { headers } from "next/headers";
+import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { auth } from "@/lib/auth";
@@ -13,9 +14,18 @@ export default async function LandingPage() {
 			{/* Navbar */}
 			<nav className="border-b border-zinc-800 px-6 py-4 bg-zinc-950/80 backdrop-blur-sm sticky top-0 z-50">
 				<div className="max-w-7xl mx-auto flex items-center justify-between">
-					<Link href="/" className="text-xl font-bold">
-						<span className="text-blue-500">Compile</span>
-						<span className="text-white">Strength</span>
+					<Link href="/" className="flex items-center gap-2">
+						<Image
+							src="/logo.png"
+							alt="CompileStrength Logo"
+							width={32}
+							height={32}
+							className="object-contain"
+						/>
+						<span className="text-xl font-bold">
+							<span className="text-blue-500">Compile</span>
+							<span className="text-white">Strength</span>
+						</span>
 					</Link>
 					<div className="flex items-center gap-4">
 						<Link
