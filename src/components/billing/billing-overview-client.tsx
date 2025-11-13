@@ -9,12 +9,7 @@ import {
 	unpauseUserSubscription,
 } from "@/app/actions/lemonsqueezy";
 import { Button } from "@/components/ui/button";
-import {
-	Card,
-	CardContent,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -23,10 +18,7 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import type { plans, subscriptions } from "@/db/schema";
-import {
-	formatPrice,
-	getSubscriptionMessage,
-} from "@/lib/subscription-utils";
+import { formatPrice, getSubscriptionMessage } from "@/lib/subscription-utils";
 
 type Subscription = typeof subscriptions.$inferSelect;
 type Plan = typeof plans.$inferSelect;
@@ -208,11 +200,14 @@ export function BillingOverviewClient({
 							</p>
 							<p className="text-sm text-muted-foreground mt-1">
 								Your trial ends on{" "}
-								{new Date(subscription.trialEndsAt).toLocaleDateString("en-US", {
-									year: "numeric",
-									month: "long",
-									day: "numeric",
-								})}
+								{new Date(subscription.trialEndsAt).toLocaleDateString(
+									"en-US",
+									{
+										year: "numeric",
+										month: "long",
+										day: "numeric",
+									},
+								)}
 								. You won't be charged until then.
 							</p>
 						</div>

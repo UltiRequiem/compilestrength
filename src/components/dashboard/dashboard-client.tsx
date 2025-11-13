@@ -114,9 +114,7 @@ export function DashboardClient({
 										units,
 									)}
 								</div>
-								<p className="text-xs text-muted-foreground">
-									Personal record
-								</p>
+								<p className="text-xs text-muted-foreground">Personal record</p>
 							</>
 						) : (
 							<>

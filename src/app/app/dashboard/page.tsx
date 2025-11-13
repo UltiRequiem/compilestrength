@@ -230,12 +230,10 @@ export default async function DashboardPage() {
 	let currentStreak = 0;
 	if (recentSessions.length > 0) {
 		const sessionsMap = new Set(
-			recentSessions.map((s) =>
-				new Date(s.completedAt!).toDateString(),
-			),
+			recentSessions.map((s) => new Date(s.completedAt!).toDateString()),
 		);
 		const today = new Date();
-		let checkDate = new Date(today);
+		const checkDate = new Date(today);
 		while (sessionsMap.has(checkDate.toDateString())) {
 			currentStreak++;
 			checkDate.setDate(checkDate.getDate() - 1);
@@ -252,10 +250,7 @@ export default async function DashboardPage() {
 		})
 		.from(workoutSets)
 		.innerJoin(exercises, eq(workoutSets.exerciseId, exercises.id))
-		.innerJoin(
-			workoutSessions,
-			eq(workoutSets.sessionId, workoutSessions.id),
-		)
+		.innerJoin(workoutSessions, eq(workoutSets.sessionId, workoutSessions.id))
 		.where(
 			and(
 				eq(workoutSessions.userId, session.user.id),
@@ -265,26 +260,27 @@ export default async function DashboardPage() {
 		.orderBy(desc(workoutSessions.completedAt))
 		.limit(10);
 
-	const recentActivity = recentSets.length > 0
-		? recentSets.map((set) => ({
-				exercise: set.exerciseName,
-				sets: 1,
-				reps: set.reps,
-				weight: Number(set.weight) || 0,
-				date: new Date(set.completedAt!).toLocaleDateString("en-US", {
-					month: "short",
-					day: "numeric",
-				}),
-			}))
-		: [
-				{
-					exercise: "No workouts logged yet",
-					sets: 0,
-					reps: 0,
-					weight: 0,
-					date: "Start logging",
-				},
-			];
+	const recentActivity =
+		recentSets.length > 0
+			? recentSets.map((set) => ({
+					exercise: set.exerciseName,
+					sets: 1,
+					reps: set.reps,
+					weight: Number(set.weight) || 0,
+					date: new Date(set.completedAt!).toLocaleDateString("en-US", {
+						month: "short",
+						day: "numeric",
+					}),
+				}))
+			: [
+					{
+						exercise: "No workouts logged yet",
+						sets: 0,
+						reps: 0,
+						weight: 0,
+						date: "Start logging",
+					},
+				];
 
 	// 5. Find last PR (highest weight for any exercise)
 	const lastPR = await db
@@ -294,10 +290,7 @@ export default async function DashboardPage() {
 		})
 		.from(workoutSets)
 		.innerJoin(exercises, eq(workoutSets.exerciseId, exercises.id))
-		.innerJoin(
-			workoutSessions,
-			eq(workoutSets.sessionId, workoutSessions.id),
-		)
+		.innerJoin(workoutSessions, eq(workoutSets.sessionId, workoutSessions.id))
 		.where(eq(workoutSessions.userId, session.user.id))
 		.groupBy(exercises.name)
 		.orderBy(desc(sql`MAX(${workoutSets.weight})`))

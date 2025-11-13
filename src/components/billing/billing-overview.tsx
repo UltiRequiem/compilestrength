@@ -1,9 +1,9 @@
+import { eq } from "drizzle-orm";
 import { getUserSubscriptions } from "@/app/actions/lemonsqueezy";
 import { BillingOverviewClient } from "@/components/billing/billing-overview-client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { db } from "@/db";
 import { plans } from "@/db/schema";
-import { eq } from "drizzle-orm";
 import { isValidSubscription } from "@/lib/subscription-utils";
 
 /**
@@ -27,9 +27,7 @@ export async function BillingOverview() {
 				<CardContent>
 					<div className="space-y-4">
 						<div>
-							<p className="text-sm text-muted-foreground mb-2">
-								Current Plan
-							</p>
+							<p className="text-sm text-muted-foreground mb-2">Current Plan</p>
 							<p className="text-2xl font-bold">Free</p>
 						</div>
 						<div className="p-4 bg-blue-500/5 border border-blue-500/20 rounded-lg">
