@@ -160,7 +160,7 @@ export async function DELETE(request: Request) {
 		}
 
 		// Delete set
-		await db.delete(workoutSets).where(eq(workoutSets.id, validatedData.setId));
+		await db.delete(workoutSets).where(eq(workoutSets.id, validatedSetId));
 
 		return NextResponse.json({ success: true });
 	} catch (error) {
