@@ -82,7 +82,10 @@ export default function SettingsPage() {
 		<div className="mx-auto max-w-4xl">
 			<SettingsHeader />
 			<div className="space-y-6">
-				<ProfileSection userName={session.user.name} userEmail={session.user.email} />
+				<ProfileSection
+					userName={session.user.name}
+					userEmail={session.user.email}
+				/>
 
 				<TrainingPreferences
 					units={units}

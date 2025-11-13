@@ -78,7 +78,9 @@ export default async function DebuggerPage() {
 	exerciseHistory.forEach((history, exerciseName) => {
 		if (history.length >= 4) {
 			// Sort by date descending (most recent first)
-			const sorted = history.sort((a, b) => b.date.getTime() - a.date.getTime());
+			const sorted = history.sort(
+				(a, b) => b.date.getTime() - a.date.getTime(),
+			);
 			const last4 = sorted.slice(0, 4);
 
 			// Check if weight has been stagnant
@@ -88,11 +90,12 @@ export default async function DebuggerPage() {
 			if (allSame && history.length >= 6) {
 				// Check last 6 weeks
 				const last6Weeks = sorted.filter(
-					(s) =>
-						s.date.getTime() >
-						Date.now() - 6 * 7 * 24 * 60 * 60 * 1000,
+					(s) => s.date.getTime() > Date.now() - 6 * 7 * 24 * 60 * 60 * 1000,
 				);
-				if (last6Weeks.length >= 4 && last6Weeks.every((s) => s.weight === weights[0])) {
+				if (
+					last6Weeks.length >= 4 &&
+					last6Weeks.every((s) => s.weight === weights[0])
+				) {
 					issues.push({
 						id: `overload-${exerciseName}`,
 						severity: "warning",
@@ -123,7 +126,8 @@ export default async function DebuggerPage() {
 		.map((s) => s.rpe as number);
 
 	if (recentRPE.length >= 10) {
-		const avgRPE = recentRPE.reduce((sum, rpe) => sum + rpe, 0) / recentRPE.length;
+		const avgRPE =
+			recentRPE.reduce((sum, rpe) => sum + rpe, 0) / recentRPE.length;
 
 		if (avgRPE >= 9) {
 			issues.push({

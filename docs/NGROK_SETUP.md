@@ -39,6 +39,8 @@ NGROK_DOMAIN=your-subdomain.ngrok-free.app
 
 Start your Next.js development server:
 ```bash
+bun dev
+# or
 npm run dev
 ```
 

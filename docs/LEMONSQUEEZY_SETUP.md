@@ -94,7 +94,7 @@ ngrok http 3000
 
 Once your environment variables are set:
 
-1. Start your development server: `npm run dev`
+1. Start your development server: `bun dev` (or `npm run dev`)
 2. Navigate to `http://localhost:3000/billing`
 3. Plans will automatically sync from LemonSqueezy on first page load
 
@@ -117,16 +117,16 @@ For Cloudflare Workers:
 
 1. Set secrets using wrangler:
 ```bash
-wrangler secret put LEMONSQUEEZY_API_KEY
-wrangler secret put LEMONSQUEEZY_STORE_ID
-wrangler secret put LEMONSQUEEZY_WEBHOOK_SECRET
+npx wrangler secret put LEMONSQUEEZY_API_KEY
+npx wrangler secret put LEMONSQUEEZY_STORE_ID
+npx wrangler secret put LEMONSQUEEZY_WEBHOOK_SECRET
 ```
 
 2. Update `wrangler.jsonc` with public variables if needed
 
 3. Update webhook URL in LemonSqueezy to your production domain
 
-4. Deploy: `npm run deploy`
+4. Deploy: `npm run deploy` (or `bun run deploy`)
 
 ## Usage Tracking Integration
 

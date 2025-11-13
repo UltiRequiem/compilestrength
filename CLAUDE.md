@@ -15,14 +15,17 @@ deployed on Cloudflare Workers.
 
 ### Tech Stack
 
+- **Package Manager**: Bun (primary, with bun.lock file)
 - **Frontend**: Next.js 15 with React 19, TailwindCSS v4
 - **Backend**: Cloudflare Workers with Node.js compatibility
 - **Database**: Neon PostgreSQL (serverless) with Drizzle ORM
 - **Database Driver**: @neondatabase/serverless (HTTP-based, optimized for
   Workers)
 - **Authentication**: Better Auth Cloudflare with Drizzle adapter
+- **Billing**: LemonSqueezy for subscription management and webhooks
 - **State Management**: Zustand for global client state (user preferences)
 - **AI**: Mastra framework with OpenAI integration
+- **Code Quality**: Biome for formatting/linting, ESLint for additional checks
 - **Deployment**: OpenNext.js for Cloudflare Workers
 
 ### Key Directory Structure
@@ -105,12 +108,14 @@ The application has comprehensive workout tracking and billing models:
 
 ## Development Commands
 
+**Note:** This project uses **Bun** as the primary package manager and runtime. Commands can use either `npm` or `bun`.
+
 ### Essential Commands
 
 ```bash
-npm run dev          # Start Next.js development server
+bun dev              # Start Next.js development server (recommended)
+npm run dev          # Start Next.js development server (alternative)
 npm run build        # Build for production
-npm run lint         # Run ESLint
 npm run check        # Build + TypeScript check
 ```
 
@@ -125,6 +130,18 @@ bun run scripts/reset-db.ts        # Reset database (drops all tables)
 npx @better-auth/cli generate      # Regenerate auth schema
 ```
 
+### Code Quality Commands
+
+```bash
+npm run lint         # Run ESLint
+npm run biocheck     # Run Biome check with auto-fix (recommended)
+npm run fix          # Alias for biocheck
+npm run format       # Format code with Biome (unsafe mode)
+npm run format:check # Check code formatting without changes
+npm run lint:biome   # Run Biome linter only
+npm run lint:biome:fix # Run Biome linter with auto-fix
+```
+
 ### Webhook Testing (Development)
 
 ```bash
@@ -133,7 +150,7 @@ npm run ngrok        # Start ngrok tunnel for webhook testing
 
 To use ngrok for testing LemonSqueezy webhooks:
 1. Add `NGROK_DOMAIN=your-subdomain.ngrok-free.app` to your `.env` file
-2. Run `npm run dev` in one terminal
+2. Run `bun dev` in one terminal
 3. Run `npm run ngrok` in another terminal
 4. Configure LemonSqueezy webhook to: `https://your-subdomain.ngrok-free.app/api/webhooks/lemonsqueezy`
 
@@ -211,6 +228,19 @@ npm run cf-typegen   # Generate Cloudflare Types
 - TailwindCSS v4 with CSS-first configuration
 - Dark mode enforced via `html` class in layout
 - Component styling follows Shadcn/ui patterns
+- Follow [docs/STYLE_GUIDE.md](docs/STYLE_GUIDE.md) for brand guidelines
+
+### Code Quality
+
+- **Biome**: Primary tool for formatting and linting
+  - Configuration in `biome.json`
+  - Uses tab indentation, double quotes
+  - Auto-organizes imports
+  - Supports CSS with Tailwind directives
+- **ESLint**: Secondary linting (Next.js specific rules)
+  - Configuration in `eslint.config.mjs`
+- Use `npm run biocheck` before committing
+- Biome enforces consistent code style across the project
 
 ### Type Safety
 

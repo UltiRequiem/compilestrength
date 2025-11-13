@@ -68,7 +68,9 @@ export function DebuggerClient({
 			<div className="mb-8">
 				<h1 className="text-3xl font-bold">Performance Analysis</h1>
 				<p className="text-muted-foreground">Data-Driven Training Insights</p>
-				<p className="text-sm text-muted-foreground">Last analyzed: {lastAnalyzed}</p>
+				<p className="text-sm text-muted-foreground">
+					Last analyzed: {lastAnalyzed}
+				</p>
 			</div>
 
 			{/* Run Analysis Button */}
@@ -172,7 +174,9 @@ export function DebuggerClient({
 													>
 														{issue.severity.toUpperCase()}
 													</Badge>
-													<CardTitle className="text-lg">{issue.title}</CardTitle>
+													<CardTitle className="text-lg">
+														{issue.title}
+													</CardTitle>
 												</div>
 												<p className="text-muted-foreground">
 													{issue.description}

@@ -8,6 +8,7 @@ Workers.
 
 ## Tech Stack
 
+- **Package Manager:** Bun (with bun.lock)
 - **Frontend:** Next.js 15 (App Router) with React 19
 - **Styling:** TailwindCSS v4
 - **State Management:** Zustand for global client state (user preferences)
@@ -17,7 +18,9 @@ Workers.
 - **Database Connection:** HTTP-based driver optimized for edge runtimes (not
   WebSocket)
 - **Authentication:** Better Auth Cloudflare with geolocation tracking
+- **Billing:** LemonSqueezy for subscription management
 - **AI:** Mastra framework with OpenAI integration
+- **Code Quality:** Biome for formatting and linting, ESLint for additional checks
 - **Deployment:** OpenNext.js adapter for Cloudflare Workers
 
 ## Features
@@ -71,12 +74,18 @@ NEXT_PUBLIC_BETTER_AUTH_URL="http://localhost:3000"
 OPENAI_API_KEY="sk-..."
 ```
 
-3. Run the development server:
+3. Install dependencies:
 
 ```bash
-npm run dev
-# or
+bun install
+```
+
+4. Run the development server:
+
+```bash
 bun dev
+# or
+npm run dev
 ```
 
 The app will be available at [http://localhost:3000](http://localhost:3000)
@@ -147,9 +156,12 @@ Secrets persist across deployments. You only need to update them if they change.
 
 ## Development Commands
 
+**Note:** This project uses **Bun** as the primary package manager. You can use either `npm` or `bun` for most commands.
+
 ```bash
 # Development
 npm run dev          # Start Next.js dev server
+bun dev              # Start Next.js dev server (using Bun)
 npm run preview      # Build and preview with Cloudflare Workers locally
 
 # Production
@@ -158,12 +170,19 @@ npm run deploy       # Deploy to Cloudflare Workers
 
 # Database
 bunx drizzle-kit push              # Push schema changes
+bunx drizzle-kit generate          # Generate migrations
+bunx drizzle-kit migrate           # Run migrations
 bunx drizzle-kit studio            # Open database GUI
 bun run scripts/reset-db.ts        # Reset database (DEV ONLY)
+npx @better-auth/cli generate      # Regenerate auth schema
 
 # Code Quality
 npm run lint         # Run ESLint
 npm run check        # Build + TypeScript check
+npm run biocheck     # Run Biome check with auto-fix
+npm run fix          # Alias for Biome check with auto-fix
+npm run format       # Format code with Biome (unsafe)
+npm run format:check # Check code formatting
 npm run cf-typegen   # Generate Cloudflare Types
 ```
 
