@@ -46,7 +46,11 @@ interface GitGainsClientProps {
 	insights: Insight[];
 }
 
-export function GitGainsClient({ commits, prs, insights }: GitGainsClientProps) {
+export function GitGainsClient({
+	commits,
+	prs,
+	insights,
+}: GitGainsClientProps) {
 	const units = useUnits();
 
 	// Map icon names to components
@@ -95,7 +99,10 @@ export function GitGainsClient({ commits, prs, insights }: GitGainsClientProps) 
 										</p>
 										<p className="text-2xl font-bold text-primary">
 											{typeof insight.value === "number"
-												? formatWeight(convertWeight(insight.value, "lbs", units), units)
+												? formatWeight(
+														convertWeight(insight.value, "lbs", units),
+														units,
+													)
 												: insight.value}
 										</p>
 										<p className="text-xs text-muted-foreground">
@@ -228,9 +235,7 @@ export function GitGainsClient({ commits, prs, insights }: GitGainsClientProps) 
 								<div className="space-y-3">
 									<div>
 										<p className="text-sm text-muted-foreground">All-time PR</p>
-										<p className="text-lg font-bold">
-											{prs[0].record}
-										</p>
+										<p className="text-lg font-bold">{prs[0].record}</p>
 										<p className="text-xs text-muted-foreground">
 											{prs[0].date}
 										</p>
@@ -263,7 +268,9 @@ export function GitGainsClient({ commits, prs, insights }: GitGainsClientProps) 
 													<p className="font-semibold">{pr.exercise}</p>
 												</div>
 												<p className="mt-1 text-sm text-primary">{pr.record}</p>
-												<p className="text-xs text-muted-foreground">{pr.date}</p>
+												<p className="text-xs text-muted-foreground">
+													{pr.date}
+												</p>
 											</div>
 											{pr.hasVideo && (
 												<Button variant="ghost" size="sm">

@@ -13,9 +13,10 @@ export default async function GitGainsPage() {
 			id: workoutSessions.id,
 			completedAt: workoutSessions.completedAt,
 			setCount: sql<number>`COUNT(${workoutSets.id})`.as("setCount"),
-			totalVolume: sql<number>`SUM(${workoutSets.weight} * ${workoutSets.reps})`.as(
-				"totalVolume",
-			),
+			totalVolume:
+				sql<number>`SUM(${workoutSets.weight} * ${workoutSets.reps})`.as(
+					"totalVolume",
+				),
 		})
 		.from(workoutSessions)
 		.leftJoin(workoutSets, eq(workoutSets.sessionId, workoutSessions.id))
@@ -60,10 +61,7 @@ export default async function GitGainsPage() {
 		})
 		.from(workoutSets)
 		.innerJoin(exercises, eq(workoutSets.exerciseId, exercises.id))
-		.innerJoin(
-			workoutSessions,
-			eq(workoutSets.sessionId, workoutSessions.id),
-		)
+		.innerJoin(workoutSessions, eq(workoutSets.sessionId, workoutSessions.id))
 		.where(eq(workoutSessions.userId, sessionData.user.id))
 		.groupBy(exercises.name, workoutSets.exerciseId)
 		.orderBy(desc(sql`MAX(${workoutSets.weight})`))
@@ -160,10 +158,7 @@ export default async function GitGainsPage() {
 			reps: workoutSets.reps,
 		})
 		.from(workoutSets)
-		.innerJoin(
-			workoutSessions,
-			eq(workoutSets.sessionId, workoutSessions.id),
-		)
+		.innerJoin(workoutSessions, eq(workoutSets.sessionId, workoutSessions.id))
 		.where(
 			and(
 				eq(workoutSessions.userId, sessionData.user.id),
