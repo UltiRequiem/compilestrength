@@ -30,6 +30,15 @@ import {
 } from "@/providers/user-preferences-store-provider";
 import { updateUserPreferences } from "./actions";
 
+const getInitials = (name: string) => {
+	return name
+		.split(" ")
+		.map((n) => n[0])
+		.join("")
+		.toUpperCase()
+		.slice(0, 2);
+};
+
 export default function SettingsPage() {
 	const { session, isPending } = useRequireAuth();
 	const [saving, setSaving] = useState(false);
@@ -59,7 +68,6 @@ export default function SettingsPage() {
 				experienceLevel,
 			});
 
-			// Update global state with saved preferences
 			setPreferences({
 				units: result.preferences.units as "lbs" | "kg",
 				restTimerDefault: result.preferences.restTimerDefault,
@@ -75,15 +83,6 @@ export default function SettingsPage() {
 		} finally {
 			setSaving(false);
 		}
-	};
-
-	const getInitials = (name: string) => {
-		return name
-			.split(" ")
-			.map((n) => n[0])
-			.join("")
-			.toUpperCase()
-			.slice(0, 2);
 	};
 
 	if (isPending) {
