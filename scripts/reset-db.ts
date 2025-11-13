@@ -7,7 +7,7 @@ if (!process.env.DATABASE_URL) {
 const sql = neon(process.env.DATABASE_URL);
 
 async function resetDatabase() {
-	console.log("🗑️  Dropping all tables...");
+	console.log("🗑  Dropping all tables...");
 
 	await sql`DROP SCHEMA public CASCADE`;
 	await sql`CREATE SCHEMA public`;
