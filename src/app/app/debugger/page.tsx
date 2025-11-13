@@ -121,15 +121,15 @@ export default function DebuggerPage() {
 		<div className="mx-auto max-w-6xl">
 			{/* Header */}
 			<div className="mb-8">
-				<h1 className="text-3xl font-bold">Gains Debugger</h1>
-				<p className="text-muted-foreground">Stack Trace for Your Progress</p>
+				<h1 className="text-3xl font-bold">Performance Analysis</h1>
+				<p className="text-muted-foreground">Data-Driven Training Insights</p>
 				<p className="text-sm text-muted-foreground">
 					Last analyzed: 2 hours ago
 				</p>
 			</div>
 
 			{/* Run Analysis Button */}
-			<Card className="mb-8 border-primary/50 glow-green-hover">
+			<Card className="mb-8 border-primary/50 glow-blue-hover">
 				<CardContent className="p-6">
 					<div className="flex items-center justify-between">
 						<div>
@@ -137,8 +137,7 @@ export default function DebuggerPage() {
 								Run Comprehensive Analysis
 							</h3>
 							<p className="text-sm text-muted-foreground">
-								Analyze your training history to identify bottlenecks and
-								plateaus
+								Analyze your training data to identify areas for optimization
 							</p>
 						</div>
 						<Button size="lg" onClick={handleAnalysis}>
@@ -151,32 +150,28 @@ export default function DebuggerPage() {
 
 			{/* Analysis Status */}
 			{isAnalyzing && (
-				<Card className="mb-8 border-primary/50 glow-green">
+				<Card className="mb-8 border-primary/50 glow-blue">
 					<CardContent className="p-8">
 						<div className="space-y-4">
 							<div className="flex items-center gap-3 text-primary">
 								<Loader2 className="h-5 w-5 animate-spin" />
-								<p className="terminal-text font-semibold">
-									{">"} Analyzing workout history...
+								<p className="font-semibold">Analyzing workout history...</p>
+							</div>
+							<div className="flex items-center gap-3 text-primary">
+								<Loader2 className="h-5 w-5 animate-spin" />
+								<p className="font-semibold">
+									Checking progressive overload...
 								</p>
 							</div>
 							<div className="flex items-center gap-3 text-primary">
 								<Loader2 className="h-5 w-5 animate-spin" />
-								<p className="terminal-text font-semibold">
-									{">"} Checking progressive overload...
+								<p className="font-semibold">
+									Evaluating volume and frequency...
 								</p>
 							</div>
 							<div className="flex items-center gap-3 text-primary">
 								<Loader2 className="h-5 w-5 animate-spin" />
-								<p className="terminal-text font-semibold">
-									{">"} Evaluating volume and frequency...
-								</p>
-							</div>
-							<div className="flex items-center gap-3 text-primary">
-								<Loader2 className="h-5 w-5 animate-spin" />
-								<p className="terminal-text font-semibold">
-									{">"} Identifying potential issues...
-								</p>
+								<p className="font-semibold">Identifying potential issues...</p>
 							</div>
 						</div>
 					</CardContent>
@@ -243,14 +238,14 @@ export default function DebuggerPage() {
 								</CardHeader>
 								<CardContent>
 									<div className="space-y-4">
-										{/* Stack Trace */}
-										<div className="rounded-lg bg-secondary p-4 terminal-text text-sm">
+										{/* Details */}
+										<div className="rounded-lg bg-secondary p-4 text-sm">
 											<p className="mb-2 font-semibold text-primary">
-												Stack Trace:
+												Analysis Details:
 											</p>
 											{issue.details.map((detail) => (
 												<p key={detail} className="text-muted-foreground">
-													<span className="text-primary">{">"}</span> {detail}
+													• {detail}
 												</p>
 											))}
 										</div>

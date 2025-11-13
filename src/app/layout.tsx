@@ -6,8 +6,9 @@ import { UserPreferencesStoreProvider } from "@/providers/user-preferences-store
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-	title: "CompileStrength - Your Workout Compiler",
-	description: "AI-powered workout programming with a code/terminal aesthetic",
+	title: "CompileStrength - Science-Based Training Programs",
+	description:
+		"AI-powered workout programming for evidence-based lifters. Train smarter with personalized programs built on exercise science.",
 };
 
 export default function RootLayout({

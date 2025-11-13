@@ -1,7 +1,7 @@
 "use client";
 
 import {
-	Bug,
+	BarChart3,
 	Calendar,
 	Dumbbell,
 	Flame,
@@ -51,7 +51,7 @@ export function DashboardClient({
 
 			{/* Quick Stats */}
 			<div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-				<Card className="card-hover glow-green-hover border-primary/20">
+				<Card className="card-hover glow-blue-hover border-primary/20">
 					<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
 						<CardTitle className="text-sm font-medium">
 							Total Workouts
@@ -59,14 +59,12 @@ export function DashboardClient({
 						<Dumbbell className="h-4 w-4 text-primary" />
 					</CardHeader>
 					<CardContent>
-						<div className="text-2xl font-bold terminal-text text-primary">
-							47
-						</div>
+						<div className="text-2xl font-bold text-primary">47</div>
 						<p className="text-xs text-muted-foreground">+3 from last month</p>
 					</CardContent>
 				</Card>
 
-				<Card className="card-hover glow-green-hover border-primary/20">
+				<Card className="card-hover glow-blue-hover border-primary/20">
 					<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
 						<CardTitle className="text-sm font-medium">
 							Current Streak
@@ -74,22 +72,20 @@ export function DashboardClient({
 						<Flame className="h-4 w-4 text-primary" />
 					</CardHeader>
 					<CardContent>
-						<div className="text-2xl font-bold terminal-text text-primary">
-							12 days
-						</div>
+						<div className="text-2xl font-bold text-primary">12 days</div>
 						<p className="text-xs text-muted-foreground">
 							Personal best: 21 days
 						</p>
 					</CardContent>
 				</Card>
 
-				<Card className="card-hover glow-green-hover border-primary/20">
+				<Card className="card-hover glow-blue-hover border-primary/20">
 					<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
 						<CardTitle className="text-sm font-medium">Last PR</CardTitle>
 						<TrendingUp className="h-4 w-4 text-primary" />
 					</CardHeader>
 					<CardContent>
-						<div className="text-lg font-bold terminal-text text-primary">
+						<div className="text-lg font-bold text-primary">
 							Squat {formatWeight(convertWeight(315, "lbs", units), units)}
 						</div>
 						<p className="text-xs text-muted-foreground">
@@ -99,15 +95,13 @@ export function DashboardClient({
 					</CardContent>
 				</Card>
 
-				<Card className="card-hover glow-green-hover border-primary/20">
+				<Card className="card-hover glow-blue-hover border-primary/20">
 					<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
 						<CardTitle className="text-sm font-medium">Next Workout</CardTitle>
 						<Calendar className="h-4 w-4 text-primary" />
 					</CardHeader>
 					<CardContent>
-						<div className="text-lg font-bold terminal-text text-primary">
-							Push Day A
-						</div>
+						<div className="text-lg font-bold text-primary">Push Day A</div>
 						<p className="text-xs text-muted-foreground">Today, 6:00 PM</p>
 					</CardContent>
 				</Card>
@@ -227,11 +221,11 @@ export function DashboardClient({
 								window.location.href = "/app/debugger";
 							}}
 						>
-							<Bug className="h-5 w-5 text-primary" />
+							<BarChart3 className="h-5 w-5 text-primary" />
 							<div className="flex-1">
-								<div className="font-semibold">Run Gains Debugger</div>
+								<div className="font-semibold">Analyze Performance</div>
 								<div className="text-xs opacity-80">
-									Analyze your progress and find issues
+									Review training data and optimize your approach
 								</div>
 							</div>
 						</Button>

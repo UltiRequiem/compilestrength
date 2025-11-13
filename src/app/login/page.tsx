@@ -1,6 +1,6 @@
 "use client";
 
-import { Lock, Mail, Terminal } from "lucide-react";
+import { Dumbbell, Lock, Mail } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -55,7 +55,7 @@ export default function LoginPage() {
 				{/* Header */}
 				<div className="text-center mb-8">
 					<div className="inline-flex items-center gap-2 mb-4">
-						<Terminal className="h-8 w-8 text-terminal-green" />
+						<Dumbbell className="h-8 w-8 text-blue-500" />
 						<h1 className="text-2xl font-bold">CompileStrength</h1>
 					</div>
 					<p className="text-muted-foreground">Sign in to your account</p>
@@ -77,8 +77,8 @@ export default function LoginPage() {
 									value={email}
 									onChange={(e) => setEmail(e.target.value)}
 									required
-									className="w-full pl-10 pr-3 py-2 bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-terminal-green"
-									placeholder="developer@example.com"
+									className="w-full pl-10 pr-3 py-2 bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+									placeholder="your@email.com"
 								/>
 							</div>
 						</div>
@@ -99,7 +99,7 @@ export default function LoginPage() {
 									value={password}
 									onChange={(e) => setPassword(e.target.value)}
 									required
-									className="w-full pl-10 pr-3 py-2 bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-terminal-green"
+									className="w-full pl-10 pr-3 py-2 bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
 									placeholder="••••••••"
 								/>
 							</div>
@@ -116,7 +116,7 @@ export default function LoginPage() {
 						<button
 							type="submit"
 							disabled={loading}
-							className="w-full bg-terminal-green hover:bg-terminal-green-bright text-black font-medium py-2 px-4 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+							className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-2 px-4 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
 						>
 							{loading ? "Signing in..." : "Sign In"}
 						</button>
@@ -137,7 +137,7 @@ export default function LoginPage() {
 					{/* Sign Up Link */}
 					<Link
 						href="/signup"
-						className="block text-center text-terminal-green hover:text-terminal-green-bright transition-colors"
+						className="block text-center text-primary hover:text-primary/90 transition-colors"
 					>
 						Create an account
 					</Link>

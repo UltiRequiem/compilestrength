@@ -167,9 +167,9 @@ export default function GitGainsPage() {
 			{/* Header */}
 			<div className="mb-8 flex items-center justify-between">
 				<div>
-					<h1 className="text-3xl font-bold">GitGains</h1>
+					<h1 className="text-3xl font-bold">Progress Tracker</h1>
 					<p className="text-muted-foreground">
-						Your Training History & Progress
+						Your Training History & Performance Metrics
 					</p>
 				</div>
 				<div className="flex gap-2">
@@ -215,7 +215,7 @@ export default function GitGainsPage() {
 				<div className="lg:col-span-2">
 					<Card className="border-primary/20">
 						<CardHeader>
-							<CardTitle>Commit History</CardTitle>
+							<CardTitle>Training History</CardTitle>
 						</CardHeader>
 						<CardContent>
 							<div className="space-y-4">

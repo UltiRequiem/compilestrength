@@ -1,17 +1,17 @@
 "use client";
 
 import {
-	Bug,
+	BarChart3,
 	CreditCard,
 	Dumbbell,
 	FolderOpen,
-	GitBranch,
 	Home,
+	LineChart,
 	LogOut,
 	Settings,
+	Sparkles,
 	User,
 	Wrench,
-	Zap,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -34,12 +34,17 @@ import { cn } from "@/lib/utils";
 
 const navigation = [
 	{ name: "Dashboard", href: "/app/dashboard", icon: Home },
-	{ name: "AI Compiler", href: "/app/compiler", icon: Zap, badge: "New" },
+	{
+		name: "Program Generator",
+		href: "/app/compiler",
+		icon: Sparkles,
+		badge: "AI",
+	},
 	{ name: "Workout Builder", href: "/app/workout-builder", icon: Wrench },
 	{ name: "My Programs", href: "/app/programs", icon: FolderOpen },
 	{ name: "Log Workout", href: "/app/log-workout", icon: Dumbbell },
-	{ name: "GitGains", href: "/app/gitgains", icon: GitBranch },
-	{ name: "Gains Debugger", href: "/app/debugger", icon: Bug },
+	{ name: "Progress Tracker", href: "/app/gitgains", icon: LineChart },
+	{ name: "Performance Analysis", href: "/app/debugger", icon: BarChart3 },
 	{ name: "The Coach", href: "/app/coach", icon: User },
 	{ name: "Billing", href: "/app/billing", icon: CreditCard },
 	{ name: "Settings", href: "/app/settings", icon: Settings },
@@ -95,7 +100,7 @@ export function AppSidebar() {
 											isActive={isActive}
 											size="lg"
 											className={cn(
-												isActive && "border border-primary/50 glow-green",
+												isActive && "border border-primary/50 glow-blue",
 											)}
 										>
 											<Link href={item.href}>

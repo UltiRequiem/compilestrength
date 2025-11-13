@@ -1,6 +1,6 @@
 "use client";
 
-import { Lock, Mail, Terminal, User } from "lucide-react";
+import { Dumbbell, Lock, Mail, User } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -72,7 +72,7 @@ export default function SignUpPage() {
 				{/* Header */}
 				<div className="text-center mb-8">
 					<div className="inline-flex items-center gap-2 mb-4">
-						<Terminal className="h-8 w-8 text-terminal-green" />
+						<Dumbbell className="h-8 w-8 text-blue-500" />
 						<h1 className="text-2xl font-bold">CompileStrength</h1>
 					</div>
 					<p className="text-muted-foreground">Create your account</p>
@@ -94,7 +94,7 @@ export default function SignUpPage() {
 									value={name}
 									onChange={(e) => setName(e.target.value)}
 									required
-									className="w-full pl-10 pr-3 py-2 bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-terminal-green"
+									className="w-full pl-10 pr-3 py-2 bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
 									placeholder="John Doe"
 								/>
 							</div>
@@ -113,8 +113,8 @@ export default function SignUpPage() {
 									value={email}
 									onChange={(e) => setEmail(e.target.value)}
 									required
-									className="w-full pl-10 pr-3 py-2 bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-terminal-green"
-									placeholder="developer@example.com"
+									className="w-full pl-10 pr-3 py-2 bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+									placeholder="your@email.com"
 								/>
 							</div>
 						</div>
@@ -136,7 +136,7 @@ export default function SignUpPage() {
 									onChange={(e) => setPassword(e.target.value)}
 									required
 									minLength={8}
-									className="w-full pl-10 pr-3 py-2 bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-terminal-green"
+									className="w-full pl-10 pr-3 py-2 bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
 									placeholder="••••••••"
 								/>
 							</div>
@@ -162,7 +162,7 @@ export default function SignUpPage() {
 									onChange={(e) => setConfirmPassword(e.target.value)}
 									required
 									minLength={8}
-									className="w-full pl-10 pr-3 py-2 bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-terminal-green"
+									className="w-full pl-10 pr-3 py-2 bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
 									placeholder="••••••••"
 								/>
 							</div>
@@ -179,7 +179,7 @@ export default function SignUpPage() {
 						<button
 							type="submit"
 							disabled={loading}
-							className="w-full bg-terminal-green hover:bg-terminal-green-bright text-black font-medium py-2 px-4 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+							className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-2 px-4 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
 						>
 							{loading ? "Creating account..." : "Create Account"}
 						</button>
@@ -200,7 +200,7 @@ export default function SignUpPage() {
 					{/* Sign In Link */}
 					<Link
 						href="/login"
-						className="block text-center text-terminal-green hover:text-terminal-green-bright transition-colors"
+						className="block text-center text-primary hover:text-primary/90 transition-colors"
 					>
 						Sign in to your account
 					</Link>

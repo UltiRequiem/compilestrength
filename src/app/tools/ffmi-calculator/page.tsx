@@ -1,12 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useSession } from "@/lib/auth-client";
 
 export default function FFMICalculator() {
+	const { data: session } = useSession();
 	const [unit, setUnit] = useState<"metric" | "imperial">("imperial");
 	const [weight, setWeight] = useState("");
 	const [height, setHeight] = useState("");
@@ -72,29 +74,37 @@ export default function FFMICalculator() {
 	};
 
 	return (
-		<div className="min-h-screen bg-black text-green-400 font-mono">
+		<div className="min-h-screen bg-zinc-950 text-zinc-100">
 			{/* Navbar */}
-			<nav className="border-b border-green-400/20 px-6 py-4">
+			<nav className="border-b border-zinc-800 px-6 py-4 bg-zinc-950/80 backdrop-blur-sm sticky top-0 z-50">
 				<div className="max-w-7xl mx-auto flex items-center justify-between">
 					<Link href="/" className="text-xl font-bold">
-						<span className="text-green-400">compile</span>
-						<span className="text-white">strength</span>
+						<span className="text-blue-500">Compile</span>
+						<span className="text-white">Strength</span>
 					</Link>
 					<div className="flex items-center gap-4">
 						<Link
 							href="/tools"
-							className="text-green-400 hover:text-green-300 transition-colors"
+							className="text-zinc-300 hover:text-white transition-colors"
 						>
 							Tools
 						</Link>
-						<Link href="/login">
-							<Button variant="outline" size="sm">
-								Login
-							</Button>
-						</Link>
-						<Link href="/signup">
-							<Button size="sm">Sign Up</Button>
-						</Link>
+						{session ? (
+							<Link href="/app/dashboard">
+								<Button size="sm">Dashboard</Button>
+							</Link>
+						) : (
+							<>
+								<Link href="/login">
+									<Button variant="outline" size="sm">
+										Login
+									</Button>
+								</Link>
+								<Link href="/signup">
+									<Button size="sm">Sign Up</Button>
+								</Link>
+							</>
+						)}
 					</div>
 				</div>
 			</nav>
@@ -104,20 +114,18 @@ export default function FFMICalculator() {
 				<div className="mb-8">
 					<Link
 						href="/tools"
-						className="text-sm text-gray-400 hover:text-green-400 mb-4 inline-block"
+						className="text-sm text-zinc-400 hover:text-blue-500 mb-4 inline-block"
 					>
 						← Back to Tools
 					</Link>
-					<h1 className="text-4xl font-bold mb-4">
-						<span className="text-green-400">// </span>FFMI Calculator
-					</h1>
-					<p className="text-gray-400">
+					<h1 className="text-4xl font-bold mb-4">FFMI Calculator</h1>
+					<p className="text-zinc-400">
 						Calculate your Fat-Free Mass Index to assess muscle development and
 						potential
 					</p>
 				</div>
 
-				<div className="border border-green-400/20 p-8 rounded-lg space-y-6">
+				<div className="border border-zinc-800 p-8 rounded-xl bg-zinc-900/50 space-y-6">
 					{/* Unit Toggle */}
 					<div className="flex gap-4">
 						<Button
@@ -183,36 +191,34 @@ export default function FFMICalculator() {
 
 					{/* Results */}
 					{result && (
-						<div className="mt-8 pt-8 border-t border-green-400/20">
-							<h2 className="text-2xl font-bold mb-4">
-								<span className="text-green-400">{">"} </span>Results
-							</h2>
+						<div className="mt-8 pt-8 border-t border-zinc-800">
+							<h2 className="text-2xl font-bold mb-4">Results</h2>
 							<div className="space-y-3">
 								<div className="flex justify-between">
-									<span className="text-gray-400">FFMI:</span>
+									<span className="text-zinc-400">FFMI:</span>
 									<span className="font-bold">{result.ffmi}</span>
 								</div>
 								<div className="flex justify-between">
-									<span className="text-gray-400">Adjusted FFMI:</span>
+									<span className="text-zinc-400">Adjusted FFMI:</span>
 									<span className="font-bold">{result.adjustedFFMI}</span>
 								</div>
 								<div className="flex justify-between">
-									<span className="text-gray-400">Fat-Free Mass:</span>
+									<span className="text-zinc-400">Fat-Free Mass:</span>
 									<span className="font-bold">
 										{result.fatFreeMass} {unit === "imperial" ? "lbs" : "kg"}
 									</span>
 								</div>
-								<div className="flex justify-between pt-3 border-t border-green-400/10">
-									<span className="text-gray-400">Category:</span>
-									<span className="font-bold text-green-400">
+								<div className="flex justify-between pt-3 border-t border-zinc-800">
+									<span className="text-zinc-400">Category:</span>
+									<span className="font-bold text-blue-500">
 										{result.category}
 									</span>
 								</div>
 							</div>
 
 							{/* Info Box */}
-							<div className="mt-6 p-4 bg-green-400/5 border border-green-400/20 rounded text-sm text-gray-400">
-								<p className="font-bold mb-2 text-green-400">
+							<div className="mt-6 p-4 bg-blue-500/5 border border-blue-500/20 rounded-lg text-sm text-zinc-400">
+								<p className="font-bold mb-2 text-blue-500">
 									Understanding FFMI:
 								</p>
 								<ul className="space-y-1 list-disc list-inside">
@@ -229,9 +235,9 @@ export default function FFMICalculator() {
 				</div>
 
 				{/* Info Section */}
-				<div className="mt-8 space-y-4 text-sm text-gray-400">
+				<div className="mt-8 space-y-4 text-sm text-zinc-400">
 					<div>
-						<h3 className="text-lg font-bold mb-2 text-green-400">
+						<h3 className="text-lg font-bold mb-2 text-blue-500">
 							What is FFMI?
 						</h3>
 						<p>
@@ -241,7 +247,7 @@ export default function FFMICalculator() {
 						</p>
 					</div>
 					<div>
-						<h3 className="text-lg font-bold mb-2 text-green-400">
+						<h3 className="text-lg font-bold mb-2 text-blue-500">
 							Why Adjusted FFMI?
 						</h3>
 						<p>

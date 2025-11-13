@@ -6,8 +6,10 @@ code in this repository.
 ## Project Overview
 
 CompileStrength is a full-stack fitness application with an AI-powered workout
-programming system and terminal-inspired aesthetic. Built with Next.js 15,
+programming system designed for science-based lifters. Built with Next.js 15,
 deployed on Cloudflare Workers.
+
+**For design and branding guidelines, see [docs/STYLE_GUIDE.md](docs/STYLE_GUIDE.md)**
 
 ## Core Architecture
 

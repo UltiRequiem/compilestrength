@@ -231,24 +231,24 @@ export function ChatPanel() {
 	return (
 		<div className="flex flex-col h-full min-h-0">
 			{/* Header */}
-			<div className="border-b border-green-800/30 p-4 shrink-0">
-				<h2 className="text-lg font-mono text-green-400">
-					&gt; CompileStrength AI Assistant
+			<div className="border-b border-zinc-800 p-4 shrink-0">
+				<h2 className="text-lg font-semibold text-blue-500">
+					AI Training Assistant
 				</h2>
-				<p className="text-sm text-green-600 mt-1">
-					Your bodybuilding workout programming expert
+				<p className="text-sm text-zinc-400 mt-1">
+					Evidence-based workout programming for hypertrophy
 				</p>
 			</div>
 
 			{/* Messages */}
-			<div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0 scrollbar-terminal">
+			<div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0 scrollbar-custom">
 				{messages.length === 0 && (
-					<div className="text-green-600 font-mono text-sm space-y-2">
-						<p>&gt; Hello! I&apos;m your bodybuilding programming assistant.</p>
-						<p>&gt; Let&apos;s create your perfect workout routine together.</p>
+					<div className="text-zinc-400 text-sm space-y-2">
+						<p>Hello! I&apos;m your AI training assistant.</p>
+						<p>Let&apos;s design your optimal training program together.</p>
 						<p>
-							&gt; Tell me about your experience, goals, and available equipment
-							to get started.
+							Tell me about your training experience, goals, and available
+							equipment to get started.
 						</p>
 					</div>
 				)}
@@ -256,12 +256,12 @@ export function ChatPanel() {
 				{messages.map((message) => (
 					<div
 						key={message.id}
-						className={`font-mono text-sm ${
-							message.role === "user" ? "text-cyan-400" : "text-green-400"
+						className={`text-sm ${
+							message.role === "user" ? "text-zinc-200" : "text-zinc-300"
 						}`}
 					>
-						<div className="mb-1">
-							{message.role === "user" ? "&gt; USER:" : "&gt; ASSISTANT:"}
+						<div className="mb-1 font-semibold">
+							{message.role === "user" ? "You:" : "AI Assistant:"}
 						</div>
 						<div className="ml-4 whitespace-pre-wrap">
 							{message.parts.map((part, index) => {
@@ -270,16 +270,15 @@ export function ChatPanel() {
 								}
 								if (part.type === "tool-call") {
 									return (
-										<div key={index} className="text-yellow-500 text-xs mt-2">
-											&gt; Calling tool:{" "}
-											{(part as { toolName?: string }).toolName || "unknown"}
+										<div key={index} className="text-blue-400 text-xs mt-2">
+											Analyzing your requirements...
 										</div>
 									);
 								}
 								if (part.type === "tool-result") {
 									return (
-										<div key={index} className="text-green-600 text-xs">
-											&gt; ✓ Tool executed
+										<div key={index} className="text-blue-400 text-xs">
+											✓ Analysis complete
 										</div>
 									);
 								}
@@ -291,10 +290,12 @@ export function ChatPanel() {
 
 				{/* Loading indicator */}
 				{(status === "submitted" || status === "streaming") && (
-					<div className="text-green-600 font-mono text-sm flex items-center gap-2">
+					<div className="text-zinc-400 text-sm flex items-center gap-2">
 						<Loader2 className="w-4 h-4 animate-spin" />
 						<span>
-							&gt; {status === "submitted" ? "Thinking..." : "Generating..."}
+							{status === "submitted"
+								? "Thinking..."
+								: "Generating your program..."}
 						</span>
 					</div>
 				)}
@@ -303,7 +304,7 @@ export function ChatPanel() {
 			</div>
 
 			{/* Input Area */}
-			<div className="border-t border-green-800/30 p-4 shrink-0">
+			<div className="border-t border-zinc-800 p-4 shrink-0">
 				<form onSubmit={handleSubmit} className="flex gap-2">
 					<div className="flex-1 relative">
 						<textarea
@@ -311,8 +312,8 @@ export function ChatPanel() {
 							value={input}
 							onChange={(e) => setInput(e.target.value)}
 							onKeyPress={handleKeyPress}
-							placeholder="Describe your fitness goals, experience level, or ask questions..."
-							className="w-full bg-black border border-green-800/30 text-green-400 placeholder-green-700 px-3 py-2 resize-none font-mono text-sm focus:outline-none focus:border-green-600 min-h-[44px] max-h-32"
+							placeholder="Describe your training goals, experience level, or ask questions..."
+							className="w-full bg-zinc-950 border border-zinc-800 text-zinc-200 placeholder-zinc-600 px-3 py-2 resize-none text-sm focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 min-h-[44px] max-h-32 rounded-md"
 							disabled={status !== "ready"}
 							rows={1}
 						/>
@@ -322,7 +323,7 @@ export function ChatPanel() {
 						<button
 							type="button"
 							onClick={handleStop}
-							className="px-4 py-2 bg-red-900/20 border border-red-600 text-red-400 hover:bg-red-900/30 transition-colors flex items-center gap-2"
+							className="px-4 py-2 bg-red-900/20 border border-red-600 text-red-400 hover:bg-red-900/30 transition-colors flex items-center gap-2 rounded-md"
 						>
 							<Square className="w-4 h-4" />
 							Stop
@@ -331,7 +332,7 @@ export function ChatPanel() {
 						<button
 							type="submit"
 							disabled={!input.trim() || status !== "ready"}
-							className="px-4 py-2 bg-green-900/20 border border-green-600 text-green-400 hover:bg-green-900/30 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
+							className="px-4 py-2 bg-blue-600 border border-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2 rounded-md"
 						>
 							<Send className="w-4 h-4" />
 							Send
@@ -339,7 +340,7 @@ export function ChatPanel() {
 					)}
 				</form>
 
-				<div className="text-xs text-green-700 mt-2 font-mono">
+				<div className="text-xs text-zinc-500 mt-2">
 					Press Enter to send • Shift+Enter for new line
 				</div>
 			</div>
