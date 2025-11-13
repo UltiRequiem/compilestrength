@@ -1,8 +1,15 @@
 import { headers } from "next/headers";
 import type { NextRequest } from "next/server";
 import { auth } from "@/lib/auth";
+import {
+	createErrorResponse,
+	createSuccessResponse,
+	createValidationErrorResponse,
+	ValidationError,
+	validateRequest,
+} from "@/lib/validation";
 import { saveWorkoutRoutineToDb } from "@/lib/workout-db";
-import type { WorkoutRoutine } from "@/stores/workout-routine-store";
+import { saveRoutineSchema } from "@/schemas";
 
 export async function POST(req: NextRequest) {
 	try {
@@ -14,21 +21,34 @@ export async function POST(req: NextRequest) {
 			return new Response("Unauthorized", { status: 401 });
 		}
 
-		const { routine }: { routine: WorkoutRoutine } = await req.json();
+		const body = await req.json();
+		const validatedData = validateRequest(saveRoutineSchema, body);
+		const { routine: rawRoutine } = validatedData;
 
-		if (!routine) {
-			return new Response("Workout routine is required", { status: 400 });
-		}
+		// Convert string dates to Date objects if needed
+		const routine = {
+			...rawRoutine,
+			createdAt:
+				typeof rawRoutine.createdAt === "string"
+					? new Date(rawRoutine.createdAt)
+					: rawRoutine.createdAt,
+			updatedAt:
+				typeof rawRoutine.updatedAt === "string"
+					? new Date(rawRoutine.updatedAt)
+					: rawRoutine.updatedAt,
+		};
 
 		const savedProgram = await saveWorkoutRoutineToDb(routine, session.user.id);
 
-		return Response.json({
-			success: true,
-			message: "Workout routine saved successfully",
-			programId: savedProgram.id,
-		});
+		return createSuccessResponse(
+			{ programId: savedProgram.id },
+			"Workout routine saved successfully",
+		);
 	} catch (error) {
+		if (error instanceof ValidationError) {
+			return createValidationErrorResponse(error);
+		}
 		console.error("Save routine API error:", error);
-		return new Response("Failed to save workout routine", { status: 500 });
+		return createErrorResponse("Failed to save workout routine");
 	}
 }

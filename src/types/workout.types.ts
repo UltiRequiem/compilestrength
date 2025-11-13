@@ -1,12 +1,27 @@
+import type {
+	Exercise as SchemaExercise,
+	PersonalRecord as SchemaPersonalRecord,
+	UserProfile as SchemaUserProfile,
+	WorkoutDay as SchemaWorkoutDay,
+	WorkoutProgram as SchemaWorkoutProgram,
+	WorkoutRoutine as SchemaWorkoutRoutine,
+	WorkoutSession as SchemaWorkoutSession,
+	WorkoutSet as SchemaWorkoutSet,
+} from "@/schemas";
+
+// Extended Exercise type that includes both database and display properties
 export interface Exercise {
 	id: string;
+	name: string;
+	description?: string;
+	muscleGroup?: string; // Alternative naming
+	equipmentType?: string; // Alternative naming
+	difficulty?: string;
+	videoUrl?: string;
 	exerciseId?: string; // For DB references
-	name?: string; // For display purposes
 	exerciseName?: string; // Alternative naming
 	muscleGroups?: string[];
-	muscleGroup?: string; // Alternative naming
 	equipment?: string;
-	equipmentType?: string; // Alternative naming
 	sets: number;
 	reps: string; // e.g., "8-12", "10", "AMRAP"
 	restPeriod?: number; // seconds
@@ -14,96 +29,57 @@ export interface Exercise {
 	weight?: number;
 	notes?: string;
 	order?: number;
-	difficulty?: string;
-	description?: string;
-	videoUrl?: string;
+	createdAt?: Date | string;
 }
 
-export interface WorkoutDay {
-	id: string;
+// Extended WorkoutDay type
+export interface WorkoutDay extends Omit<SchemaWorkoutDay, "programId"> {
 	programId?: string;
-	dayNumber?: number;
-	name: string; // e.g., "Push Day", "Pull Day", "Legs"
-	type?: string; // push, pull, legs, upper, lower, full, rest
 	exercises: Exercise[];
 	order?: number;
-	description?: string;
 }
 
-export interface WorkoutProgram {
-	id: string;
-	userId?: string;
-	name: string;
-	description?: string;
+// Extended WorkoutProgram type
+export interface WorkoutProgram extends SchemaWorkoutProgram {
 	days: WorkoutDay[];
-	goalType?: string; // strength, hypertrophy, endurance, general
-	experienceLevel?: string; // beginner, intermediate, advanced
-	frequency?: number; // workouts per week / days per week
 	duration?: number; // weeks
-	durationWeeks?: number; // Alternative naming
 	difficulty?: "beginner" | "intermediate" | "advanced";
 	goals?: string[]; // e.g., ["muscle_gain", "strength", "endurance"]
-	isActive?: boolean;
-	createdAt?: Date | string;
-	updatedAt?: Date | string;
 }
 
-export interface WorkoutRoutine extends WorkoutProgram {
-	// Extended version used in compiler/store
-	routine?: Record<string, unknown>; // JSON object containing the full routine structure
-	agentType?: string; // bodybuilding, powerlifting, endurance, general
-	conversationId?: string;
+// Extended WorkoutRoutine type
+export interface WorkoutRoutine extends SchemaWorkoutRoutine {
+	// Additional properties for compatibility
+	days?: WorkoutDay[];
+	frequency?: number;
+	duration?: number;
+	difficulty?: "beginner" | "intermediate" | "advanced";
+	goals?: string[];
 }
 
+// Extended Set type
 export interface Set {
-	id?: string;
-	number?: number;
-	setNumber?: number; // Alternative naming
+	id: string;
+	sessionId: string;
+	exerciseId: string;
+	setNumber: number;
 	weight: number;
 	reps: number | null;
 	rpe?: number | null; // Rate of Perceived Exertion 1-10
+	number?: number;
 	completed?: boolean;
 	completedAt?: Date | string;
-	sessionId?: string;
-	exerciseId?: string;
 }
 
 export interface ExerciseWithSets extends Exercise {
 	completedSets: Set[];
 }
 
-export interface WorkoutSession {
-	id: string;
-	userId: string;
-	workoutDayId?: string;
-	startTime: Date | string;
-	endTime?: Date | string;
-	notes?: string;
-	completedAt?: Date | string;
+// Use schema types directly
+export type WorkoutSession = SchemaWorkoutSession & {
 	sets?: Set[];
-}
+};
 
-export interface PersonalRecord {
-	id: string;
-	userId: string;
-	exerciseId: string;
-	weight: number;
-	reps: number;
-	recordType: string; // 1rm, 3rm, 5rm, volume
-	achievedAt: Date | string;
-}
+export type PersonalRecord = SchemaPersonalRecord;
 
-export interface UserProfile {
-	experience: "beginner" | "intermediate" | "advanced";
-	goals: string[];
-	availableEquipment: string[];
-	timeConstraints: {
-		daysPerWeek: number;
-		minutesPerSession: number;
-	};
-	physicalLimitations?: string[];
-	preferences?: {
-		favoriteExercises?: string[];
-		exercisesToAvoid?: string[];
-	};
-}
+export type UserProfile = SchemaUserProfile;

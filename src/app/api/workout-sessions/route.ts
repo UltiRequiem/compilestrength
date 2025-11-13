@@ -4,6 +4,16 @@ import { NextResponse } from "next/server";
 import { db } from "@/db";
 import { workoutSessions, workoutSets } from "@/db/schema";
 import { auth } from "@/lib/auth";
+import {
+	createErrorResponse,
+	createValidationErrorResponse,
+	ValidationError,
+	validateRequest,
+} from "@/lib/validation";
+import {
+	createWorkoutSessionSchema,
+	updateWorkoutSessionSchema,
+} from "@/schemas";
 
 export async function GET() {
 	const session = await auth.api.getSession({
@@ -62,11 +72,9 @@ export async function POST(request: Request) {
 	}
 
 	try {
-		const body = (await request.json()) as {
-			workoutDayId?: string;
-			notes?: string;
-		};
-		const { workoutDayId, notes } = body;
+		const body = await request.json();
+		const validatedData = validateRequest(createWorkoutSessionSchema, body);
+		const { workoutDayId, notes } = validatedData;
 
 		// Check if there's already an active session
 		const activeSessions = await db
@@ -98,11 +106,11 @@ export async function POST(request: Request) {
 
 		return NextResponse.json(newSession);
 	} catch (error) {
+		if (error instanceof ValidationError) {
+			return createValidationErrorResponse(error);
+		}
 		console.error("Error creating workout session:", error);
-		return NextResponse.json(
-			{ error: "Failed to create workout session" },
-			{ status: 500 },
-		);
+		return createErrorResponse("Failed to create workout session");
 	}
 }
 
@@ -116,13 +124,9 @@ export async function PATCH(request: Request) {
 	}
 
 	try {
-		const body = (await request.json()) as {
-			sessionId?: string;
-			endTime?: string;
-			notes?: string;
-			completed?: boolean;
-		};
-		const { sessionId, endTime, notes, completed } = body;
+		const body = await request.json();
+		const validatedData = validateRequest(updateWorkoutSessionSchema, body);
+		const { sessionId, endTime, notes, completed } = validatedData;
 
 		if (!sessionId) {
 			return NextResponse.json(
@@ -149,10 +153,10 @@ export async function PATCH(request: Request) {
 
 		return NextResponse.json(updatedSession);
 	} catch (error) {
+		if (error instanceof ValidationError) {
+			return createValidationErrorResponse(error);
+		}
 		console.error("Error updating workout session:", error);
-		return NextResponse.json(
-			{ error: "Failed to update workout session" },
-			{ status: 500 },
-		);
+		return createErrorResponse("Failed to update workout session");
 	}
 }
