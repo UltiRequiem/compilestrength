@@ -96,7 +96,7 @@ export default function LogWorkoutPage() {
 			});
 
 			if (response.ok) {
-				const sessionData = await response.json();
+				const sessionData = (await response.json()) as { id: string };
 				setWorkoutSession(sessionData);
 
 				// Initialize exercises with empty sets
@@ -109,12 +109,18 @@ export default function LogWorkoutPage() {
 					const exercisesWithSets: ExerciseWithSets[] =
 						currentDay.exercises.map((ex) => ({
 							...ex,
+							// Use a temporary ID for sets that haven't been saved to the database yet.
+							// The format 'temp_pending_${ex.id}_${i}' makes it clear this is not a persistent ID.
 							completedSets: Array.from({ length: ex.sets }, (_, i) => ({
+								id: `temp_pending_${ex.id}_${i}`,
 								number: i + 1,
+								setNumber: i + 1,
 								weight: 0,
 								reps: null,
 								rpe: null,
 								completed: false,
+								sessionId: sessionData.id || "",
+								exerciseId: ex.id,
 							})),
 						}));
 					setExercises(exercisesWithSets);

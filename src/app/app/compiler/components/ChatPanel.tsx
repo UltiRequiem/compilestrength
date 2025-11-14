@@ -4,8 +4,8 @@ import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import { Loader2, Send, Square } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import type { UserProfile } from "@/schemas";
 import {
-	type UserProfile,
 	useWorkoutRoutineActions,
 	type WorkoutRoutine,
 } from "@/stores/workout-routine-store";

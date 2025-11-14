@@ -25,6 +25,7 @@ deployed on Cloudflare Workers.
 - **Billing**: LemonSqueezy for subscription management and webhooks
 - **State Management**: Zustand for global client state (user preferences)
 - **AI**: Mastra framework with OpenAI integration
+- **Validation**: Zod for runtime schema validation and type inference
 - **Code Quality**: Biome for formatting/linting, ESLint for additional checks
 - **Deployment**: OpenNext.js for Cloudflare Workers
 
@@ -43,6 +44,8 @@ deployed on Cloudflare Workers.
   - `auth-utils.ts` - Authentication helpers
   - `subscription-utils.ts` - Subscription status and validation
   - `lemonsqueezy-typeguards.ts` - Type guards for webhooks
+  - `validation.ts` - Zod validation utilities and error handling
+  - `date-transform.ts` - Type-safe date transformation utilities
 - `src/config/` - Configuration files
   - `lemonsqueezy.ts` - LemonSqueezy SDK setup
 - `src/agents/` - AI agent implementations using Mastra
@@ -52,6 +55,13 @@ deployed on Cloudflare Workers.
 - `src/providers/` - React context providers and Zustand store providers
   - `user-preferences-store-provider.tsx` - SSR-safe Zustand provider with
     session handling
+- `src/schemas/` - Zod validation schemas and inferred types
+  - `workout.schemas.ts` - Workout-related validation schemas
+  - `user.schemas.ts` - User and preferences schemas
+  - `billing.schemas.ts` - LemonSqueezy billing schemas
+  - `ai.schemas.ts` - AI chat and compiler schemas
+  - `common.schemas.ts` - Common utility schemas
+  - `index.ts` - Centralized schema exports
 - `src/db/` - Drizzle ORM schema and database connection
   - `schema.ts` - Complete database schema including auth and billing tables
   - `auth.schema.ts` - Better Auth generated schema
@@ -164,6 +174,54 @@ npm run deploy       # Deploy to Cloudflare Workers
 npm run cf-typegen   # Generate Cloudflare Types
 ```
 
+## Validation System
+
+### Zod Schema Validation
+
+CompileStrength uses Zod for comprehensive runtime validation and TypeScript type inference across all API endpoints and data models.
+
+**Key Features:**
+- Runtime request/response validation with detailed error messages
+- Automatic TypeScript type inference from schemas
+- Centralized schema definitions in `src/schemas/`
+- Custom validation utilities and error handling
+- Consistent API response format with structured error details
+
+**Schema Organization:**
+- `workout.schemas.ts` - Workout sessions, sets, programs, routines
+- `user.schemas.ts` - User profiles and preferences
+- `billing.schemas.ts` - LemonSqueezy subscription and billing data
+- `ai.schemas.ts` - AI chat messages and compiler requests
+- `common.schemas.ts` - Shared utilities (pagination, search, responses)
+
+**API Validation Flow:**
+1. All API endpoints validate request bodies using `validateRequest()`
+2. Invalid requests return structured error responses with field-level details
+3. Valid data is automatically typed according to schema
+4. Responses follow consistent success/error format
+
+**Example Usage:**
+```typescript
+// In API route
+import { createWorkoutSetSchema } from "@/schemas";
+import { validateRequest, ValidationError, createValidationErrorResponse } from "@/lib/validation";
+import { transformTimestamps } from "@/lib/date-transform";
+
+const body = await request.json();
+const validatedData = validateRequest(createWorkoutSetSchema, body);
+// validatedData is now fully typed according to schema
+
+// Transform string dates to Date objects (type-safe)
+const dataWithDates = transformTimestamps(validatedData);
+```
+
+**Type Inference:**
+Instead of manually defining interfaces, types are inferred from Zod schemas:
+```typescript
+import type { CreateWorkoutSet, WorkoutSession } from "@/schemas";
+// Types automatically derived from schema definitions
+```
+
 ## Environment Configuration
 
 ### Required Environment Variables
@@ -242,11 +300,23 @@ npm run cf-typegen   # Generate Cloudflare Types
 - Use `npm run biocheck` before committing
 - Biome enforces consistent code style across the project
 
-### Type Safety
+### Type Safety & Validation
 
 - Strict TypeScript configuration
+- **Zod Schemas**: All API endpoints use Zod for runtime validation
+  - Prefer inferred types from schemas over manual interfaces
+  - Import types from `@/schemas` for consistency
+  - Use `validateRequest()` utility in API routes
 - Environment variables validated via @t3-oss/env-nextjs
 - Drizzle ORM provides database type safety with full TypeScript inference
+
+### API Development Guidelines
+
+- All API endpoints MUST validate request bodies using Zod schemas
+- Use structured error responses via validation utilities
+- Follow consistent response format: `{ success: boolean, data?: any, error?: string }`
+- Handle validation errors with proper HTTP status codes (400 for validation failures)
+- Prefer schema-inferred types over manually defined interfaces
 
 ## AI Integration
 

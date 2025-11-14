@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { create } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
+import type { UserProfile } from "@/schemas";
 
 export interface Exercise {
 	id: string;
@@ -35,20 +36,7 @@ export interface WorkoutRoutine {
 	updatedAt: Date;
 }
 
-export interface UserProfile {
-	experience: "beginner" | "intermediate" | "advanced";
-	goals: string[];
-	availableEquipment: string[];
-	timeConstraints: {
-		daysPerWeek: number;
-		minutesPerSession: number;
-	};
-	physicalLimitations?: string[];
-	preferences?: {
-		favoriteExercises?: string[];
-		exercisesToAvoid?: string[];
-	};
-}
+// Use schema type directly - already imported above
 
 interface WorkoutRoutineState {
 	routine: WorkoutRoutine | null;
