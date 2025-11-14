@@ -140,11 +140,20 @@ export function useActiveSession() {
 		}
 	};
 
-	const initializeExercises = (currentDay: any, sessionId: string) => {
+	interface WorkoutDay {
+		exercises: Array<{
+			id: string;
+			name: string;
+			sets: number;
+			// Add other properties as needed
+		}>;
+	}
+
+	const initializeExercises = (currentDay: WorkoutDay | undefined, sessionId: string) => {
 		if (!currentDay) return;
 
 		const exercisesWithSets: ExerciseWithSets[] = currentDay.exercises.map(
-			(ex: any) => ({
+			(ex) => ({
 				...ex,
 				completedSets: Array.from({ length: ex.sets }, (_, i) => ({
 					id: `temp_pending_${ex.id}_${i}`,
