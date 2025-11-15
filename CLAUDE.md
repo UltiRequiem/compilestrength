@@ -300,7 +300,11 @@ import type { CreateWorkoutSet, WorkoutSession } from "@/schemas";
 ### Component Structure
 
 - Shadcn/ui components in `src/components/ui/`
+- **Shared components** in `src/components/`:
+  - `navbar.tsx` - Reusable navigation component used across all tool pages
 - Page components in `src/app/` following App Router conventions
+- **Tool pages** in `src/app/tools/` - All fitness calculators use shared navbar
+  component
 - Custom hooks in `src/hooks/`
 
 ### Toast Notifications
@@ -319,15 +323,16 @@ CompileStrength uses **Sonner** for non-blocking toast notifications:
 ```typescript
 import { toast } from "sonner";
 
-// Error notifications
-toast.error("Failed to save workout");
+// Error notifications (used in all calculator validation)
+toast.error("Please enter valid weight and reps (1-20 reps)");
 
 // Success notifications
 toast.success("Workout completed successfully");
 ```
 
 **Never use `alert()` or `confirm()` dialogs** - always use toast notifications
-for user feedback.
+for user feedback. All fitness calculator validation uses `toast.error()` for
+non-blocking user feedback.
 
 ### Styling
 
@@ -347,6 +352,19 @@ for user feedback.
   - Configuration in `eslint.config.mjs`
 - Use `npm run biocheck` before committing
 - Biome enforces consistent code style across the project
+
+**Code Quality Standards:**
+
+- **Avoid Magic Numbers**: Use named constants for configuration values
+  - Example: `CUTTING_DEFICIT_MULTIPLIER = 0.8` instead of hardcoded `0.8`
+  - Example: `PLATE_WEIGHT_TOLERANCE = 0.01` for floating-point precision
+- **Consistent UI/Logic Alignment**: Ensure displayed categories match
+  calculation logic exactly
+  - Fixed in body fat calculator: UI categories now match calculation thresholds
+- **Component Reusability**: Extract shared components to avoid duplication
+  - Navbar component used across all calculator pages
+- **Non-blocking UX**: Use toast notifications instead of blocking alert()
+  dialogs
 
 ### Type Safety & Validation
 
