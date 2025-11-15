@@ -33,7 +33,6 @@ import type {
 export async function syncPlans() {
 	configureLemonSqueezy();
 
-	// Fetch all the variants from the database.
 	const productVariants: Plan[] = await db.select().from(plans);
 
 	// Helper function to add a variant to the productVariants array and sync it with the database.
