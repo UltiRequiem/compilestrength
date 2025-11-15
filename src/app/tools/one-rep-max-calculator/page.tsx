@@ -61,6 +61,28 @@ export default function OneRepMaxCalculator() {
 		});
 	};
 
+	// Handle unit conversion for existing results
+	const handleUnitChange = (newUnit: "lbs" | "kg") => {
+		const oldUnit = unit;
+		setUnit(newUnit);
+
+		// Convert existing results if they exist
+		if (results && oldUnit !== newUnit) {
+			const conversionFactor = newUnit === "kg" ? 0.453592 : 2.20462;
+
+			setResults({
+				brzycki: Number((results.brzycki * conversionFactor).toFixed(1)),
+				epley: Number((results.epley * conversionFactor).toFixed(1)),
+				lander: Number((results.lander * conversionFactor).toFixed(1)),
+				lombardi: Number((results.lombardi * conversionFactor).toFixed(1)),
+				mayhew: Number((results.mayhew * conversionFactor).toFixed(1)),
+				oConner: Number((results.oConner * conversionFactor).toFixed(1)),
+				wathen: Number((results.wathen * conversionFactor).toFixed(1)),
+				average: Number((results.average * conversionFactor).toFixed(1)),
+			});
+		}
+	};
+
 	return (
 		<div className="min-h-screen bg-zinc-950 text-zinc-100">
 			{/* Navbar */}
@@ -123,13 +145,13 @@ export default function OneRepMaxCalculator() {
 					<div className="flex gap-4">
 						<Button
 							variant={unit === "lbs" ? "default" : "outline"}
-							onClick={() => setUnit("lbs")}
+							onClick={() => handleUnitChange("lbs")}
 						>
 							Pounds (lbs)
 						</Button>
 						<Button
 							variant={unit === "kg" ? "default" : "outline"}
-							onClick={() => setUnit("kg")}
+							onClick={() => handleUnitChange("kg")}
 						>
 							Kilograms (kg)
 						</Button>

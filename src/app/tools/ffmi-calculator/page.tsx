@@ -86,6 +86,24 @@ export default function FFMICalculator() {
 		});
 	};
 
+	// Handle unit conversion for existing results
+	const handleUnitChange = (newUnit: "metric" | "imperial") => {
+		const oldUnit = unit;
+		setUnit(newUnit);
+
+		// Convert existing results if they exist
+		if (result && oldUnit !== newUnit) {
+			const conversionFactor = newUnit === "imperial" ? 2.20462 : 0.453592;
+
+			setResult({
+				ffmi: result.ffmi, // FFMI is unitless, no conversion needed
+				adjustedFFMI: result.adjustedFFMI, // Adjusted FFMI is unitless, no conversion needed
+				fatFreeMass: Number((result.fatFreeMass * conversionFactor).toFixed(1)),
+				category: result.category,
+			});
+		}
+	};
+
 	return (
 		<div className="min-h-screen bg-zinc-950 text-zinc-100">
 			{/* Navbar */}
@@ -149,13 +167,13 @@ export default function FFMICalculator() {
 					<div className="flex gap-4">
 						<Button
 							variant={unit === "imperial" ? "default" : "outline"}
-							onClick={() => setUnit("imperial")}
+							onClick={() => handleUnitChange("imperial")}
 						>
 							Imperial (lb/in)
 						</Button>
 						<Button
 							variant={unit === "metric" ? "default" : "outline"}
-							onClick={() => setUnit("metric")}
+							onClick={() => handleUnitChange("metric")}
 						>
 							Metric (kg/cm)
 						</Button>

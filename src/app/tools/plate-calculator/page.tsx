@@ -104,6 +104,8 @@ export default function PlateCalculator() {
 	const handleUnitChange = (newUnit: "kg" | "lbs") => {
 		setUnit(newUnit);
 		setBarWeight(newUnit === "kg" ? "20" : "45");
+		// Clear results since they're no longer valid for the new unit
+		setResults(null);
 	};
 
 	return (
