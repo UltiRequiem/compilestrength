@@ -1,7 +1,101 @@
+import type { Metadata } from "next";
 import { headers } from "next/headers";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { auth } from "@/lib/auth";
+
+const itemListSchema = {
+	"@context": "https://schema.org",
+	"@type": "ItemList",
+	name: "Free Fitness Calculators",
+	description:
+		"Free evidence-based fitness calculators and tools for serious lifters",
+	itemListElement: [
+		{
+			"@type": "ListItem",
+			position: 1,
+			item: {
+				"@type": "SoftwareApplication",
+				name: "FFMI Calculator",
+				url: "https://compilestrength.com/tools/ffmi-calculator",
+				description:
+					"Calculate your Fat-Free Mass Index to assess muscle development and natural genetic potential",
+			},
+		},
+		{
+			"@type": "ListItem",
+			position: 2,
+			item: {
+				"@type": "SoftwareApplication",
+				name: "One Rep Max Calculator",
+				url: "https://compilestrength.com/tools/one-rep-max-calculator",
+				description:
+					"Calculate your 1RM using multiple proven formulas for strength assessment",
+			},
+		},
+		{
+			"@type": "ListItem",
+			position: 3,
+			item: {
+				"@type": "SoftwareApplication",
+				name: "TDEE Calculator",
+				url: "https://compilestrength.com/tools/tdee-calculator",
+				description:
+					"Calculate your Total Daily Energy Expenditure for accurate calorie planning",
+			},
+		},
+		{
+			"@type": "ListItem",
+			position: 4,
+			item: {
+				"@type": "SoftwareApplication",
+				name: "Body Fat Calculator",
+				url: "https://compilestrength.com/tools/body-fat-calculator",
+				description:
+					"Calculate body fat percentage using US Navy and Army methods",
+			},
+		},
+		{
+			"@type": "ListItem",
+			position: 5,
+			item: {
+				"@type": "SoftwareApplication",
+				name: "Plate Calculator",
+				url: "https://compilestrength.com/tools/plate-calculator",
+				description:
+					"Calculate which plates to load on your barbell for any target weight",
+			},
+		},
+	],
+};
+
+export const metadata: Metadata = {
+	title: "Free Fitness Calculators & Tools | Evidence-Based Training",
+	description:
+		"Free FFMI, 1RM, TDEE, and body fat calculators. Science-based fitness tools for serious lifters. No signup required.",
+	keywords: [
+		"fitness calculators",
+		"FFMI calculator",
+		"1RM calculator",
+		"TDEE calculator",
+		"body fat calculator",
+		"plate calculator",
+		"evidence based fitness tools",
+	],
+	openGraph: {
+		title: "Free Fitness Calculators & Tools | Evidence-Based Training",
+		description:
+			"Free FFMI, 1RM, TDEE, and body fat calculators. Science-based fitness tools for serious lifters. No signup required.",
+		url: "https://compilestrength.com/tools",
+		images: ["/logo.png"],
+	},
+	twitter: {
+		title: "Free Fitness Calculators & Tools | Evidence-Based Training",
+		description:
+			"Free FFMI, 1RM, TDEE, and body fat calculators. Science-based fitness tools for serious lifters.",
+		images: ["/logo.png"],
+	},
+};
 
 export default async function ToolsPage() {
 	const session = await auth.api.getSession({
@@ -10,6 +104,12 @@ export default async function ToolsPage() {
 
 	return (
 		<div className="min-h-screen bg-zinc-950 text-zinc-100">
+			{/* Structured Data */}
+			<script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+			/>
+
 			{/* Navbar */}
 			<nav className="border-b border-zinc-800 px-6 py-4 bg-zinc-950/80 backdrop-blur-sm sticky top-0 z-50">
 				<div className="max-w-7xl mx-auto flex items-center justify-between">
@@ -23,6 +123,12 @@ export default async function ToolsPage() {
 							className="text-zinc-300 hover:text-white transition-colors"
 						>
 							Tools
+						</Link>
+						<Link
+							href="/blog"
+							className="text-zinc-300 hover:text-white transition-colors"
+						>
+							Blog
 						</Link>
 						{session ? (
 							<Link href="/app/dashboard">
@@ -65,31 +171,54 @@ export default async function ToolsPage() {
 									<h3 className="text-xl font-bold mb-2">FFMI Calculator</h3>
 									<p className="text-zinc-400 text-sm">
 										Calculate your Fat-Free Mass Index to assess muscle
-										development
+										development and natural genetic potential
 									</p>
 								</div>
 							</Link>
 
-							{/* Placeholder for more tools */}
-							<div className="border border-zinc-800 p-6 rounded-xl opacity-50">
-								<h3 className="text-xl font-bold mb-2">One Rep Max</h3>
-								<p className="text-zinc-400 text-sm">Coming soon...</p>
-							</div>
+							<Link href="/tools/one-rep-max-calculator">
+								<div className="border border-zinc-800 p-6 rounded-xl hover:bg-zinc-900 hover:border-blue-700 transition-all cursor-pointer">
+									<h3 className="text-xl font-bold mb-2">
+										One Rep Max Calculator
+									</h3>
+									<p className="text-zinc-400 text-sm">
+										Calculate your 1RM using multiple proven formulas for
+										strength assessment
+									</p>
+								</div>
+							</Link>
 
-							<div className="border border-zinc-800 p-6 rounded-xl opacity-50">
-								<h3 className="text-xl font-bold mb-2">TDEE Calculator</h3>
-								<p className="text-zinc-400 text-sm">Coming soon...</p>
-							</div>
+							<Link href="/tools/tdee-calculator">
+								<div className="border border-zinc-800 p-6 rounded-xl hover:bg-zinc-900 hover:border-blue-700 transition-all cursor-pointer">
+									<h3 className="text-xl font-bold mb-2">TDEE Calculator</h3>
+									<p className="text-zinc-400 text-sm">
+										Calculate your Total Daily Energy Expenditure for accurate
+										calorie planning
+									</p>
+								</div>
+							</Link>
 
-							<div className="border border-zinc-800 p-6 rounded-xl opacity-50">
-								<h3 className="text-xl font-bold mb-2">Body Fat %</h3>
-								<p className="text-zinc-400 text-sm">Coming soon...</p>
-							</div>
+							<Link href="/tools/body-fat-calculator">
+								<div className="border border-zinc-800 p-6 rounded-xl hover:bg-zinc-900 hover:border-blue-700 transition-all cursor-pointer">
+									<h3 className="text-xl font-bold mb-2">
+										Body Fat Calculator
+									</h3>
+									<p className="text-zinc-400 text-sm">
+										Calculate body fat percentage using US Navy and Army methods
+										with circumference measurements
+									</p>
+								</div>
+							</Link>
 
-							<div className="border border-zinc-800 p-6 rounded-xl opacity-50">
-								<h3 className="text-xl font-bold mb-2">Plate Calculator</h3>
-								<p className="text-zinc-400 text-sm">Coming soon...</p>
-							</div>
+							<Link href="/tools/plate-calculator">
+								<div className="border border-zinc-800 p-6 rounded-xl hover:bg-zinc-900 hover:border-blue-700 transition-all cursor-pointer">
+									<h3 className="text-xl font-bold mb-2">Plate Calculator</h3>
+									<p className="text-zinc-400 text-sm">
+										Calculate which plates to load on your barbell for any
+										target weight
+									</p>
+								</div>
+							</Link>
 
 							<div className="border border-zinc-800 p-6 rounded-xl opacity-50">
 								<h3 className="text-xl font-bold mb-2">Macro Calculator</h3>

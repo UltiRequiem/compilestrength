@@ -21,12 +21,25 @@ export default function FFMICalculator() {
 	} | null>(null);
 
 	const calculate = () => {
+		if (!weight.trim() || !height.trim() || !bodyFat.trim()) {
+			alert("Please enter weight, height, and body fat percentage");
+			return;
+		}
+
 		const w = Number.parseFloat(weight);
 		const h = Number.parseFloat(height);
 		const bf = Number.parseFloat(bodyFat);
 
-		if (!w || !h || !bf || bf < 0 || bf > 100) {
-			alert("Please enter valid numbers");
+		if (
+			Number.isNaN(w) ||
+			Number.isNaN(h) ||
+			Number.isNaN(bf) ||
+			w <= 0 ||
+			h <= 0 ||
+			bf < 0 ||
+			bf > 100
+		) {
+			alert("Please enter valid numbers (body fat between 0-100%)");
 			return;
 		}
 
@@ -88,6 +101,12 @@ export default function FFMICalculator() {
 							className="text-zinc-300 hover:text-white transition-colors"
 						>
 							Tools
+						</Link>
+						<Link
+							href="/blog"
+							className="text-zinc-300 hover:text-white transition-colors"
+						>
+							Blog
 						</Link>
 						{session ? (
 							<Link href="/app/dashboard">
@@ -185,7 +204,16 @@ export default function FFMICalculator() {
 						</div>
 					</div>
 
-					<Button onClick={calculate} className="w-full" size="lg">
+					<Button
+						type="button"
+						onClick={(e) => {
+							e.preventDefault();
+							e.stopPropagation();
+							calculate();
+						}}
+						className="w-full"
+						size="lg"
+					>
 						Calculate FFMI
 					</Button>
 

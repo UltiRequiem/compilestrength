@@ -275,7 +275,7 @@ export function useActiveSession() {
 		if (!workoutSession || !workoutSession.startTime) return 0;
 		try {
 			const startTime = new Date(workoutSession.startTime).getTime();
-			if (isNaN(startTime)) return 0;
+			if (Number.isNaN(startTime)) return 0;
 			const now = Date.now();
 			return Math.floor((now - startTime) / 1000);
 		} catch {
