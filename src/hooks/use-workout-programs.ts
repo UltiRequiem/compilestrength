@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import type { WorkoutProgram } from "@/app/app/log-workout/types";
+import type { WorkoutProgram } from "@/types/workout.types";
 
 export function useWorkoutPrograms() {
 	const [programs, setPrograms] = useState<WorkoutProgram[]>([]);

@@ -3,7 +3,7 @@ import type {
 	ExerciseWithSets,
 	WorkoutDay,
 	WorkoutProgram,
-} from "@/app/app/log-workout/types";
+} from "@/types/workout.types";
 
 interface ActiveSession {
 	id: string;
