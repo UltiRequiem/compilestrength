@@ -45,24 +45,26 @@ export default function PlateCalculator() {
 		],
 	};
 
-	const calculate = () => {
-		if (!targetWeight.trim() || !barWeight.trim()) {
-			alert("Please enter both target weight and bar weight");
-			return;
-		}
+import { toast } from "sonner";
 
-		const target = Number.parseFloat(targetWeight);
-		const bar = Number.parseFloat(barWeight);
+const calculate = () => {
+	if (!targetWeight.trim() || !barWeight.trim()) {
+		toast.error("Please enter both target weight and bar weight");
+		return;
+	}
 
-		if (Number.isNaN(target) || Number.isNaN(bar) || target <= 0 || bar <= 0) {
-			alert("Please enter valid numbers for target weight and bar weight");
-			return;
-		}
+	const target = Number.parseFloat(targetWeight);
+	const bar = Number.parseFloat(barWeight);
 
-		if (target <= bar) {
-			alert("Target weight must be greater than bar weight");
-			return;
-		}
+	if (Number.isNaN(target) || Number.isNaN(bar) || target <= 0 || bar <= 0) {
+		toast.error("Please enter valid numbers for target weight and bar weight");
+		return;
+	}
+
+	if (target <= bar) {
+		toast.error("Target weight must be greater than bar weight");
+		return;
+	}
 
 		const weightNeeded = target - bar;
 		const weightPerSide = weightNeeded / 2;
