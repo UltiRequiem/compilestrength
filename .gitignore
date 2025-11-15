@@ -94,6 +94,9 @@ build/Release
 node_modules/
 jspm_packages/
 
+# Package manager lock files (we use bun.lock)
+package-lock.json
+
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/
 
@@ -102,6 +105,9 @@ web_modules/
 
 # Optional npm cache directory
 .npm
+
+# package-lock.json (project uses Bun)
+package-lock.json
 
 # Optional eslint cache
 .eslintcache
