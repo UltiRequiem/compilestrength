@@ -4,6 +4,53 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { auth } from "@/lib/auth";
 
+const organizationSchema = {
+	"@context": "https://schema.org",
+	"@type": "Organization",
+	name: "CompileStrength",
+	url: "https://compilestrength.com",
+	logo: "https://compilestrength.com/logo.png",
+	description:
+		"AI-powered workout programming for evidence-based lifters. Train smarter with personalized programs built on exercise science.",
+	sameAs: ["https://twitter.com/compilestrength"],
+};
+
+const softwareApplicationSchema = {
+	"@context": "https://schema.org",
+	"@type": "SoftwareApplication",
+	name: "CompileStrength",
+	applicationCategory: "HealthApplication",
+	operatingSystem: "Web",
+	description:
+		"AI-powered workout program generator for evidence-based lifters. Generate personalized training programs with progressive overload and periodization.",
+	url: "https://compilestrength.com",
+	author: {
+		"@type": "Organization",
+		name: "CompileStrength",
+	},
+	offers: [
+		{
+			"@type": "Offer",
+			price: "0",
+			priceCurrency: "USD",
+			description: "7-day free trial",
+			eligibleDuration: {
+				"@type": "Duration",
+				// ISO 8601 duration for 7 days
+				duration: "P7D",
+			},
+			isAccessibleForFree: true,
+		},
+		{
+			"@type": "Offer",
+			price: "19.99",
+			priceCurrency: "USD",
+			description: "Monthly subscription after free trial",
+			isAccessibleForFree: false,
+		},
+	],
+};
+
 export default async function LandingPage() {
 	const session = await auth.api.getSession({
 		headers: await headers(),
@@ -11,6 +58,18 @@ export default async function LandingPage() {
 
 	return (
 		<div className="min-h-screen bg-zinc-950 text-zinc-100">
+			{/* Structured Data */}
+			<script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+			/>
+			<script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{
+					__html: JSON.stringify(softwareApplicationSchema),
+				}}
+			/>
+
 			{/* Navbar */}
 			<nav className="border-b border-zinc-800 px-6 py-4 bg-zinc-950/80 backdrop-blur-sm sticky top-0 z-50">
 				<div className="max-w-7xl mx-auto flex items-center justify-between">
@@ -33,6 +92,12 @@ export default async function LandingPage() {
 							className="text-zinc-300 hover:text-white transition-colors"
 						>
 							Tools
+						</Link>
+						<Link
+							href="/blog"
+							className="text-zinc-300 hover:text-white transition-colors"
+						>
+							Blog
 						</Link>
 						{session ? (
 							<Link href="/app/dashboard">

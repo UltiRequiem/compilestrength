@@ -1,17 +1,22 @@
 # CompileStrength Style Guide
 
-> **Target Audience**: Science-based lifters who understand training principles like progressive overload, periodization, and evidence-based programming.
+> **Target Audience**: Science-based lifters who understand training principles
+> like progressive overload, periodization, and evidence-based programming.
 
 ## Brand Identity
 
 ### Brand Positioning
-CompileStrength is a professional, data-driven training platform for serious lifters. We speak to users who:
+
+CompileStrength is a professional, data-driven training platform for serious
+lifters. We speak to users who:
+
 - Understand exercise science fundamentals
 - Track their progress systematically
 - Make training decisions based on evidence
 - Value progressive overload and periodization
 
 ### Voice & Tone
+
 - **Professional** - Serious about training, not gimmicky
 - **Evidence-Based** - References training principles
 - **Direct** - Clear, concise language
@@ -24,6 +29,7 @@ CompileStrength is a professional, data-driven training platform for serious lif
 ### Color Palette
 
 #### Primary Colors
+
 - **Primary Blue**: `#3b82f6` (rgb(59, 130, 246))
   - HSL: `217 91% 60%`
   - Usage: Primary actions, links, accents
@@ -33,6 +39,7 @@ CompileStrength is a professional, data-driven training platform for serious lif
   - Usage: Page backgrounds
 
 #### Secondary Colors
+
 - **Zinc 950**: `#09090b` - Darkest background
 - **Zinc 900**: `#18181b` - Card backgrounds
 - **Zinc 800**: `#27272a` - Borders, dividers
@@ -42,16 +49,19 @@ CompileStrength is a professional, data-driven training platform for serious lif
 - **Zinc 100**: `#f4f4f5` - Headers, emphasis
 
 #### Accent Colors
+
 - **Success**: Keep primary blue
 - **Destructive**: `#ef4444` (red-500)
 
 ### Typography
 
 #### Font Family
+
 - **Primary**: Inter (sans-serif)
 - **NO monospace fonts** - We are not a terminal/code app
 
 #### Font Sizes
+
 - **Hero Heading**: `text-5xl md:text-7xl` (48px → 72px)
 - **Page Title**: `text-3xl` to `text-4xl` (30px → 36px)
 - **Section Heading**: `text-2xl` (24px)
@@ -61,6 +71,7 @@ CompileStrength is a professional, data-driven training platform for serious lif
 - **Micro Text**: `text-xs` (12px)
 
 #### Font Weights
+
 - **Bold**: Headers, emphasis
 - **Semibold**: Section titles
 - **Medium**: Labels, buttons
@@ -69,17 +80,20 @@ CompileStrength is a professional, data-driven training platform for serious lif
 ### Spacing & Layout
 
 #### Padding/Margin Scale
+
 - Use Tailwind's spacing scale consistently
 - Cards: `p-6` to `p-12` depending on size
 - Sections: `py-12` to `py-24`
 - Gaps: `gap-4` to `gap-8`
 
 #### Border Radius
+
 - **Default**: `rounded-xl` (0.75rem / 12px)
 - **Buttons**: `rounded-md` (0.375rem / 6px)
 - **Small Elements**: `rounded-lg` (0.5rem / 8px)
 
 #### Container Widths
+
 - **Landing Page**: `max-w-7xl`
 - **App Content**: `max-w-6xl` to `max-w-7xl`
 - **Forms**: `max-w-md` (448px)
@@ -90,22 +104,26 @@ CompileStrength is a professional, data-driven training platform for serious lif
 #### Buttons
 
 **Primary Button**
+
 ```tsx
 <Button size="lg" className="h-12 px-8 text-lg">
   Start Free Trial
-</Button>
+</Button>;
 ```
+
 - Background: Blue-500
 - Text: White
 - Hover: Darker blue
 - Prominent for CTAs
 
 **Outline Button**
+
 ```tsx
 <Button variant="outline" size="sm">
   Login
-</Button>
+</Button>;
 ```
+
 - Border: Zinc-800
 - Text: Zinc-300
 - Hover: White text
@@ -113,6 +131,7 @@ CompileStrength is a professional, data-driven training platform for serious lif
 #### Cards
 
 **Standard Card**
+
 ```tsx
 <Card className="border-zinc-800 p-8 rounded-xl bg-zinc-900/50">
   <CardHeader>
@@ -121,29 +140,33 @@ CompileStrength is a professional, data-driven training platform for serious lif
   <CardContent>
     {/* Content */}
   </CardContent>
-</Card>
+</Card>;
 ```
 
 **Hover Effect**
+
 ```tsx
-className="hover:bg-zinc-900 transition-colors"
+className = "hover:bg-zinc-900 transition-colors";
 ```
 
 **Glow Effect (for emphasis)**
+
 ```tsx
-className="glow-blue-hover"
+className = "glow-blue-hover";
 ```
 
 #### Navigation
 
 **Nav Bar**
+
 ```tsx
 <nav className="border-b border-zinc-800 px-6 py-4 bg-zinc-950/80 backdrop-blur-sm sticky top-0 z-50">
   {/* Sticky navigation with blur effect */}
-</nav>
+</nav>;
 ```
 
 **Logo**
+
 ```tsx
 <span className="text-blue-500">Compile</span>
 <span className="text-white">Strength</span>
@@ -152,18 +175,18 @@ className="glow-blue-hover"
 #### Forms
 
 **Input Fields**
+
 ```tsx
-<Input
-  className="bg-zinc-950 border-zinc-800 text-zinc-200
-             focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
-/>
+<Input className="bg-zinc-950 border-zinc-800 text-zinc-200
+             focus:border-blue-600 focus:ring-1 focus:ring-blue-600" />;
 ```
 
 **Labels**
+
 ```tsx
 <Label className="text-sm font-medium mb-2">
   Label Text
-</Label>
+</Label>;
 ```
 
 ## Content Guidelines
@@ -171,6 +194,7 @@ className="glow-blue-hover"
 ### Feature Naming
 
 #### ✅ DO Use
+
 - **Program Generator** (not "Compiler")
 - **Progress Tracker** (not "GitGains")
 - **Performance Analysis** (not "Gains Debugger")
@@ -178,6 +202,7 @@ className="glow-blue-hover"
 - **AI Training Assistant** (not "AI Compiler")
 
 #### ❌ DON'T Use
+
 - Terminal metaphors (`>`, `//`, `$`)
 - Code references ("compile", "debug", "git commit")
 - Monospace fonts
@@ -186,32 +211,36 @@ className="glow-blue-hover"
 ### Writing Style
 
 #### Headlines
+
 - Focus on training benefits
 - Use action words
 - Be specific about features
 
-**Good**: "Training Programs Built on Exercise Science"
-**Bad**: "// Compile Your Strength"
+**Good**: "Training Programs Built on Exercise Science" **Bad**: "// Compile
+Your Strength"
 
 #### Descriptions
+
 - Reference training principles (progressive overload, periodization)
 - Use specific terminology (hypertrophy, volume, frequency)
 - Focus on measurable outcomes
 
-**Good**: "Track your lifts, monitor progressive overload, and analyze performance trends"
-**Bad**: "Log workouts, track PRs, and visualize your gains"
+**Good**: "Track your lifts, monitor progressive overload, and analyze
+performance trends" **Bad**: "Log workouts, track PRs, and visualize your gains"
 
 #### Call-to-Actions
+
 - Direct and confident
 - Focus on outcomes
 - Clear next steps
 
-**Good**: "Start Free Trial", "Analyze Performance", "Generate Program"
-**Bad**: "Run Gains Debugger", "Compile Your Gains"
+**Good**: "Start Free Trial", "Analyze Performance", "Generate Program" **Bad**:
+"Run Gains Debugger", "Compile Your Gains"
 
 ### Iconography
 
 #### Preferred Icons (Lucide)
+
 - `Dumbbell` - Workouts, exercise
 - `BarChart3` - Analytics, performance
 - `LineChart` - Progress tracking
@@ -222,6 +251,7 @@ className="glow-blue-hover"
 - `Target` - Goals
 
 #### Avoid Icons
+
 - `Terminal` - Too developer-focused
 - `Bug` - Negative connotation
 - `GitBranch` - Code reference
@@ -230,6 +260,7 @@ className="glow-blue-hover"
 ## Examples
 
 ### Landing Page Hero
+
 ```tsx
 <h1 className="text-5xl md:text-7xl font-bold tracking-tight">
   Training Programs Built on
@@ -243,6 +274,7 @@ className="glow-blue-hover"
 ```
 
 ### Feature Card
+
 ```tsx
 <div className="border border-zinc-800 p-8 rounded-xl bg-zinc-900/50
                 hover:bg-zinc-900 transition-colors">
@@ -250,14 +282,14 @@ className="glow-blue-hover"
     AI Program Generator
   </h3>
   <p className="text-zinc-400 leading-relaxed">
-    Create personalized training programs based on your experience
-    level, training frequency, and goals. Built with periodization
-    principles.
+    Create personalized training programs based on your experience level,
+    training frequency, and goals. Built with periodization principles.
   </p>
-</div>
+</div>;
 ```
 
 ### Stats Display
+
 ```tsx
 <div className="text-2xl font-bold text-primary">
   47
@@ -272,6 +304,7 @@ className="glow-blue-hover"
 ### CSS Custom Properties
 
 #### Theme Variables
+
 ```css
 :root {
   /* Primary */
@@ -290,6 +323,7 @@ className="glow-blue-hover"
 ```
 
 #### Utility Classes
+
 ```css
 /* Blue glow effect */
 .glow-blue {
@@ -316,6 +350,7 @@ className="glow-blue-hover"
 ### Component Patterns
 
 #### Page Layout
+
 ```tsx
 <div className="mx-auto max-w-7xl">
   {/* Header */}
@@ -328,20 +363,22 @@ className="glow-blue-hover"
   <div className="space-y-8">
     {/* Cards, sections, etc. */}
   </div>
-</div>
+</div>;
 ```
 
 #### Loading States
+
 ```tsx
 <div className="flex items-center gap-2 text-zinc-400">
   <Loader2 className="w-4 h-4 animate-spin" />
   <span>Loading...</span>
-</div>
+</div>;
 ```
 
 ## Migration Notes
 
 ### Deprecated Patterns
+
 - ❌ `text-green-400` → ✅ `text-blue-500`
 - ❌ `border-green-400/20` → ✅ `border-zinc-800`
 - ❌ `font-mono` → ✅ Remove (use default font)
@@ -350,6 +387,7 @@ className="glow-blue-hover"
 - ❌ `scrollbar-terminal` → ✅ `scrollbar-custom`
 
 ### Text Replacements
+
 - "AI Compiler" → "Program Generator"
 - "GitGains" → "Progress Tracker"
 - "Gains Debugger" → "Performance Analysis"
@@ -381,5 +419,4 @@ When adding new features, ensure:
 
 ---
 
-**Last Updated**: January 2025
-**Version**: 2.0 (Post-Rebrand)
+**Last Updated**: January 2025 **Version**: 2.0 (Post-Rebrand)

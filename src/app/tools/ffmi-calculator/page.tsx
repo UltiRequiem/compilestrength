@@ -2,13 +2,13 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { toast } from "sonner";
+import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useSession } from "@/lib/auth-client";
 
 export default function FFMICalculator() {
-	const { data: session } = useSession();
 	const [unit, setUnit] = useState<"metric" | "imperial">("imperial");
 	const [weight, setWeight] = useState("");
 	const [height, setHeight] = useState("");
@@ -21,12 +21,25 @@ export default function FFMICalculator() {
 	} | null>(null);
 
 	const calculate = () => {
+		if (!weight.trim() || !height.trim() || !bodyFat.trim()) {
+			toast.error("Please enter weight, height, and body fat percentage");
+			return;
+		}
+
 		const w = Number.parseFloat(weight);
 		const h = Number.parseFloat(height);
 		const bf = Number.parseFloat(bodyFat);
 
-		if (!w || !h || !bf || bf < 0 || bf > 100) {
-			alert("Please enter valid numbers");
+		if (
+			Number.isNaN(w) ||
+			Number.isNaN(h) ||
+			Number.isNaN(bf) ||
+			w <= 0 ||
+			h <= 0 ||
+			bf < 0 ||
+			bf > 100
+		) {
+			toast.error("Please enter valid numbers (body fat between 0-100%)");
 			return;
 		}
 
@@ -73,41 +86,27 @@ export default function FFMICalculator() {
 		});
 	};
 
+	// Handle unit conversion for existing results
+	const handleUnitChange = (newUnit: "metric" | "imperial") => {
+		const oldUnit = unit;
+		setUnit(newUnit);
+
+		// Convert existing results if they exist
+		if (result && oldUnit !== newUnit) {
+			const conversionFactor = newUnit === "imperial" ? 2.20462 : 0.453592;
+
+			setResult({
+				ffmi: result.ffmi, // FFMI is unitless, no conversion needed
+				adjustedFFMI: result.adjustedFFMI, // Adjusted FFMI is unitless, no conversion needed
+				fatFreeMass: Number((result.fatFreeMass * conversionFactor).toFixed(1)),
+				category: result.category,
+			});
+		}
+	};
+
 	return (
 		<div className="min-h-screen bg-zinc-950 text-zinc-100">
-			{/* Navbar */}
-			<nav className="border-b border-zinc-800 px-6 py-4 bg-zinc-950/80 backdrop-blur-sm sticky top-0 z-50">
-				<div className="max-w-7xl mx-auto flex items-center justify-between">
-					<Link href="/" className="text-xl font-bold">
-						<span className="text-blue-500">Compile</span>
-						<span className="text-white">Strength</span>
-					</Link>
-					<div className="flex items-center gap-4">
-						<Link
-							href="/tools"
-							className="text-zinc-300 hover:text-white transition-colors"
-						>
-							Tools
-						</Link>
-						{session ? (
-							<Link href="/app/dashboard">
-								<Button size="sm">Dashboard</Button>
-							</Link>
-						) : (
-							<>
-								<Link href="/login">
-									<Button variant="outline" size="sm">
-										Login
-									</Button>
-								</Link>
-								<Link href="/signup">
-									<Button size="sm">Sign Up</Button>
-								</Link>
-							</>
-						)}
-					</div>
-				</div>
-			</nav>
+			<Navbar />
 
 			{/* Main Content */}
 			<main className="max-w-3xl mx-auto px-6 py-12">
@@ -130,13 +129,13 @@ export default function FFMICalculator() {
 					<div className="flex gap-4">
 						<Button
 							variant={unit === "imperial" ? "default" : "outline"}
-							onClick={() => setUnit("imperial")}
+							onClick={() => handleUnitChange("imperial")}
 						>
 							Imperial (lb/in)
 						</Button>
 						<Button
 							variant={unit === "metric" ? "default" : "outline"}
-							onClick={() => setUnit("metric")}
+							onClick={() => handleUnitChange("metric")}
 						>
 							Metric (kg/cm)
 						</Button>
@@ -185,7 +184,16 @@ export default function FFMICalculator() {
 						</div>
 					</div>
 
-					<Button onClick={calculate} className="w-full" size="lg">
+					<Button
+						type="button"
+						onClick={(e) => {
+							e.preventDefault();
+							e.stopPropagation();
+							calculate();
+						}}
+						className="w-full"
+						size="lg"
+					>
 						Calculate FFMI
 					</Button>
 

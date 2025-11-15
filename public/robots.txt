@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+Allow: /tools
+Allow: /tools/*
+Allow: /blog
+Allow: /blog/*
+Allow: /login
+Allow: /signup
+
+Disallow: /app/
+Disallow: /api/
+
+Sitemap: https://compilestrength.com/sitemap.xml
