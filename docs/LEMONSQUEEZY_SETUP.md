@@ -5,12 +5,14 @@ This guide will help you complete the LemonSqueezy integration setup.
 ## What's Been Implemented
 
 ✅ **Database Schema**
+
 - Plans table (synced from LemonSqueezy)
 - Subscriptions table (tracks user subscriptions)
 - WebhookEvents table (logs all webhook events)
 - UsageTracking table (tracks weekly usage limits)
 
 ✅ **Route Structure**
+
 - `/` - Public landing page
 - `/tools/*` - Public fitness calculators (FFMI calculator)
 - `/(dashboard)/*` - Protected dashboard (requires auth)
@@ -18,6 +20,7 @@ This guide will help you complete the LemonSqueezy integration setup.
 - `/api/webhooks/lemonsqueezy` - Webhook endpoint
 
 ✅ **Billing Features**
+
 - Plan selection and checkout
 - Subscription management (pause, cancel, change plans)
 - Usage tracking (1 compile/week, 5 edits, 50 messages)
@@ -43,12 +46,14 @@ LEMONSQUEEZY_WEBHOOK_URL=https://yourdomain.com/api/webhooks/lemonsqueezy
 ### 2. Get LemonSqueezy Credentials
 
 1. **API Key**:
-   - Go to [LemonSqueezy Settings → API](https://app.lemonsqueezy.com/settings/api)
+   - Go to
+     [LemonSqueezy Settings → API](https://app.lemonsqueezy.com/settings/api)
    - Click "Create API Key"
    - Copy the key and add to `.env`
 
 2. **Store ID**:
-   - Go to [LemonSqueezy Settings → Stores](https://app.lemonsqueezy.com/settings/stores)
+   - Go to
+     [LemonSqueezy Settings → Stores](https://app.lemonsqueezy.com/settings/stores)
    - Find your store ID (numeric ID in the URL or settings)
    - Add to `.env`
 
@@ -83,7 +88,9 @@ LEMONSQUEEZY_WEBHOOK_URL=https://yourdomain.com/api/webhooks/lemonsqueezy
      - `subscription_unpaused`
      - `subscription_expired`
 
-For local development, use [ngrok](https://ngrok.com/) or [LocalCan](https://www.localcan.com/):
+For local development, use [ngrok](https://ngrok.com/) or
+[LocalCan](https://www.localcan.com/):
+
 ```bash
 # Example with ngrok
 ngrok http 3000
@@ -98,7 +105,8 @@ Once your environment variables are set:
 2. Navigate to `http://localhost:3000/billing`
 3. Plans will automatically sync from LemonSqueezy on first page load
 
-Alternatively, you can manually trigger sync by visiting the billing page or calling the `syncPlans()` action.
+Alternatively, you can manually trigger sync by visiting the billing page or
+calling the `syncPlans()` action.
 
 ### 6. Test the Flow
 
@@ -116,6 +124,7 @@ Alternatively, you can manually trigger sync by visiting the billing page or cal
 For Cloudflare Workers:
 
 1. Set secrets using wrangler:
+
 ```bash
 npx wrangler secret put LEMONSQUEEZY_API_KEY
 npx wrangler secret put LEMONSQUEEZY_STORE_ID
@@ -135,7 +144,10 @@ To integrate usage tracking in your features:
 ### For AI Compiler:
 
 ```typescript
-import { canCompile, incrementCompileUsage } from "@/app/actions/usage-tracking";
+import {
+  canCompile,
+  incrementCompileUsage,
+} from "@/app/actions/usage-tracking";
 
 // Before allowing compile
 const { allowed, used, limit } = await canCompile();
@@ -151,7 +163,10 @@ await incrementCompileUsage();
 ### For Routine Edits:
 
 ```typescript
-import { canEditRoutine, incrementRoutineEditUsage } from "@/app/actions/usage-tracking";
+import {
+  canEditRoutine,
+  incrementRoutineEditUsage,
+} from "@/app/actions/usage-tracking";
 
 const { allowed, used, limit } = await canEditRoutine();
 
@@ -165,7 +180,10 @@ await incrementRoutineEditUsage();
 ### For AI Messages:
 
 ```typescript
-import { canSendMessage, incrementMessageUsage } from "@/app/actions/usage-tracking";
+import {
+  canSendMessage,
+  incrementMessageUsage,
+} from "@/app/actions/usage-tracking";
 
 const { allowed, used, limit } = await canSendMessage();
 
@@ -186,12 +204,13 @@ import { UsageDisplay } from "@/components/billing/usage-display";
 // In your dashboard page:
 <Suspense fallback={<div>Loading usage...</div>}>
   <UsageDisplay />
-</Suspense>
+</Suspense>;
 ```
 
 ## Subscription Status Checking
 
 The `SubscriptionBanner` component automatically shows:
+
 - Trial status and expiration
 - Upgrade prompts for expired subscriptions
 - Warning for paused subscriptions
@@ -201,16 +220,19 @@ It's already integrated in the dashboard layout.
 ## Troubleshooting
 
 ### Webhooks not working?
+
 - Check webhook signature matches your `.env` secret
 - Verify webhook URL is publicly accessible
 - Check `WebhookEvents` table for processing errors
 
 ### Plans not syncing?
+
 - Verify `LEMONSQUEEZY_STORE_ID` is correct
 - Check API key has correct permissions
 - Ensure products are published (not draft)
 
 ### Subscription not updating?
+
 - Check webhook events are being received
 - Look at `processingError` field in `WebhookEvents` table
 - Verify user_id is being passed in checkout custom data
@@ -231,8 +253,11 @@ It's already integrated in the dashboard layout.
 ## Support
 
 For issues with:
-- **LemonSqueezy**: Contact LemonSqueezy support or check their [docs](https://docs.lemonsqueezy.com)
-- **Integration Code**: Refer to [CLAUDE.md](./CLAUDE.md) for architecture details
+
+- **LemonSqueezy**: Contact LemonSqueezy support or check their
+  [docs](https://docs.lemonsqueezy.com)
+- **Integration Code**: Refer to [CLAUDE.md](./CLAUDE.md) for architecture
+  details
 - **Database**: Use `bunx drizzle-kit studio` to inspect tables
 
 ## Reference Links

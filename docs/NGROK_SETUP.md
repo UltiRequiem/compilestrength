@@ -4,13 +4,16 @@ This guide explains how to use ngrok for testing LemonSqueezy webhooks locally.
 
 ## What is Ngrok?
 
-Ngrok creates a secure tunnel from a public URL to your local development server, allowing external services (like LemonSqueezy) to send webhooks to your local machine.
+Ngrok creates a secure tunnel from a public URL to your local development
+server, allowing external services (like LemonSqueezy) to send webhooks to your
+local machine.
 
 ## Setup Steps
 
 ### 1. Install Ngrok
 
 If you haven't already, install ngrok:
+
 ```bash
 # macOS
 brew install ngrok
@@ -33,11 +36,13 @@ Add your ngrok domain to your `.env` file:
 NGROK_DOMAIN=your-subdomain.ngrok-free.app
 ```
 
-**Important**: Replace `your-subdomain.ngrok-free.app` with your actual ngrok domain.
+**Important**: Replace `your-subdomain.ngrok-free.app` with your actual ngrok
+domain.
 
 ### 4. Run Ngrok
 
 Start your Next.js development server:
+
 ```bash
 bun dev
 # or
@@ -45,17 +50,21 @@ npm run dev
 ```
 
 In a separate terminal, start ngrok:
+
 ```bash
 npm run ngrok
 ```
 
-This will create a tunnel from `https://your-subdomain.ngrok-free.app` to `localhost:3000`.
+This will create a tunnel from `https://your-subdomain.ngrok-free.app` to
+`localhost:3000`.
 
 ### 5. Configure LemonSqueezy Webhook
 
-1. Go to [LemonSqueezy Settings > Webhooks](https://app.lemonsqueezy.com/settings/webhooks)
+1. Go to
+   [LemonSqueezy Settings > Webhooks](https://app.lemonsqueezy.com/settings/webhooks)
 2. Create a new webhook endpoint
-3. Set the URL to: `https://your-subdomain.ngrok-free.app/api/webhooks/lemonsqueezy`
+3. Set the URL to:
+   `https://your-subdomain.ngrok-free.app/api/webhooks/lemonsqueezy`
 4. Copy the signing secret and add it to your `.env`:
    ```bash
    LEMONSQUEEZY_WEBHOOK_SECRET=your-signing-secret
@@ -99,10 +108,12 @@ This will create a tunnel from `https://your-subdomain.ngrok-free.app` to `local
 
 ## Production Deployment
 
-In production, you don't need ngrok. Configure your LemonSqueezy webhook to point directly to your production URL:
+In production, you don't need ngrok. Configure your LemonSqueezy webhook to
+point directly to your production URL:
 
 ```
 https://yourdomain.com/api/webhooks/lemonsqueezy
 ```
 
-Make sure to update `LEMONSQUEEZY_WEBHOOK_SECRET` in your production environment variables.
+Make sure to update `LEMONSQUEEZY_WEBHOOK_SECRET` in your production environment
+variables.
