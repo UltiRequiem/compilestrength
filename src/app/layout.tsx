@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
+
 import { Toaster } from "sonner";
 import { UserPreferencesStoreProvider } from "@/providers/user-preferences-store-provider";
+
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -61,9 +63,6 @@ export const metadata: Metadata = {
 			"max-image-preview": "large",
 			"max-snippet": -1,
 		},
-	},
-	verification: {
-		google: "your-google-verification-code", // Replace with actual code
 	},
 };
 
