@@ -58,7 +58,9 @@ export default function PlateCalculator() {
 		const bar = Number.parseFloat(barWeight);
 
 		if (Number.isNaN(target) || Number.isNaN(bar) || target <= 0 || bar <= 0) {
-			toast.error("Please enter valid numbers for target weight and bar weight");
+			toast.error(
+				"Please enter valid numbers for target weight and bar weight",
+			);
 			return;
 		}
 
@@ -186,8 +188,8 @@ export default function PlateCalculator() {
 							{results.impossible && (
 								<div className="p-4 bg-yellow-900/20 border border-yellow-600 rounded-lg">
 									<p className="text-yellow-400">
-										⚠️ Cannot achieve exact weight with available plates.
-										Closest weight: {results.totalWeight} {unit}
+										⚠️ Cannot achieve exact weight with available plates. Closest
+										weight: {results.totalWeight} {unit}
 									</p>
 								</div>
 							)}
@@ -211,11 +213,15 @@ export default function PlateCalculator() {
 
 									<div className="p-4 bg-zinc-800/30 rounded-lg">
 										<p className="text-zinc-300">
-											<strong>Total Weight:</strong> {results.totalWeight} {unit}
+											<strong>Total Weight:</strong> {results.totalWeight}{" "}
+											{unit}
 										</p>
 										<p className="text-zinc-400 text-sm mt-1">
 											Bar: {barWeight}
-											{unit} + Plates: {(results.totalWeight - Number.parseFloat(barWeight)).toFixed(1)}
+											{unit} + Plates:{" "}
+											{(
+												results.totalWeight - Number.parseFloat(barWeight)
+											).toFixed(1)}
 											{unit}
 										</p>
 									</div>
