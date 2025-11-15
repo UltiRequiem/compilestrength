@@ -28,12 +28,27 @@ const softwareApplicationSchema = {
 		"@type": "Organization",
 		name: "CompileStrength",
 	},
-	offers: {
-		"@type": "Offer",
-		price: "0",
-		priceCurrency: "USD",
-		description: "7-day free trial",
-	},
+	offers: [
+		{
+			"@type": "Offer",
+			price: "0",
+			priceCurrency: "USD",
+			description: "7-day free trial",
+			eligibleDuration: {
+				"@type": "Duration",
+				// ISO 8601 duration for 7 days
+				duration: "P7D",
+			},
+			isAccessibleForFree: true,
+		},
+		{
+			"@type": "Offer",
+			price: "19.99",
+			priceCurrency: "USD",
+			description: "Monthly subscription after free trial",
+			isAccessibleForFree: false,
+		},
+	],
 };
 
 export default async function LandingPage() {

@@ -2,13 +2,13 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { toast } from "sonner";
+import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useSession } from "@/lib/auth-client";
 
 export default function FFMICalculator() {
-	const { data: session } = useSession();
 	const [unit, setUnit] = useState<"metric" | "imperial">("imperial");
 	const [weight, setWeight] = useState("");
 	const [height, setHeight] = useState("");
@@ -22,7 +22,7 @@ export default function FFMICalculator() {
 
 	const calculate = () => {
 		if (!weight.trim() || !height.trim() || !bodyFat.trim()) {
-			alert("Please enter weight, height, and body fat percentage");
+			toast.error("Please enter weight, height, and body fat percentage");
 			return;
 		}
 
@@ -39,7 +39,7 @@ export default function FFMICalculator() {
 			bf < 0 ||
 			bf > 100
 		) {
-			alert("Please enter valid numbers (body fat between 0-100%)");
+			toast.error("Please enter valid numbers (body fat between 0-100%)");
 			return;
 		}
 
@@ -106,45 +106,7 @@ export default function FFMICalculator() {
 
 	return (
 		<div className="min-h-screen bg-zinc-950 text-zinc-100">
-			{/* Navbar */}
-			<nav className="border-b border-zinc-800 px-6 py-4 bg-zinc-950/80 backdrop-blur-sm sticky top-0 z-50">
-				<div className="max-w-7xl mx-auto flex items-center justify-between">
-					<Link href="/" className="text-xl font-bold">
-						<span className="text-blue-500">Compile</span>
-						<span className="text-white">Strength</span>
-					</Link>
-					<div className="flex items-center gap-4">
-						<Link
-							href="/tools"
-							className="text-zinc-300 hover:text-white transition-colors"
-						>
-							Tools
-						</Link>
-						<Link
-							href="/blog"
-							className="text-zinc-300 hover:text-white transition-colors"
-						>
-							Blog
-						</Link>
-						{session ? (
-							<Link href="/app/dashboard">
-								<Button size="sm">Dashboard</Button>
-							</Link>
-						) : (
-							<>
-								<Link href="/login">
-									<Button variant="outline" size="sm">
-										Login
-									</Button>
-								</Link>
-								<Link href="/signup">
-									<Button size="sm">Sign Up</Button>
-								</Link>
-							</>
-						)}
-					</div>
-				</div>
-			</nav>
+			<Navbar />
 
 			{/* Main Content */}
 			<main className="max-w-3xl mx-auto px-6 py-12">

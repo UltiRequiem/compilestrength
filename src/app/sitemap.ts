@@ -54,7 +54,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 		},
 		{
 			url: `${baseUrl}/blog/progressive-overload-science`,
-			lastModified: new Date("2024-11-14"),
+			lastModified: new Date(),
 			changeFrequency: "monthly",
 			priority: 0.6,
 		},

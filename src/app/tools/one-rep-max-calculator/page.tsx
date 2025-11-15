@@ -2,13 +2,13 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { toast } from "sonner";
+import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useSession } from "@/lib/auth-client";
 
 export default function OneRepMaxCalculator() {
-	const { data: session } = useSession();
 	const [unit, setUnit] = useState<"lbs" | "kg">("lbs");
 	const [weight, setWeight] = useState("");
 	const [reps, setReps] = useState("");
@@ -25,7 +25,7 @@ export default function OneRepMaxCalculator() {
 
 	const calculate = () => {
 		if (!weight.trim() || !reps.trim()) {
-			alert("Please enter both weight and reps");
+			toast.error("Please enter both weight and reps");
 			return;
 		}
 
@@ -33,7 +33,7 @@ export default function OneRepMaxCalculator() {
 		const r = Number.parseInt(reps, 10);
 
 		if (Number.isNaN(w) || Number.isNaN(r) || w <= 0 || r <= 0 || r > 20) {
-			alert("Please enter valid weight and reps (1-20 reps)");
+			toast.error("Please enter valid weight and reps (1-20 reps)");
 			return;
 		}
 
@@ -85,45 +85,7 @@ export default function OneRepMaxCalculator() {
 
 	return (
 		<div className="min-h-screen bg-zinc-950 text-zinc-100">
-			{/* Navbar */}
-			<nav className="border-b border-zinc-800 px-6 py-4 bg-zinc-950/80 backdrop-blur-sm sticky top-0 z-50">
-				<div className="max-w-7xl mx-auto flex items-center justify-between">
-					<Link href="/" className="text-xl font-bold">
-						<span className="text-blue-500">Compile</span>
-						<span className="text-white">Strength</span>
-					</Link>
-					<div className="flex items-center gap-4">
-						<Link
-							href="/tools"
-							className="text-zinc-300 hover:text-white transition-colors"
-						>
-							Tools
-						</Link>
-						<Link
-							href="/blog"
-							className="text-zinc-300 hover:text-white transition-colors"
-						>
-							Blog
-						</Link>
-						{session ? (
-							<Link href="/app/dashboard">
-								<Button size="sm">Dashboard</Button>
-							</Link>
-						) : (
-							<>
-								<Link href="/login">
-									<Button variant="outline" size="sm">
-										Login
-									</Button>
-								</Link>
-								<Link href="/signup">
-									<Button size="sm">Sign Up</Button>
-								</Link>
-							</>
-						)}
-					</div>
-				</div>
-			</nav>
+			<Navbar />
 
 			{/* Main Content */}
 			<main className="max-w-3xl mx-auto px-6 py-12">

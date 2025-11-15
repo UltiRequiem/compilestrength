@@ -2,13 +2,13 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { toast } from "sonner";
+import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useSession } from "@/lib/auth-client";
 
 export default function BodyFatCalculator() {
-	const { data: session } = useSession();
 	const [unit, setUnit] = useState<"metric" | "imperial">("imperial");
 	const [gender, setGender] = useState<"male" | "female">("male");
 	const [height, setHeight] = useState("");
@@ -23,12 +23,12 @@ export default function BodyFatCalculator() {
 
 	const calculate = () => {
 		if (!height.trim() || !waist.trim() || !neck.trim()) {
-			alert("Please enter height, waist, and neck measurements");
+			toast.error("Please enter height, waist, and neck measurements");
 			return;
 		}
 
 		if (gender === "female" && !hip.trim()) {
-			alert("Please enter hip measurement for females");
+			toast.error("Please enter hip measurement for females");
 			return;
 		}
 
@@ -45,12 +45,14 @@ export default function BodyFatCalculator() {
 			w <= 0 ||
 			n <= 0
 		) {
-			alert("Please enter valid measurements for height, waist, and neck");
+			toast.error(
+				"Please enter valid measurements for height, waist, and neck",
+			);
 			return;
 		}
 
 		if (gender === "female" && (Number.isNaN(hipMeasure) || hipMeasure <= 0)) {
-			alert("Please enter a valid hip measurement");
+			toast.error("Please enter a valid hip measurement");
 			return;
 		}
 
@@ -108,45 +110,7 @@ export default function BodyFatCalculator() {
 
 	return (
 		<div className="min-h-screen bg-zinc-950 text-zinc-100">
-			{/* Navbar */}
-			<nav className="border-b border-zinc-800 px-6 py-4 bg-zinc-950/80 backdrop-blur-sm sticky top-0 z-50">
-				<div className="max-w-7xl mx-auto flex items-center justify-between">
-					<Link href="/" className="text-xl font-bold">
-						<span className="text-blue-500">Compile</span>
-						<span className="text-white">Strength</span>
-					</Link>
-					<div className="flex items-center gap-4">
-						<Link
-							href="/tools"
-							className="text-zinc-300 hover:text-white transition-colors"
-						>
-							Tools
-						</Link>
-						<Link
-							href="/blog"
-							className="text-zinc-300 hover:text-white transition-colors"
-						>
-							Blog
-						</Link>
-						{session ? (
-							<Link href="/app/dashboard">
-								<Button size="sm">Dashboard</Button>
-							</Link>
-						) : (
-							<>
-								<Link href="/login">
-									<Button variant="outline" size="sm">
-										Login
-									</Button>
-								</Link>
-								<Link href="/signup">
-									<Button size="sm">Sign Up</Button>
-								</Link>
-							</>
-						)}
-					</div>
-				</div>
-			</nav>
+			<Navbar />
 
 			{/* Main Content */}
 			<main className="max-w-3xl mx-auto px-6 py-12">
@@ -316,21 +280,21 @@ export default function BodyFatCalculator() {
 									<div>
 										<h4 className="font-semibold text-zinc-300 mb-2">Men:</h4>
 										<ul className="space-y-1 text-zinc-400">
-											<li>Essential: 2-5%</li>
+											<li>Essential fat (too low): &lt;6%</li>
 											<li>Athletic: 6-13%</li>
 											<li>Fitness: 14-17%</li>
 											<li>Average: 18-24%</li>
-											<li>Above Average: 25%+</li>
+											<li>Above average: 25%+</li>
 										</ul>
 									</div>
 									<div>
 										<h4 className="font-semibold text-zinc-300 mb-2">Women:</h4>
 										<ul className="space-y-1 text-zinc-400">
-											<li>Essential: 10-13%</li>
+											<li>Essential fat (too low): &lt;14%</li>
 											<li>Athletic: 14-20%</li>
 											<li>Fitness: 21-24%</li>
 											<li>Average: 25-31%</li>
-											<li>Above Average: 32%+</li>
+											<li>Above average: 32%+</li>
 										</ul>
 									</div>
 								</div>
