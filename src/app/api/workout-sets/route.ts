@@ -84,7 +84,6 @@ export async function PATCH(request: Request) {
 		const validatedData = updateWorkoutSetSchema.parse(body);
 		const { setId, reps, weight, rpe } = validatedData;
 
-		// Verify the set belongs to the user's session
 		const [existingSet] = await db
 			.select({
 				setId: workoutSets.id,
