@@ -419,4 +419,5 @@ When adding new features, ensure:
 
 ---
 
-**Last Updated**: January 2025 **Version**: 2.0 (Post-Rebrand)
+**Last Updated**: January 2025
+**Version**: 2.0 (Post-Rebrand)
