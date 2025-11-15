@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -122,7 +123,9 @@ export default function LogWorkoutPage() {
 				initializeExercises(currentDay, sessionData.id);
 			}
 		} catch (error) {
-			alert(error instanceof Error ? error.message : "Failed to start workout");
+			toast.error(
+				error instanceof Error ? error.message : "Failed to start workout",
+			);
 		}
 	};
 
@@ -133,7 +136,9 @@ export default function LogWorkoutPage() {
 			// Auto-start rest timer
 			startRest(exercise.restSeconds || defaultRestTime);
 		} catch (error) {
-			alert(error instanceof Error ? error.message : "Failed to save set");
+			toast.error(
+				error instanceof Error ? error.message : "Failed to save set",
+			);
 		}
 	};
 
@@ -142,7 +147,7 @@ export default function LogWorkoutPage() {
 			await finishWorkout();
 			router.push("/app");
 		} catch (error) {
-			alert(
+			toast.error(
 				error instanceof Error ? error.message : "Failed to finish workout",
 			);
 		}

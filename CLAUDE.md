@@ -281,6 +281,28 @@ import type { CreateWorkoutSet, WorkoutSession } from "@/schemas";
 - Page components in `src/app/` following App Router conventions
 - Custom hooks in `src/hooks/`
 
+### Toast Notifications
+
+CompileStrength uses **Sonner** for non-blocking toast notifications:
+
+- **Package**: `sonner` - Modern, customizable toast library
+- **Setup**: `<Toaster />` component mounted in root layout (`src/app/layout.tsx`)
+- **Usage**: Import `toast` from `"sonner"` and use `toast.error()`, `toast.success()`, etc.
+- **Styling**: Automatically inherits dark mode from app theme
+
+**Example Usage:**
+```typescript
+import { toast } from "sonner";
+
+// Error notifications
+toast.error("Failed to save workout");
+
+// Success notifications
+toast.success("Workout completed successfully");
+```
+
+**Never use `alert()` or `confirm()` dialogs** - always use toast notifications for user feedback.
+
 ### Styling
 
 - TailwindCSS v4 with CSS-first configuration

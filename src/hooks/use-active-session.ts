@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react";
 import type {
 	ExerciseWithSets,
+	WorkoutDay,
 	WorkoutProgram,
 } from "@/app/app/log-workout/types";
 
@@ -16,6 +17,10 @@ interface ActiveSession {
 		reps: number;
 		rpe: number;
 	}>;
+}
+
+interface NewSessionResponse {
+	id: string;
 }
 
 export function useActiveSession() {
@@ -125,8 +130,15 @@ export function useActiveSession() {
 			});
 
 			if (response.ok) {
-				const sessionData = (await response.json()) as { id: string };
-				setWorkoutSession(sessionData as ActiveSession);
+				const sessionData = (await response.json()) as NewSessionResponse;
+				// Create a minimal ActiveSession with the data we have
+				const partialSession: ActiveSession = {
+					id: sessionData.id,
+					workoutDayId: selectedDay,
+					startTime: new Date().toISOString(),
+					sets: [],
+				};
+				setWorkoutSession(partialSession);
 				return sessionData;
 			}
 
@@ -140,16 +152,10 @@ export function useActiveSession() {
 		}
 	};
 
-	interface WorkoutDay {
-		exercises: Array<{
-			id: string;
-			name: string;
-			sets: number;
-			// Add other properties as needed
-		}>;
-	}
-
-	const initializeExercises = (currentDay: WorkoutDay | undefined, sessionId: string) => {
+	const initializeExercises = (
+		currentDay: WorkoutDay | undefined,
+		sessionId: string,
+	) => {
 		if (!currentDay) return;
 
 		const exercisesWithSets: ExerciseWithSets[] = currentDay.exercises.map(
@@ -175,7 +181,16 @@ export function useActiveSession() {
 	const completeSet = async (exerciseIdx: number, setIdx: number) => {
 		if (!workoutSession) return;
 
+		if (exerciseIdx < 0 || exerciseIdx >= exercises.length) {
+			throw new Error("Invalid exercise index");
+		}
+
 		const exercise = exercises[exerciseIdx];
+
+		if (setIdx < 0 || setIdx >= exercise.completedSets.length) {
+			throw new Error("Invalid set index");
+		}
+
 		const set = exercise.completedSets[setIdx];
 
 		if (!set.reps || !set.weight) {
@@ -216,6 +231,21 @@ export function useActiveSession() {
 		field: "weight" | "reps" | "rpe",
 		value: number,
 	) => {
+		if (exerciseIdx < 0 || exerciseIdx >= exercises.length) {
+			console.warn("Invalid exercise index:", exerciseIdx);
+			return;
+		}
+
+		const exercise = exercises[exerciseIdx];
+		if (
+			!exercise.completedSets ||
+			setIdx < 0 ||
+			setIdx >= exercise.completedSets.length
+		) {
+			console.warn("Invalid set index:", setIdx);
+			return;
+		}
+
 		const newExercises = [...exercises];
 		newExercises[exerciseIdx].completedSets[setIdx][field] = value as any;
 		setExercises(newExercises);
@@ -242,10 +272,15 @@ export function useActiveSession() {
 	};
 
 	const getSessionStartTime = useCallback(() => {
-		if (!workoutSession) return 0;
-		const startTime = new Date(workoutSession.startTime).getTime();
-		const now = Date.now();
-		return Math.floor((now - startTime) / 1000);
+		if (!workoutSession || !workoutSession.startTime) return 0;
+		try {
+			const startTime = new Date(workoutSession.startTime).getTime();
+			if (isNaN(startTime)) return 0;
+			const now = Date.now();
+			return Math.floor((now - startTime) / 1000);
+		} catch {
+			return 0;
+		}
 	}, [workoutSession]);
 
 	const getCompletedSetsCount = useCallback(() => {
