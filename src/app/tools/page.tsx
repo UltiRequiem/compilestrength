@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import Link from "next/link";
+import { LandingNavbar } from "@/components/landing-navbar";
 import { Button } from "@/components/ui/button";
 import { auth } from "@/lib/auth";
-import { LandingNavbar } from "@/components/landing-navbar";
 
 const itemListSchema = {
 	"@context": "https://schema.org",
@@ -117,7 +117,9 @@ export default async function ToolsPage() {
 			{/* Main Content */}
 			<main className="max-w-7xl mx-auto px-6 py-12">
 				<div className="mb-12">
-					<h1 className="text-4xl font-bold mb-4">Free Training Tools</h1>
+					<h1 className="text-4xl font-bold mb-4">
+						{session ? "Training Tools" : "Free Training Tools"}
+					</h1>
 					<p className="text-zinc-400 text-lg">
 						Evidence-based calculators and utilities for optimal training
 					</p>

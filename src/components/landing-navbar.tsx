@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
 
 interface LandingNavbarProps {
 	isLoggedIn: boolean;
@@ -53,11 +53,7 @@ export function LandingNavbar({ isLoggedIn }: LandingNavbarProps) {
 					) : (
 						<div className="flex items-center gap-2">
 							<Link href="/login">
-								<Button
-									variant="outline"
-									size="sm"
-									className="shrink-0"
-								>
+								<Button variant="outline" size="sm" className="shrink-0">
 									Sign In
 								</Button>
 							</Link>
@@ -118,12 +114,22 @@ export function LandingNavbar({ isLoggedIn }: LandingNavbarProps) {
 									</Link>
 								) : (
 									<div className="px-4 py-4">
-										<Link href="/login" onClick={() => setMobileMenuOpen(false)}>
-											<Button variant="outline" size="sm" className="w-full mb-3">
+										<Link
+											href="/login"
+											onClick={() => setMobileMenuOpen(false)}
+										>
+											<Button
+												variant="outline"
+												size="sm"
+												className="w-full mb-3"
+											>
 												Sign In
 											</Button>
 										</Link>
-										<Link href="/signup" onClick={() => setMobileMenuOpen(false)}>
+										<Link
+											href="/signup"
+											onClick={() => setMobileMenuOpen(false)}
+										>
 											<Button size="sm" className="w-full">
 												Sign Up
 											</Button>

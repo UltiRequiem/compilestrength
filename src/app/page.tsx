@@ -1,8 +1,8 @@
 import { headers } from "next/headers";
 import Link from "next/link";
+import { LandingNavbar } from "@/components/landing-navbar";
 import { Button } from "@/components/ui/button";
 import { auth } from "@/lib/auth";
-import { LandingNavbar } from "@/components/landing-navbar";
 
 const organizationSchema = {
 	"@context": "https://schema.org",
