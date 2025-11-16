@@ -7,7 +7,6 @@ import type {
 	WorkoutSession as SchemaWorkoutSession,
 } from "@/schemas";
 
-// Extended Exercise type that includes both database and display properties
 export interface Exercise {
 	id: string;
 	name: string;
@@ -30,14 +29,12 @@ export interface Exercise {
 	createdAt?: Date | string;
 }
 
-// Extended WorkoutDay type
 export interface WorkoutDay extends Omit<SchemaWorkoutDay, "programId"> {
 	programId?: string;
 	exercises: Exercise[];
 	order?: number;
 }
 
-// Extended WorkoutProgram type
 export interface WorkoutProgram extends SchemaWorkoutProgram {
 	days: WorkoutDay[];
 	duration?: number; // weeks
@@ -45,7 +42,6 @@ export interface WorkoutProgram extends SchemaWorkoutProgram {
 	goals?: string[]; // e.g., ["muscle_gain", "strength", "endurance"]
 }
 
-// Extended WorkoutRoutine type
 export interface WorkoutRoutine extends SchemaWorkoutRoutine {
 	// Additional properties for compatibility
 	days?: WorkoutDay[];
@@ -55,7 +51,6 @@ export interface WorkoutRoutine extends SchemaWorkoutRoutine {
 	goals?: string[];
 }
 
-// Extended Set type
 export interface Set {
 	id: string;
 	sessionId: string;
@@ -73,7 +68,6 @@ export interface ExerciseWithSets extends Exercise {
 	completedSets: Set[];
 }
 
-// Use schema types directly
 export type WorkoutSession = SchemaWorkoutSession & {
 	sets?: Set[];
 };
