@@ -3,7 +3,6 @@
 import { Dumbbell, Loader2, Play } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -13,30 +12,40 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import { useActiveSession } from "@/hooks/use-active-session";
-import { useWorkoutPrograms } from "@/hooks/use-workout-programs";
+import type { WorkoutProgram, WorkoutDay } from "@/types/workout.types";
 
-export function WorkoutListing() {
+interface WorkoutListingProps {
+	programs: WorkoutProgram[];
+	selectedProgram: string | null;
+	selectedDay: string | null;
+	selectProgram: (programId: string) => void;
+	selectDay: (dayId: string) => void;
+	currentProgram: WorkoutProgram | undefined;
+	currentDay: WorkoutDay | undefined;
+	startWorkout: (selectedDay: string) => Promise<any>;
+	initializeExercises: (currentDay: WorkoutDay, sessionId: string) => void;
+	isStarting: boolean;
+}
+
+export function WorkoutListing({
+	programs,
+	selectedProgram,
+	selectedDay,
+	selectProgram,
+	selectDay,
+	currentProgram,
+	currentDay,
+	startWorkout,
+	initializeExercises,
+	isStarting,
+}: WorkoutListingProps) {
 	const router = useRouter();
-
-	const {
-		programs,
-		selectedProgram,
-		selectedDay,
-		selectProgram,
-		selectDay,
-		getCurrentProgram,
-		getCurrentDay,
-	} = useWorkoutPrograms();
-
-	const { startWorkout, initializeExercises, isStarting } = useActiveSession();
 
 	const handleStartWorkout = async () => {
 		if (!selectedDay) return;
 
 		try {
 			const sessionData = await startWorkout(selectedDay);
-			const currentDay = getCurrentDay();
 
 			if (sessionData && currentDay) {
 				initializeExercises(currentDay, sessionData.id);
@@ -47,9 +56,6 @@ export function WorkoutListing() {
 			);
 		}
 	};
-
-	const currentProgram = getCurrentProgram();
-	const currentDay = getCurrentDay();
 
 	return (
 		<div className="mx-auto max-w-4xl">
@@ -66,7 +72,7 @@ export function WorkoutListing() {
 						<Dumbbell className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
 						<h3 className="text-xl font-semibold mb-2">No Workout Programs</h3>
 						<p className="text-muted-foreground mb-6">
-							You don't have any workout programs yet. Create a program to start
+							You don&apos;t have any workout programs yet. Create a program to start
 							logging workouts.
 						</p>
 						<Button onClick={() => router.push("/app/programs")}>
