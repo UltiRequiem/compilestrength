@@ -130,6 +130,22 @@ The application has comprehensive workout tracking and billing models:
 - Individual action hooks prevent object recreation issues
 - Type-safe with full TypeScript inference
 
+## Getting Started
+
+### For New Engineers
+
+👋 **New to CompileStrength?** Start here:
+
+**📚 [ONBOARDING.md](docs/ONBOARDING.md)** - Complete setup and architecture guide for new developers
+
+This guide covers development environment setup, project architecture, common tasks, and troubleshooting tips.
+
+### Additional Resources
+
+- **Design System**: [docs/STYLE_GUIDE.md](docs/STYLE_GUIDE.md) - Brand guidelines and UI patterns
+- **Billing Integration**: [docs/LEMONSQUEEZY_SETUP.md](docs/LEMONSQUEEZY_SETUP.md) - Subscription setup
+- **Webhook Testing**: [docs/NGROK_SETUP.md](docs/NGROK_SETUP.md) - Local development with ngrok
+
 ## Development Commands
 
 **Note:** This project uses **Bun** as the primary package manager and runtime.
