@@ -14,6 +14,10 @@ export const updateWorkoutSessionSchema = z.object({
 	completed: z.boolean().optional(),
 });
 
+export const deleteWorkoutSessionSchema = z.object({
+	sessionId: z.string().min(1, "Session ID is required"),
+});
+
 export const createWorkoutSetSchema = z.object({
 	sessionId: z.string().min(1, "Session ID is required"),
 	exerciseId: z.string().min(1, "Exercise ID is required"),

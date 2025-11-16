@@ -4,6 +4,7 @@ export { getActiveWorkoutProgramsByUserId } from "./workout-programs";
 
 export {
 	createWorkoutSession,
+	deleteWorkoutSession,
 	getActiveWorkoutSession,
 	updateWorkoutSession,
 } from "./workout-sessions";

@@ -1,34 +1,71 @@
 "use client";
 
-import { CheckCircle, Circle, Clock, Edit, Pause, Play, X } from "lucide-react";
+import {
+	CheckCircle,
+	Circle,
+	Clock,
+	Edit,
+	Pause,
+	Play,
+	X,
+	XCircle,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { Input } from "@/components/ui/input";
-import { useActiveSession } from "@/hooks/use-active-session";
-import { useWorkoutPrograms } from "@/hooks/use-workout-programs";
-import { useWorkoutTimer } from "@/hooks/use-workout-timer";
+import type { useWorkoutTimer } from "@/hooks/use-workout-timer";
 import {
 	useRestTimerDefault,
 	useUnits,
 } from "@/providers/user-preferences-store-provider";
+import type { ExerciseWithSets, WorkoutDay } from "@/types/workout.types";
 import { formatTime } from "../../app/app/log-workout/utils";
 
-export function WorkoutInProgress() {
+interface WorkoutInProgressProps {
+	exercises: ExerciseWithSets[];
+	completeSet: (exerciseIdx: number, setIdx: number) => Promise<any>;
+	updateSetValue: (
+		exerciseIdx: number,
+		setIdx: number,
+		field: "weight" | "reps" | "rpe",
+		value: number,
+	) => void;
+	finishWorkout: () => Promise<any>;
+	abortWorkout: () => Promise<any>;
+	getCompletedSetsCount: () => number;
+	getTotalSetsCount: () => number;
+	currentDay: WorkoutDay | undefined;
+	workoutTimer: ReturnType<typeof useWorkoutTimer>;
+}
+
+export function WorkoutInProgress({
+	exercises,
+	completeSet,
+	updateSetValue,
+	finishWorkout,
+	abortWorkout,
+	getCompletedSetsCount,
+	getTotalSetsCount,
+	currentDay,
+	workoutTimer,
+}: WorkoutInProgressProps) {
 	const router = useRouter();
+	const [showAbortDialog, setShowAbortDialog] = useState(false);
 
-	const { getCurrentDay } = useWorkoutPrograms();
-
-	const {
-		exercises,
-		completeSet,
-		updateSetValue,
-		finishWorkout,
-		getCompletedSetsCount,
-		getTotalSetsCount,
-	} = useActiveSession();
+	// Temporary debug to see what we have
+	React.useEffect(() => {
+		console.log(
+			"WorkoutInProgress - exercises:",
+			exercises.length,
+			"currentDay:",
+			currentDay?.name,
+		);
+	}, [exercises.length, currentDay?.name]);
 
 	const {
 		elapsedTime,
@@ -37,7 +74,7 @@ export function WorkoutInProgress() {
 		isResting,
 		toggleTimer,
 		startRest,
-	} = useWorkoutTimer();
+	} = workoutTimer;
 
 	const units = useUnits();
 	const defaultRestTime = useRestTimerDefault();
@@ -66,9 +103,25 @@ export function WorkoutInProgress() {
 		}
 	};
 
+	const handleAbortWorkout = async () => {
+		try {
+			await abortWorkout();
+			toast.success("Workout aborted");
+			// Wait a bit more before redirecting to ensure state is cleared
+			setTimeout(() => {
+				router.push("/app");
+			}, 200);
+		} catch (error) {
+			toast.error(
+				error instanceof Error ? error.message : "Failed to abort workout",
+			);
+		} finally {
+			setShowAbortDialog(false);
+		}
+	};
+
 	const completedSets = getCompletedSetsCount();
 	const totalSets = getTotalSetsCount();
-	const currentDay = getCurrentDay();
 
 	return (
 		<div className="mx-auto max-w-4xl">
@@ -100,6 +153,14 @@ export function WorkoutInProgress() {
 								<Play className="h-4 w-4" />
 							)}
 						</Button>
+						<Button
+							variant="outline"
+							onClick={() => setShowAbortDialog(true)}
+							className="text-destructive hover:text-destructive"
+						>
+							<XCircle className="h-4 w-4 mr-2" />
+							Abort
+						</Button>
 						<Button variant="outline" onClick={() => router.push("/app")}>
 							<X className="h-4 w-4 mr-2" />
 							Exit
@@ -127,7 +188,6 @@ export function WorkoutInProgress() {
 				)}
 			</div>
 
-			{/* Exercises */}
 			<div className="space-y-6">
 				{exercises.map((exercise, exerciseIdx) => {
 					const isCurrentExercise =
@@ -212,15 +272,21 @@ export function WorkoutInProgress() {
 																	type="number"
 																	className="h-8 w-20"
 																	value={set.weight || ""}
-																	onChange={(e) =>
-																		updateSetValue(
-																			exerciseIdx,
-																			setIdx,
-																			"weight",
-																			Number.parseFloat(e.target.value) || 0,
-																		)
-																	}
+																	onChange={(e) => {
+																		const value =
+																			Number.parseFloat(e.target.value) || 0;
+																		if (value >= 0) {
+																			updateSetValue(
+																				exerciseIdx,
+																				setIdx,
+																				"weight",
+																				value,
+																			);
+																		}
+																	}}
 																	placeholder="0"
+																	min="0"
+																	step="0.5"
 																/>
 															)}
 														</td>
@@ -234,15 +300,21 @@ export function WorkoutInProgress() {
 																	type="number"
 																	className="h-8 w-16"
 																	value={set.reps || ""}
-																	onChange={(e) =>
-																		updateSetValue(
-																			exerciseIdx,
-																			setIdx,
-																			"reps",
-																			Number.parseInt(e.target.value, 10) || 0,
-																		)
-																	}
+																	onChange={(e) => {
+																		const value =
+																			Number.parseInt(e.target.value, 10) || 0;
+																		if (value >= 0) {
+																			updateSetValue(
+																				exerciseIdx,
+																				setIdx,
+																				"reps",
+																				value,
+																			);
+																		}
+																	}}
 																	placeholder="0"
+																	min="0"
+																	step="1"
 																/>
 															)}
 														</td>
@@ -297,7 +369,6 @@ export function WorkoutInProgress() {
 										</table>
 									</div>
 
-									{/* Quick Actions */}
 									<div className="flex gap-2">
 										<Button
 											variant="outline"
@@ -317,7 +388,6 @@ export function WorkoutInProgress() {
 				})}
 			</div>
 
-			{/* Finish Workout */}
 			{totalSets > 0 && (
 				<Card className="mt-8 border-primary/50">
 					<CardContent className="p-6">
@@ -335,6 +405,17 @@ export function WorkoutInProgress() {
 					</CardContent>
 				</Card>
 			)}
+
+			<ConfirmDialog
+				open={showAbortDialog}
+				onOpenChange={setShowAbortDialog}
+				title="Abort Workout"
+				description="Are you sure you want to abort this workout? All progress will be lost and cannot be recovered."
+				confirmText="Abort Workout"
+				cancelText="Continue Workout"
+				onConfirm={handleAbortWorkout}
+				destructive={true}
+			/>
 		</div>
 	);
 }

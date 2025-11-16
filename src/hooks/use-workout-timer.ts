@@ -48,7 +48,12 @@ export function useWorkoutTimer() {
 	};
 
 	const setInitialElapsedTime = (seconds: number) => {
+		console.log(
+			"useWorkoutTimer - setInitialElapsedTime called with:",
+			seconds,
+		);
 		setElapsedTime(seconds);
+		console.log("useWorkoutTimer - elapsedTime should now be:", seconds);
 	};
 
 	return {

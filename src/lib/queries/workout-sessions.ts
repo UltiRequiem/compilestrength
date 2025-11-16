@@ -1,8 +1,23 @@
-import { and, desc, eq, isNull } from "drizzle-orm";
+import { and, desc, eq, isNull, lt } from "drizzle-orm";
 import { db } from "@/db";
 import { workoutSessions, workoutSets } from "@/db/schema";
 
 export async function getActiveWorkoutSession(userId: string) {
+	// Clean up any sessions older than 24 hours that aren't completed
+	const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+	const cleanupResult = await db
+		.update(workoutSessions)
+		.set({ completedAt: new Date() })
+		.where(
+			and(
+				eq(workoutSessions.userId, userId),
+				isNull(workoutSessions.completedAt),
+				lt(workoutSessions.startTime, oneDayAgo),
+			),
+		);
+
+	// console.log("Session cleanup - cleaned up sessions:", cleanupResult);
+
 	const activeSessions = await db
 		.select()
 		.from(workoutSessions)
@@ -14,6 +29,8 @@ export async function getActiveWorkoutSession(userId: string) {
 		)
 		.orderBy(desc(workoutSessions.startTime))
 		.limit(1);
+
+	// console.log("getActiveWorkoutSession - found sessions:", activeSessions.length);
 
 	if (activeSessions.length === 0) {
 		return null;
@@ -82,7 +99,8 @@ export async function updateWorkoutSession(
 
 	if (updateData.endTime) updatePayload.endTime = updateData.endTime;
 	if (updateData.notes !== undefined) updatePayload.notes = updateData.notes;
-	if (updateData.completed) updatePayload.completedAt = new Date();
+	if (updateData.completed !== undefined)
+		updatePayload.completedAt = new Date();
 
 	const [updatedSession] = await db
 		.update(workoutSessions)
@@ -96,4 +114,25 @@ export async function updateWorkoutSession(
 		.returning();
 
 	return updatedSession;
+}
+
+export async function deleteWorkoutSession(sessionId: string, userId: string) {
+	// console.log("deleteWorkoutSession - deleting session:", sessionId, "for user:", userId);
+
+	// First delete all workout sets for this session
+	await db.delete(workoutSets).where(eq(workoutSets.sessionId, sessionId));
+
+	// Then delete the session
+	const [deletedSession] = await db
+		.delete(workoutSessions)
+		.where(
+			and(
+				eq(workoutSessions.id, sessionId),
+				eq(workoutSessions.userId, userId),
+			),
+		)
+		.returning();
+
+	// console.log("deleteWorkoutSession - deleted session:", deletedSession);
+	return deletedSession;
 }

@@ -34,21 +34,43 @@ export function useActiveSession() {
 		if (programs.length === 0) return;
 
 		try {
-			const response = await fetch("/api/workout-sessions");
+			const response = await fetch("/api/workout-sessions", {
+				cache: "no-store",
+				headers: {
+					"Cache-Control": "no-cache",
+				},
+			});
 			if (response.ok) {
 				const activeSession = await response.json();
+				console.log("checkActiveSession - API response:", activeSession);
 				if (activeSession) {
 					const session = activeSession as ActiveSession;
 					setWorkoutSession(session);
+					console.log(
+						"checkActiveSession - Session set, workoutDayId:",
+						session.workoutDayId,
+					);
 
 					// Find the program and day for this session
 					const sessionProgram = programs.find((p) =>
 						p.days.some((d) => d.id === session.workoutDayId),
 					);
+					console.log(
+						"checkActiveSession - Found program:",
+						sessionProgram?.name,
+						"programs available:",
+						programs.length,
+					);
 
 					if (sessionProgram) {
 						const currentDay = sessionProgram.days.find(
 							(d) => d.id === session.workoutDayId,
+						);
+						console.log(
+							"checkActiveSession - Found current day:",
+							currentDay?.name,
+							"exercises:",
+							currentDay?.exercises?.length,
 						);
 						if (currentDay) {
 							// Rebuild exercises with completed sets from the session
@@ -103,7 +125,21 @@ export function useActiveSession() {
 									};
 								});
 
+							console.log(
+								"checkActiveSession - Built exercises:",
+								exercisesWithSets.length,
+								"setting exercises",
+							);
 							setExercises(exercisesWithSets);
+							console.log("checkActiveSession - Exercises set successfully");
+
+							// Verify exercises were set
+							setTimeout(() => {
+								console.log(
+									"checkActiveSession - Verify exercises after timeout, current exercises array length should be:",
+									exercisesWithSets.length,
+								);
+							}, 100);
 							return {
 								programId: sessionProgram.id,
 								dayId: session.workoutDayId,
@@ -193,9 +229,22 @@ export function useActiveSession() {
 
 		const set = exercise.completedSets[setIdx];
 
-		if (!set.reps || !set.weight) {
-			throw new Error("Please enter weight and reps");
+		// Better validation - ensure we have valid numbers
+		if (set.reps === null || set.reps === undefined || set.reps < 0) {
+			throw new Error("Please enter valid reps (must be 0 or more)");
 		}
+		if (set.weight === null || set.weight === undefined || set.weight < 0) {
+			throw new Error("Please enter valid weight (must be 0 or more)");
+		}
+
+		console.log("completeSet - sending data:", {
+			sessionId: workoutSession.id,
+			exerciseId: exercise.exerciseId,
+			setNumber: set.number,
+			reps: set.reps,
+			weight: set.weight,
+			rpe: set.rpe,
+		});
 
 		const response = await fetch("/api/workout-sets", {
 			method: "POST",
@@ -247,7 +296,10 @@ export function useActiveSession() {
 		}
 
 		const newExercises = [...exercises];
-		newExercises[exerciseIdx].completedSets[setIdx][field] = value as any;
+		if (field === "weight" || field === "reps" || field === "rpe") {
+			(newExercises[exerciseIdx].completedSets[setIdx][field] as number) =
+				value;
+		}
 		setExercises(newExercises);
 	};
 
@@ -265,19 +317,54 @@ export function useActiveSession() {
 		});
 
 		if (response.ok) {
+			setWorkoutSession(null);
+			setExercises([]);
 			return await response.json();
 		}
 
 		throw new Error("Failed to finish workout");
 	};
 
+	const abortWorkout = async () => {
+		if (!workoutSession) return;
+
+		const response = await fetch("/api/workout-sessions", {
+			method: "DELETE",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({
+				sessionId: workoutSession.id,
+			}),
+		});
+
+		if (response.ok) {
+			// Clear local state immediately
+			setWorkoutSession(null);
+			setExercises([]);
+			return await response.json();
+		}
+
+		throw new Error("Failed to abort workout");
+	};
+
 	const getSessionStartTime = useCallback(() => {
+		console.log(
+			"getSessionStartTime called - workoutSession:",
+			!!workoutSession,
+			"startTime:",
+			workoutSession?.startTime,
+		);
 		if (!workoutSession || !workoutSession.startTime) return 0;
 		try {
 			const startTime = new Date(workoutSession.startTime).getTime();
 			if (Number.isNaN(startTime)) return 0;
 			const now = Date.now();
-			return Math.floor((now - startTime) / 1000);
+			const elapsed = Math.floor((now - startTime) / 1000);
+			console.log(
+				"getSessionStartTime - calculated elapsed:",
+				elapsed,
+				"seconds",
+			);
+			return elapsed;
 		} catch {
 			return 0;
 		}
@@ -304,6 +391,7 @@ export function useActiveSession() {
 		completeSet,
 		updateSetValue,
 		finishWorkout,
+		abortWorkout,
 		getSessionStartTime,
 		getCompletedSetsCount,
 		getTotalSetsCount,
