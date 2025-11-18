@@ -9,10 +9,9 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-	title:
-		"CompileStrength - AI Workout Program Generator | Evidence-Based Training",
+	title: "CompileStrength - Science-Based Training",
 	description:
-		"Generate personalized workout programs with AI. Science-based training for lifters who understand progressive overload and periodization. Start free trial.",
+		"Generate sience based workout programs. Science-based training for lifters who understand progressive overload and periodization",
 	keywords: [
 		"workout program generator",
 		"AI workout planner",
