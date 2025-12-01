@@ -149,6 +149,8 @@ tasks, and troubleshooting tips.
 
 - **Design System**: [docs/STYLE_GUIDE.md](docs/STYLE_GUIDE.md) - Brand
   guidelines and UI patterns
+- **SEO Best Practices**: [docs/SEO_BEST_PRACTICES.md](docs/SEO_BEST_PRACTICES.md) -
+  Comprehensive SEO and metadata guidelines for all pages (REQUIRED for new tool pages)
 - **Billing Integration**:
   [docs/LEMONSQUEEZY_SETUP.md](docs/LEMONSQUEEZY_SETUP.md) - Subscription setup
 - **Webhook Testing**: [docs/NGROK_SETUP.md](docs/NGROK_SETUP.md) - Local
@@ -339,6 +341,30 @@ import type { CreateWorkoutSet, WorkoutSession } from "@/schemas";
 - **Tool pages** in `src/app/tools/` - All fitness calculators use shared navbar
   component
 - Custom hooks in `src/hooks/`
+
+### Creating New Tool Pages
+
+When creating new calculator or tool pages in `src/app/tools/`, you MUST:
+
+1. **Follow SEO Best Practices**: See [docs/SEO_BEST_PRACTICES.md](docs/SEO_BEST_PRACTICES.md)
+   for complete requirements
+2. **Create a layout.tsx** with comprehensive metadata including:
+   - Title, description, keywords
+   - Authors, creator, publisher
+   - Canonical URL
+   - OpenGraph metadata (type, locale, siteName, images with dimensions)
+   - Twitter card metadata (card type, creator: @ultirequiem)
+3. **Use the shared Navbar component** from `@/components/navbar`
+4. **Follow validation patterns** using Zod schemas and toast notifications
+5. **Reference example**: [src/app/tools/plate-calculator/layout.tsx](src/app/tools/plate-calculator/layout.tsx)
+
+**SEO Checklist for New Tools:**
+- [ ] Title under 60 chars with primary keyword
+- [ ] Description 150-160 chars with keywords
+- [ ] OpenGraph image dimensions: 1200x630
+- [ ] Twitter card: `summary_large_image`
+- [ ] Twitter creator: `@ultirequiem`
+- [ ] Canonical URL set
 
 ### Toast Notifications
 
