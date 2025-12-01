@@ -3,21 +3,6 @@ import { db } from "@/db";
 import { workoutSessions, workoutSets } from "@/db/schema";
 
 export async function getActiveWorkoutSession(userId: string) {
-	// Clean up any sessions older than 24 hours that aren't completed
-	const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
-	const cleanupResult = await db
-		.update(workoutSessions)
-		.set({ completedAt: new Date() })
-		.where(
-			and(
-				eq(workoutSessions.userId, userId),
-				isNull(workoutSessions.completedAt),
-				lt(workoutSessions.startTime, oneDayAgo),
-			),
-		);
-
-	// console.log("Session cleanup - cleaned up sessions:", cleanupResult);
-
 	const activeSessions = await db
 		.select()
 		.from(workoutSessions)
@@ -30,13 +15,10 @@ export async function getActiveWorkoutSession(userId: string) {
 		.orderBy(desc(workoutSessions.startTime))
 		.limit(1);
 
-	// console.log("getActiveWorkoutSession - found sessions:", activeSessions.length);
-
 	if (activeSessions.length === 0) {
 		return null;
 	}
 
-	// Fetch sets for the active session
 	const sets = await db
 		.select()
 		.from(workoutSets)

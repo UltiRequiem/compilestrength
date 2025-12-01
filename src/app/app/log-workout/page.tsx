@@ -71,11 +71,18 @@ export default function LogWorkoutPage() {
 		};
 
 		restoreSession();
-	}, [session, programs.length]);
+	}, [
+		session,
+		programs.length,
+		programs,
+		checkActiveSession,
+		selectDay,
+		selectProgram,
+	]);
 
 	// Separate useEffect to initialize timer after workoutSession is set (only once)
 	useEffect(() => {
-		if (workoutSession && workoutSession.startTime && !hasSetTimer.current) {
+		if (workoutSession?.startTime && !hasSetTimer.current) {
 			hasSetTimer.current = true;
 			const initialElapsed = getSessionStartTime();
 			console.log(

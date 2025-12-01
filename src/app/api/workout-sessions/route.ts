@@ -106,7 +106,7 @@ export async function DELETE(request: Request) {
 
 		// console.log("DELETE workout session:", { sessionId, userId });
 
-		const result = await deleteWorkoutSession(sessionId, userId);
+		const _result = await deleteWorkoutSession(sessionId, userId);
 		// console.log("Session deleted:", result);
 
 		return NextResponse.json({ success: true });
