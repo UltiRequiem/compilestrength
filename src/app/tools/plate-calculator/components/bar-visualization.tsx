@@ -1,9 +1,10 @@
+import type { WeightUnit } from "@/lib/types";
 import type { PlateConfig } from "../logic";
 
 interface BarVisualizationProps {
 	plates: PlateConfig[];
 	barWeight: string;
-	unit: "kg" | "lbs";
+	unit: WeightUnit;
 }
 
 export function BarVisualization({

@@ -5,7 +5,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 import { Navbar } from "@/components/navbar";
-
+import type { WeightUnit } from "@/lib/types";
 import {
 	BarVisualization,
 	CalculatorInputs,
@@ -21,7 +21,7 @@ import {
 import { plateCalculatorInputSchema } from "./validation";
 
 export default function PlateCalculator() {
-	const [unit, setUnit] = useState<"kg" | "lbs">("lbs");
+	const [unit, setUnit] = useState<WeightUnit>("lbs");
 	const [targetWeight, setTargetWeight] = useState("");
 	const [barWeight, setBarWeight] = useState("45");
 	const [results, setResults] = useState<PlateCalculationResult | null>(null);

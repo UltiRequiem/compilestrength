@@ -1,3 +1,4 @@
+import type { WeightUnit } from "@/lib/types";
 import { PLATE_WEIGHT_TOLERANCE, plateConfigs } from "./config";
 
 export interface PlateConfig {
@@ -24,7 +25,7 @@ export interface PlateCalculationResult {
 export function calculatePlateDistribution(
 	targetWeight: number,
 	barWeight: number,
-	unit: "kg" | "lbs",
+	unit: WeightUnit,
 ): PlateCalculationResult {
 	// Calculate weight needed per side of the bar
 	const weightPerSide = (targetWeight - barWeight) / 2;
@@ -65,6 +66,6 @@ export function calculatePlateDistribution(
  * @param unit - The unit system
  * @returns Default bar weight as a string
  */
-export function getDefaultBarWeight(unit: "kg" | "lbs"): string {
+export function getDefaultBarWeight(unit: WeightUnit): string {
 	return unit === "kg" ? "20" : "45";
 }

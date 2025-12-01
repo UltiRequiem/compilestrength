@@ -1,9 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import type { WeightUnit } from "@/lib/types";
 
 interface CalculatorInputsProps {
-	unit: "kg" | "lbs";
+	unit: WeightUnit;
 	targetWeight: string;
 	barWeight: string;
 	onTargetWeightChange: (value: string) => void;

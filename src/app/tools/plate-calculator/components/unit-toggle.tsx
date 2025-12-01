@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button";
+import type { WeightUnit } from "@/lib/types";
 
 interface UnitToggleProps {
-	unit: "kg" | "lbs";
-	onUnitChange: (unit: "kg" | "lbs") => void;
+	unit: WeightUnit;
+	onUnitChange: (unit: WeightUnit) => void;
 }
 
 export function UnitToggle({ unit, onUnitChange }: UnitToggleProps) {

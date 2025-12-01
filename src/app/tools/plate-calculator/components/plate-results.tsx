@@ -1,8 +1,9 @@
+import type { WeightUnit } from "@/lib/types";
 import type { PlateCalculationResult } from "../logic";
 
 interface PlateResultsProps {
 	results: PlateCalculationResult;
-	unit: "kg" | "lbs";
+	unit: WeightUnit;
 	barWeight: string;
 }
 
