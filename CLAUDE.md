@@ -12,6 +12,9 @@ deployed on Cloudflare Workers.
 **For design and branding guidelines, see
 [docs/STYLE_GUIDE.md](docs/STYLE_GUIDE.md)**
 
+**For SEO and metadata best practices, see
+[docs/SEO_BEST_PRACTICES.md](docs/SEO_BEST_PRACTICES.md)**
+
 ## Core Architecture
 
 ### Tech Stack

@@ -12,18 +12,36 @@ export const metadata: Metadata = {
 		"powerlifting plate calculator",
 		"barbell loading",
 	],
+	authors: [{ name: "CompileStrength" }],
+	creator: "CompileStrength",
+	publisher: "CompileStrength",
+	alternates: {
+		canonical: "https://compilestrength.com/tools/plate-calculator",
+	},
 	openGraph: {
-		title: "Plate Calculator | Barbell Loading Calculator",
-		description:
-			"Calculate which plates to load on your barbell for any weight. Free tool supporting kg and lb plates with visual display.",
+		type: "website",
+		locale: "en_US",
 		url: "https://compilestrength.com/tools/plate-calculator",
-		images: ["/logo.png"],
+		siteName: "CompileStrength",
+		title: "Plate Calculator | Barbell Loading Calculator - CompileStrength",
+		description:
+			"Calculate which plates to load on your barbell for any weight. Free tool supporting kg and lb plates with visual plate layout display.",
+		images: [
+			{
+				url: "/logo.png",
+				width: 1200,
+				height: 630,
+				alt: "CompileStrength Plate Calculator - Barbell Loading Tool",
+			},
+		],
 	},
 	twitter: {
-		title: "Plate Calculator | Barbell Loading Calculator",
+		card: "summary_large_image",
+		title: "Plate Calculator | Barbell Loading Calculator - CompileStrength",
 		description:
-			"Calculate which plates to load on your barbell for any weight. Free tool supporting kg and lb plates.",
+			"Calculate which plates to load on your barbell for any weight. Free tool supporting kg and lb plates with visual display.",
 		images: ["/logo.png"],
+		creator: "@ultirequiem",
 	},
 };
 

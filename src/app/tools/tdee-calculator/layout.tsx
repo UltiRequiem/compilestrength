@@ -13,18 +13,36 @@ export const metadata: Metadata = {
 		"bulking calories",
 		"maintenance calories",
 	],
+	authors: [{ name: "CompileStrength" }],
+	creator: "CompileStrength",
+	publisher: "CompileStrength",
+	alternates: {
+		canonical: "https://compilestrength.com/tools/tdee-calculator",
+	},
 	openGraph: {
-		title: "TDEE Calculator | Total Daily Energy Expenditure",
-		description:
-			"Calculate your Total Daily Energy Expenditure (TDEE) for accurate calorie and macro planning. Free tool with multiple activity levels.",
+		type: "website",
+		locale: "en_US",
 		url: "https://compilestrength.com/tools/tdee-calculator",
-		images: ["/logo.png"],
+		siteName: "CompileStrength",
+		title: "TDEE Calculator | Total Daily Energy Expenditure - CompileStrength",
+		description:
+			"Calculate your Total Daily Energy Expenditure (TDEE) for accurate calorie and macro planning. Free tool with multiple activity levels and cutting/bulking recommendations.",
+		images: [
+			{
+				url: "/logo.png",
+				width: 1200,
+				height: 630,
+				alt: "CompileStrength TDEE Calculator - Total Daily Energy Expenditure",
+			},
+		],
 	},
 	twitter: {
+		card: "summary_large_image",
 		title: "TDEE Calculator | Total Daily Energy Expenditure",
 		description:
 			"Calculate your Total Daily Energy Expenditure (TDEE) for accurate calorie and macro planning.",
 		images: ["/logo.png"],
+		creator: "@ultirequiem",
 	},
 };
 
