@@ -7,6 +7,7 @@ import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { PLATE_WEIGHT_TOLERANCE, plateConfigs } from "./config";
 
 interface PlateConfig {
 	weight: number;
@@ -14,8 +15,7 @@ interface PlateConfig {
 	count: number;
 }
 
-// Tolerance for floating point precision when calculating plate combinations
-const PLATE_WEIGHT_TOLERANCE = 0.01;
+
 
 export default function PlateCalculator() {
 	const [unit, setUnit] = useState<"kg" | "lbs">("lbs");
@@ -26,27 +26,6 @@ export default function PlateCalculator() {
 		totalWeight: number;
 		impossible: boolean;
 	} | null>(null);
-
-	// Standard plate sets
-	const plateConfigs = {
-		kg: [
-			{ weight: 25, color: "bg-red-600", count: 0 },
-			{ weight: 20, color: "bg-blue-600", count: 0 },
-			{ weight: 15, color: "bg-yellow-600", count: 0 },
-			{ weight: 10, color: "bg-green-600", count: 0 },
-			{ weight: 5, color: "bg-white text-black", count: 0 },
-			{ weight: 2.5, color: "bg-red-800", count: 0 },
-			{ weight: 1.25, color: "bg-gray-600", count: 0 },
-		],
-		lbs: [
-			{ weight: 45, color: "bg-red-600", count: 0 },
-			{ weight: 35, color: "bg-blue-600", count: 0 },
-			{ weight: 25, color: "bg-yellow-600", count: 0 },
-			{ weight: 10, color: "bg-green-600", count: 0 },
-			{ weight: 5, color: "bg-white text-black", count: 0 },
-			{ weight: 2.5, color: "bg-red-800", count: 0 },
-		],
-	};
 
 	const calculate = () => {
 		if (!targetWeight.trim() || !barWeight.trim()) {
@@ -198,9 +177,9 @@ export default function PlateCalculator() {
 								<div className="space-y-4">
 									<h3 className="text-lg font-semibold">Plates Per Side:</h3>
 									<div className="flex flex-wrap gap-2">
-										{results.plates.map((plate, index) => (
+										{results.plates.map((plate) => (
 											<div
-												key={index}
+												key={plate.weight}
 												className={`px-4 py-2 rounded-lg ${plate.color} font-bold flex items-center gap-2`}
 											>
 												<span>
@@ -232,11 +211,11 @@ export default function PlateCalculator() {
 										<div className="flex items-center justify-center space-x-1">
 											{/* Left side plates */}
 											<div className="flex">
-												{results.plates.map((plate, plateIndex) =>
+												{results.plates.map((plate) =>
 													Array.from({ length: plate.count }).map(
 														(_, countIndex) => (
 															<div
-																key={`left-${plateIndex}-${countIndex}`}
+																key={`left-${plate.weight}-${countIndex}`}
 																className={`w-3 h-12 ${plate.color} border border-zinc-600 -ml-1 first:ml-0`}
 																title={`${plate.weight}${
 																	unit === "kg" ? "kg" : "lb"
@@ -255,11 +234,11 @@ export default function PlateCalculator() {
 
 											{/* Right side plates (mirror of left) */}
 											<div className="flex flex-row-reverse">
-												{results.plates.map((plate, plateIndex) =>
+												{results.plates.map((plate) =>
 													Array.from({ length: plate.count }).map(
 														(_, countIndex) => (
 															<div
-																key={`right-${plateIndex}-${countIndex}`}
+																key={`right-${plate.weight}-${countIndex}`}
 																className={`w-3 h-12 ${plate.color} border border-zinc-600 -mr-1 first:mr-0`}
 																title={`${plate.weight}${
 																	unit === "kg" ? "kg" : "lb"
