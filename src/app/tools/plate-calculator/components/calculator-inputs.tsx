@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import type { WeightUnit } from "@/lib/types";
+import type { WeightUnit } from "@/types/exercise";
 
 interface CalculatorInputsProps {
 	unit: WeightUnit;

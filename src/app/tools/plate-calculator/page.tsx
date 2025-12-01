@@ -5,7 +5,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 import { Navbar } from "@/components/navbar";
-import type { WeightUnit } from "@/lib/types";
+import type { WeightUnit } from "@/types/exercise";
 import {
 	BarVisualization,
 	CalculatorInputs,

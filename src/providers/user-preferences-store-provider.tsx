@@ -8,6 +8,7 @@ import {
 	useRef,
 } from "react";
 import { useStore } from "zustand";
+
 import { useSession } from "@/lib/auth-client";
 import {
 	createUserPreferencesStore,

@@ -1,4 +1,4 @@
-import type { WeightUnit } from "@/lib/types";
+import type { WeightUnit } from "@/types/exercise";
 import type { PlateCalculationResult } from "../logic";
 
 interface PlateResultsProps {

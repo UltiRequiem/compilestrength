@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import type { WeightUnit } from "@/lib/types";
+import type { WeightUnit } from "@/types/exercise";
 
 interface UnitToggleProps {
 	unit: WeightUnit;

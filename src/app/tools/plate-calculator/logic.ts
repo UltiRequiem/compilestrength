@@ -1,4 +1,4 @@
-import type { WeightUnit } from "@/lib/types";
+import type { WeightUnit } from "@/types/exercise";
 import { PLATE_WEIGHT_TOLERANCE, plateConfigs } from "./config";
 
 export interface PlateConfig {
