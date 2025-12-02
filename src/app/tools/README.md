@@ -307,17 +307,33 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 - Unit conversion (imperial/metric)
 - Type-safe validation and calculations
 
+### ✅ FFMI Calculator (Refactored)
+
+**Status**: Fully refactored following the recommended pattern
+
+**Structure**:
+
+- ✅ Separated logic (`logic.ts`) with pure calculation functions
+- ✅ Zod validation (`validation.ts`) with comprehensive input validation
+- ✅ Configuration constants (`config.ts`) with FFMI formula constants and category thresholds
+- ✅ Clean page orchestration with toast notifications
+- ✅ JSDoc documentation for all formulas
+
+**Features**:
+
+- Fat-Free Mass Index (FFMI) calculation
+- Height-adjusted FFMI (normalized to 1.8m/5'11")
+- FFMI category determination (below average to enhanced)
+- Fat-free mass calculation
+- Unit conversion (imperial/metric)
+- Type-safe validation and calculations
+
 ### ⚠️ Other Calculators (Need Refactoring)
 
 The following calculators have all logic embedded in `page.tsx` and would
 benefit from refactoring:
 
-1. **FFMI Calculator** (`ffmi-calculator/`)
-
-   - All logic in page.tsx
-   - Needs full architecture refactor
-
-2. **One Rep Max Calculator** (`one-rep-max-calculator/`)
+1. **One Rep Max Calculator** (`one-rep-max-calculator/`)
    - All logic in page.tsx
    - Needs full architecture refactor
 

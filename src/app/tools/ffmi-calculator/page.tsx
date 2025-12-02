@@ -7,100 +7,49 @@ import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import type { FFMICalculationResult } from "./config";
+import { calculateFFMI, convertFFMIResultUnits } from "./logic";
+import { ffmiCalculatorInputSchema } from "./validation";
+import type { UnitSystem } from "@/types/unit-system";
 
 export default function FFMICalculator() {
-	const [unit, setUnit] = useState<"metric" | "imperial">("imperial");
+	const [unit, setUnit] = useState<UnitSystem>("imperial");
 	const [weight, setWeight] = useState("");
 	const [height, setHeight] = useState("");
 	const [bodyFat, setBodyFat] = useState("");
-	const [result, setResult] = useState<{
-		ffmi: number;
-		adjustedFFMI: number;
-		fatFreeMass: number;
-		category: string;
-	} | null>(null);
+	const [result, setResult] = useState<FFMICalculationResult | null>(null);
 
 	const calculate = () => {
-		if (!weight.trim() || !height.trim() || !bodyFat.trim()) {
-			toast.error("Please enter weight, height, and body fat percentage");
-			return;
-		}
-
-		const w = Number.parseFloat(weight);
-		const h = Number.parseFloat(height);
-		const bf = Number.parseFloat(bodyFat);
-
-		if (
-			Number.isNaN(w) ||
-			Number.isNaN(h) ||
-			Number.isNaN(bf) ||
-			w <= 0 ||
-			h <= 0 ||
-			bf < 0 ||
-			bf > 100
-		) {
-			toast.error("Please enter valid numbers (body fat between 0-100%)");
-			return;
-		}
-
-		// Convert to metric if needed
-		const weightKg = unit === "imperial" ? w * 0.453592 : w;
-		const heightM = unit === "imperial" ? h * 0.0254 : h / 100;
-
-		// Calculate fat-free mass in kg
-		const fatFreeMassKg = weightKg * (1 - bf / 100);
-
-		// Calculate FFMI
-		const ffmi = fatFreeMassKg / (heightM * heightM);
-
-		// Calculate adjusted FFMI (normalized to 1.8m height)
-		const adjustedFFMI = ffmi + 6.1 * (1.8 - heightM);
-
-		// Convert fat-free mass to display units
-		const fatFreeMassDisplay =
-			unit === "imperial"
-				? fatFreeMassKg * 2.20462 // Convert kg to lbs
-				: fatFreeMassKg;
-
-		// Determine category (matching info box ranges)
-		let category = "";
-		if (adjustedFFMI < 18) {
-			category = "Below average";
-		} else if (adjustedFFMI >= 18 && adjustedFFMI < 20) {
-			category = "Average";
-		} else if (adjustedFFMI >= 20 && adjustedFFMI < 22) {
-			category = "Above average";
-		} else if (adjustedFFMI >= 22 && adjustedFFMI < 24) {
-			category = "Excellent";
-		} else if (adjustedFFMI >= 24 && adjustedFFMI < 26) {
-			category = "Superior - Natural limit";
-		} else {
-			category = "Very likely enhanced (steroid use)";
-		}
-
-		setResult({
-			ffmi: Number(ffmi.toFixed(1)),
-			adjustedFFMI: Number(adjustedFFMI.toFixed(1)),
-			fatFreeMass: Number(fatFreeMassDisplay.toFixed(1)),
-			category,
+		// Validate inputs using Zod schema
+		const parseResult = ffmiCalculatorInputSchema.safeParse({
+			weight,
+			height,
+			bodyFat,
+			unit,
 		});
+
+		if (!parseResult.success) {
+			// Display the first validation error
+			toast.error(
+				`${parseResult.error.issues.map((issue) => issue.message).join(". ")}.`,
+			);
+			return;
+		}
+
+		// Calculate FFMI using pure functions
+		const calculationResult = calculateFFMI(parseResult.data);
+		setResult(calculationResult);
 	};
 
 	// Handle unit conversion for existing results
-	const handleUnitChange = (newUnit: "metric" | "imperial") => {
+	const handleUnitChange = (newUnit: UnitSystem) => {
 		const oldUnit = unit;
 		setUnit(newUnit);
 
 		// Convert existing results if they exist
 		if (result && oldUnit !== newUnit) {
-			const conversionFactor = newUnit === "imperial" ? 2.20462 : 0.453592;
-
-			setResult({
-				ffmi: result.ffmi, // FFMI is unitless, no conversion needed
-				adjustedFFMI: result.adjustedFFMI, // Adjusted FFMI is unitless, no conversion needed
-				fatFreeMass: Number((result.fatFreeMass * conversionFactor).toFixed(1)),
-				category: result.category,
-			});
+			const convertedResult = convertFFMIResultUnits(result, newUnit, oldUnit);
+			setResult(convertedResult);
 		}
 	};
 
