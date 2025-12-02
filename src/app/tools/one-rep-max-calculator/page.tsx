@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import type { WeightUnit } from "@/types/exercise";
-import type { OneRepMaxResult } from "./config";
+import { KG_TO_LBS, LBS_TO_KG, type OneRepMaxResult } from "./config";
 import { calculateOneRepMax, convertOneRepMaxResults } from "./logic";
 import { oneRepMaxInputSchema } from "./validation";
 
@@ -40,13 +40,29 @@ export default function OneRepMaxCalculator() {
 		setResults(calculationResults);
 	};
 
-	// Handle unit conversion for existing results
+	// Handle unit conversion for existing results and input weight
 	const handleUnitChange = (newUnit: WeightUnit) => {
 		const oldUnit = unit;
 		setUnit(newUnit);
 
+		// Only perform conversions if unit actually changed
+		if (oldUnit === newUnit) {
+			return;
+		}
+
+		// Convert existing weight input if present and valid
+		if (weight.trim()) {
+			const parsedWeight = Number.parseFloat(weight);
+			if (!Number.isNaN(parsedWeight) && parsedWeight > 0) {
+				const conversionFactor = newUnit === "kg" ? LBS_TO_KG : KG_TO_LBS;
+				const convertedWeight = parsedWeight * conversionFactor;
+				// Format to 1 decimal place for cleaner display
+				setWeight(convertedWeight.toFixed(1));
+			}
+		}
+
 		// Convert existing results if they exist
-		if (results && oldUnit !== newUnit) {
+		if (results) {
 			const convertedResults = convertOneRepMaxResults(
 				results,
 				oldUnit,
