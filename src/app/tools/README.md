@@ -287,23 +287,37 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 - Unit conversion (imperial/metric)
 - Type-safe validation and calculations
 
+### ✅ TDEE Calculator (Refactored)
+
+**Status**: Fully refactored following the recommended pattern
+
+**Structure**:
+
+- ✅ Separated logic (`logic.ts`) with pure calculation functions
+- ✅ Zod validation (`validation.ts`) with comprehensive input validation
+- ✅ Configuration constants (`config.ts`) with Mifflin-St Jeor formula constants
+- ✅ Clean page orchestration with toast notifications
+- ✅ JSDoc documentation for all formulas
+
+**Features**:
+
+- Mifflin-St Jeor BMR calculation (gender-specific, more accurate than Harris-Benedict)
+- TDEE calculation with activity level multipliers
+- Cutting and bulking calorie targets (20% deficit / 10% surplus)
+- Unit conversion (imperial/metric)
+- Type-safe validation and calculations
+
 ### ⚠️ Other Calculators (Need Refactoring)
 
 The following calculators have all logic embedded in `page.tsx` and would
 benefit from refactoring:
 
-1. **TDEE Calculator** (`tdee-calculator/`)
-
-   - All logic in page.tsx
-   - Some constants defined (good!)
-   - Needs logic extraction
-
-2. **FFMI Calculator** (`ffmi-calculator/`)
+1. **FFMI Calculator** (`ffmi-calculator/`)
 
    - All logic in page.tsx
    - Needs full architecture refactor
 
-3. **One Rep Max Calculator** (`one-rep-max-calculator/`)
+2. **One Rep Max Calculator** (`one-rep-max-calculator/`)
    - All logic in page.tsx
    - Needs full architecture refactor
 

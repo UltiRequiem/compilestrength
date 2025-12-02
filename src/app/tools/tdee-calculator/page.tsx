@@ -7,87 +7,52 @@ import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
-// TDEE calculation constants
-const CUTTING_DEFICIT_MULTIPLIER = 0.8; // 20% deficit
-const BULKING_SURPLUS_MULTIPLIER = 1.1; // 10% surplus
+import {
+	ACTIVITY_LEVELS,
+	type TDEEResult,
+} from "./config";
+import { calculateTDEEResults } from "./logic";
+import { tdeeInputSchema } from "./validation";
+import type { UnitSystem } from "@/types/unit-system";
+import type { Gender } from "@/types/gender";
 
 export default function TDEECalculator() {
-	const [unit, setUnit] = useState<"metric" | "imperial">("imperial");
-	const [gender, setGender] = useState<"male" | "female">("male");
+	const [unit, setUnit] = useState<UnitSystem>("imperial");
+	const [gender, setGender] = useState<Gender>("male");
 	const [age, setAge] = useState("");
 	const [weight, setWeight] = useState("");
 	const [height, setHeight] = useState("");
 	const [activityLevel, setActivityLevel] = useState("1.55");
-	const [results, setResults] = useState<{
-		bmr: number;
-		tdee: number;
-		cutting: number;
-		bulking: number;
-		formula: string;
-	} | null>(null);
-
-	const activityLevels = [
-		{ value: "1.2", label: "Sedentary (desk job, no exercise)" },
-		{ value: "1.375", label: "Lightly active (light exercise 1-3 days/week)" },
-		{
-			value: "1.55",
-			label: "Moderately active (moderate exercise 3-5 days/week)",
-		},
-		{ value: "1.725", label: "Very active (hard exercise 6-7 days/week)" },
-		{
-			value: "1.9",
-			label: "Extremely active (very hard exercise, physical job)",
-		},
-	];
+	const [results, setResults] = useState<TDEEResult | null>(null);
 
 	const calculate = () => {
-		if (!weight.trim() || !height.trim() || !age.trim()) {
-			toast.error("Please enter age, weight, and height");
-			return;
-		}
-
-		const w = Number.parseFloat(weight);
-		const h = Number.parseFloat(height);
-		const a = Number.parseInt(age, 10);
-		const activity = Number.parseFloat(activityLevel);
-
-		if (
-			Number.isNaN(w) ||
-			Number.isNaN(h) ||
-			Number.isNaN(a) ||
-			w <= 0 ||
-			h <= 0 ||
-			a < 15 ||
-			a > 80
-		) {
-			toast.error("Please enter valid age (15-80), weight, and height");
-			return;
-		}
-
-		// Convert to metric if needed
-		const weightKg = unit === "imperial" ? w * 0.453592 : w;
-		const heightCm = unit === "imperial" ? h * 2.54 : h;
-
-		// Mifflin-St Jeor Equation (more accurate than Harris-Benedict)
-		let bmr: number;
-		if (gender === "male") {
-			bmr = 10 * weightKg + 6.25 * heightCm - 5 * a + 5;
-		} else {
-			bmr = 10 * weightKg + 6.25 * heightCm - 5 * a - 161;
-		}
-
-		const tdee = bmr * activity;
-		const cutting = tdee * CUTTING_DEFICIT_MULTIPLIER;
-		const bulking = tdee * BULKING_SURPLUS_MULTIPLIER;
-
-		setResults({
-			bmr: Math.round(bmr),
-			tdee: Math.round(tdee),
-			cutting: Math.round(cutting),
-			bulking: Math.round(bulking),
-			formula: "Mifflin-St Jeor",
+		// Validate inputs using Zod schema
+		const result = tdeeInputSchema.safeParse({
+			age,
+			weight,
+			height,
+			activityLevel,
+			gender,
+			unit,
 		});
+
+		if (!result.success) {
+			return toast.error(
+				`${result.error.issues.map((issue) => issue.message).join(". ")}.`,
+			);
+		}
+
+		// Calculate TDEE using pure logic function
+		const calculationResult = calculateTDEEResults({
+			age: result.data.age,
+			weight: result.data.weight,
+			height: result.data.height,
+			activityLevel: result.data.activityLevel,
+			gender: result.data.gender,
+			unit: result.data.unit,
+		});
+
+		setResults(calculationResult);
 	};
 
 	return (
@@ -197,7 +162,7 @@ export default function TDEECalculator() {
 							onChange={(e) => setActivityLevel(e.target.value)}
 							className="mt-1 w-full px-3 py-2 bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
 						>
-							{activityLevels.map((level) => (
+							{ACTIVITY_LEVELS.map((level) => (
 								<option key={level.value} value={level.value}>
 									{level.label}
 								</option>
