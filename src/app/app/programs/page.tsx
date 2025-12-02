@@ -138,9 +138,9 @@ export default function ProgramsPage() {
 					<div className="flex-1 max-w-2xl">
 						{routines.length > 1 && (
 							<div className="mb-4 space-y-3">
-								<label className="text-sm font-medium text-muted-foreground block">
+								<div className="text-sm font-medium text-muted-foreground block">
 									Select Program ({routines.length} available)
-								</label>
+								</div>
 
 								{/* Search input */}
 								<div className="relative">
@@ -270,7 +270,9 @@ export default function ProgramsPage() {
 						<Button
 							size="sm"
 							variant="outline"
-							onClick={() => (window.location.href = "/app/compiler")}
+							onClick={() => {
+								window.location.href = "/app/compiler";
+							}}
 						>
 							<RefreshCw className="h-4 w-4" />
 							Generate New

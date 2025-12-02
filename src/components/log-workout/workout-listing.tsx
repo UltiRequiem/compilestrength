@@ -88,9 +88,9 @@ export function WorkoutListing({
 						</CardHeader>
 						<CardContent className="space-y-4">
 							<div>
-								<label className="text-sm font-medium mb-2 block">
+								<div className="text-sm font-medium mb-2 block">
 									Workout Program
-								</label>
+								</div>
 								<Select
 									value={selectedProgram || undefined}
 									onValueChange={selectProgram}
@@ -110,9 +110,9 @@ export function WorkoutListing({
 
 							{currentProgram && currentProgram.days.length > 0 && (
 								<div>
-									<label className="text-sm font-medium mb-2 block">
+									<div className="text-sm font-medium mb-2 block">
 										Workout Day
-									</label>
+									</div>
 									<Select
 										value={selectedDay || undefined}
 										onValueChange={selectDay}
