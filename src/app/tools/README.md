@@ -268,29 +268,42 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 - ✅ Component organization (`components/`)
 - ✅ Clean page orchestration
 
+### ✅ Body Fat Calculator (Refactored)
+
+**Status**: Fully refactored following the recommended pattern
+
+**Structure**:
+
+- ✅ Separated logic (`logic.ts`) with pure calculation functions
+- ✅ Zod validation (`validation.ts`) with comprehensive input validation
+- ✅ Configuration constants (`config.ts`) with named constants for formulas
+- ✅ Clean page orchestration with toast notifications
+- ✅ JSDoc documentation for all formulas
+
+**Features**:
+
+- US Navy formula implementation (gender-specific)
+- Body fat category determination
+- Unit conversion (imperial/metric)
+- Type-safe validation and calculations
+
 ### ⚠️ Other Calculators (Need Refactoring)
 
 The following calculators have all logic embedded in `page.tsx` and would
 benefit from refactoring:
 
-1. **Body Fat Calculator** (`body-fat-calculator/`)
-
-   - All logic in page.tsx (lines 24-109)
-   - No separation of concerns
-   - Hard to test calculation logic
-
-2. **TDEE Calculator** (`tdee-calculator/`)
+1. **TDEE Calculator** (`tdee-calculator/`)
 
    - All logic in page.tsx
    - Some constants defined (good!)
    - Needs logic extraction
 
-3. **FFMI Calculator** (`ffmi-calculator/`)
+2. **FFMI Calculator** (`ffmi-calculator/`)
 
    - All logic in page.tsx
    - Needs full architecture refactor
 
-4. **One Rep Max Calculator** (`one-rep-max-calculator/`)
+3. **One Rep Max Calculator** (`one-rep-max-calculator/`)
    - All logic in page.tsx
    - Needs full architecture refactor
 
