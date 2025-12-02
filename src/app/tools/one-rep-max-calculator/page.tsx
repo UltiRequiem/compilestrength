@@ -7,79 +7,68 @@ import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import type { WeightUnit } from "@/types/exercise";
+import { KG_TO_LBS, LBS_TO_KG, type OneRepMaxResult } from "./config";
+import { calculateOneRepMax, convertOneRepMaxResults } from "./logic";
+import { oneRepMaxInputSchema } from "./validation";
 
 export default function OneRepMaxCalculator() {
-	const [unit, setUnit] = useState<"lbs" | "kg">("lbs");
+	const [unit, setUnit] = useState<WeightUnit>("lbs");
 	const [weight, setWeight] = useState("");
 	const [reps, setReps] = useState("");
-	const [results, setResults] = useState<{
-		brzycki: number;
-		epley: number;
-		lander: number;
-		lombardi: number;
-		mayhew: number;
-		oConner: number;
-		wathen: number;
-		average: number;
-	} | null>(null);
+	const [results, setResults] = useState<OneRepMaxResult | null>(null);
 
 	const calculate = () => {
-		if (!weight.trim() || !reps.trim()) {
-			toast.error("Please enter both weight and reps");
-			return;
-		}
-
-		const w = Number.parseFloat(weight);
-		const r = Number.parseInt(reps, 10);
-
-		if (Number.isNaN(w) || Number.isNaN(r) || w <= 0 || r <= 0 || r > 20) {
-			toast.error("Please enter valid weight and reps (1-20 reps)");
-			return;
-		}
-
-		// Different 1RM formulas
-		const brzycki = w * (36 / (37 - r));
-		const epley = w * (1 + r / 30);
-		const lander = (100 * w) / (101.3 - 2.67123 * r);
-		const lombardi = w * r ** 0.1;
-		const mayhew = (100 * w) / (52.2 + 41.9 * Math.exp(-0.055 * r));
-		const oConner = w * (1 + 0.025 * r);
-		const wathen = (100 * w) / (48.8 + 53.8 * Math.exp(-0.075 * r));
-
-		const average =
-			(brzycki + epley + lander + lombardi + mayhew + oConner + wathen) / 7;
-
-		setResults({
-			brzycki: Number(brzycki.toFixed(1)),
-			epley: Number(epley.toFixed(1)),
-			lander: Number(lander.toFixed(1)),
-			lombardi: Number(lombardi.toFixed(1)),
-			mayhew: Number(mayhew.toFixed(1)),
-			oConner: Number(oConner.toFixed(1)),
-			wathen: Number(wathen.toFixed(1)),
-			average: Number(average.toFixed(1)),
+		// Validate inputs using Zod schema
+		const validationResult = oneRepMaxInputSchema.safeParse({
+			weight,
+			reps,
 		});
+
+		if (!validationResult.success) {
+			// Display first validation error
+			toast.error(
+				`${validationResult.error.issues.map((issue) => issue.message).join(". ")}.`,
+			);
+			return;
+		}
+
+		// Calculate 1RM using validated data
+		const { weight: validWeight, reps: validReps } = validationResult.data;
+		const calculationResults = calculateOneRepMax(validWeight, validReps);
+
+		setResults(calculationResults);
 	};
 
-	// Handle unit conversion for existing results
-	const handleUnitChange = (newUnit: "lbs" | "kg") => {
+	// Handle unit conversion for existing results and input weight
+	const handleUnitChange = (newUnit: WeightUnit) => {
 		const oldUnit = unit;
 		setUnit(newUnit);
 
-		// Convert existing results if they exist
-		if (results && oldUnit !== newUnit) {
-			const conversionFactor = newUnit === "kg" ? 0.453592 : 2.20462;
+		// Only perform conversions if unit actually changed
+		if (oldUnit === newUnit) {
+			return;
+		}
 
-			setResults({
-				brzycki: Number((results.brzycki * conversionFactor).toFixed(1)),
-				epley: Number((results.epley * conversionFactor).toFixed(1)),
-				lander: Number((results.lander * conversionFactor).toFixed(1)),
-				lombardi: Number((results.lombardi * conversionFactor).toFixed(1)),
-				mayhew: Number((results.mayhew * conversionFactor).toFixed(1)),
-				oConner: Number((results.oConner * conversionFactor).toFixed(1)),
-				wathen: Number((results.wathen * conversionFactor).toFixed(1)),
-				average: Number((results.average * conversionFactor).toFixed(1)),
-			});
+		// Convert existing weight input if present and valid
+		if (weight.trim()) {
+			const parsedWeight = Number.parseFloat(weight);
+			if (!Number.isNaN(parsedWeight) && parsedWeight > 0) {
+				const conversionFactor = newUnit === "kg" ? LBS_TO_KG : KG_TO_LBS;
+				const convertedWeight = parsedWeight * conversionFactor;
+				// Format to 1 decimal place for cleaner display
+				setWeight(convertedWeight.toFixed(1));
+			}
+		}
+
+		// Convert existing results if they exist
+		if (results) {
+			const convertedResults = convertOneRepMaxResults(
+				results,
+				oldUnit,
+				newUnit,
+			);
+			setResults(convertedResults);
 		}
 	};
 
@@ -205,7 +194,7 @@ export default function OneRepMaxCalculator() {
 									<div className="flex justify-between">
 										<span className="text-zinc-400">O'Connor Formula:</span>
 										<span className="font-bold">
-											{results.oConner} {unit}
+											{results.oConnor} {unit}
 										</span>
 									</div>
 									<div className="flex justify-between">
