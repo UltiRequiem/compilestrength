@@ -156,6 +156,7 @@ export function calculateFFMI(inputs: FFMIInputs): FFMICalculationResult {
  * FFMI and adjusted FFMI are unitless, so only fat-free mass needs conversion.
  *
  * @param result - Current FFMI calculation result
+ * @param currentUnit - Current unit system of the result
  * @param newUnit - Target unit system
  * @returns Updated result with fat-free mass converted to new units
  */
