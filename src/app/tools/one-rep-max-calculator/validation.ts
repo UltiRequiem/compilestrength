@@ -17,7 +17,7 @@ export const oneRepMaxInputSchema = z.object({
 		.pipe(
 			z
 				.number()
-				.min(0, "Weight must be greater than 0"),
+				.positive("Weight must be greater than 0"),
 		),
 	reps: z
 		.string()
