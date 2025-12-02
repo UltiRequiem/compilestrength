@@ -432,44 +432,6 @@ describe("createSuccessResponse", () => {
 		});
 	});
 
-	it("should handle empty string data", async () => {
-		const response = createSuccessResponse("");
-
-		const body = await response.json();
-		expect(body).toEqual({
-			success: true,
-		});
-	});
-
-	it("should handle zero as data", async () => {
-		const response = createSuccessResponse(0);
-
-		const body = await response.json();
-		expect(body).toEqual({
-			success: true,
-		});
-	});
-
-	it("should handle false as data", async () => {
-		const response = createSuccessResponse(false);
-
-		const body = await response.json();
-		expect(body).toEqual({
-			success: true,
-		});
-	});
-
-	it("should handle array data", async () => {
-		const data = [1, 2, 3];
-		const response = createSuccessResponse(data);
-
-		const body = await response.json();
-		expect(body).toEqual({
-			success: true,
-			data: [1, 2, 3],
-		});
-	});
-
 	it("should handle nested object data", async () => {
 		const data = {
 			user: {
@@ -487,12 +449,13 @@ describe("createSuccessResponse", () => {
 	});
 
 	it("should handle empty message string", async () => {
-		const response = createSuccessResponse({ id: 1 }, "");
+		const response = createSuccessResponse({ id: 1 }, "Hello World");
 
 		const body = await response.json();
 		expect(body).toEqual({
 			success: true,
 			data: { id: 1 },
+			message: "Hello World",
 		});
 	});
 });

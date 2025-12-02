@@ -36,11 +36,13 @@ export function createValidationErrorResponse(error: ValidationError) {
 }
 
 export function createErrorResponse(message: string, status = 500) {
-	return new Response(
-		JSON.stringify({
+	const response = {
 			success: false,
 			error: message,
-		}),
+		};
+
+	return new Response(
+		JSON.stringify(response),
 		{
 			status,
 			headers: { "Content-Type": "application/json" },
@@ -48,16 +50,19 @@ export function createErrorResponse(message: string, status = 500) {
 	);
 }
 
-export function createSuccessResponse(data?: unknown, message?: string) {
+export function createSuccessResponse(
+	data?: Record<string, unknown> | null,
+	message?: string,
+) {
 	const response: Record<string, unknown> = {
 		success: true,
 	};
 
-	if (message) {
+	if (message !== undefined) {
 		response.message = message;
 	}
 
-	if (data) {
+	if (data !== undefined && data !== null) {
 		response.data = data;
 	}
 
