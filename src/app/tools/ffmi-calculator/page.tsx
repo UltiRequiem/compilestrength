@@ -48,7 +48,7 @@ export default function FFMICalculator() {
 
 		// Convert existing results if they exist
 		if (result && oldUnit !== newUnit) {
-			const convertedResult = convertFFMIResultUnits(result, newUnit, oldUnit);
+			const convertedResult = convertFFMIResultUnits(result, oldUnit, newUnit);
 			setResult(convertedResult);
 		}
 	};

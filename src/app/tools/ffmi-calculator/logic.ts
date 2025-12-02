@@ -161,8 +161,8 @@ export function calculateFFMI(inputs: FFMIInputs): FFMICalculationResult {
  */
 export function convertFFMIResultUnits(
 	result: FFMICalculationResult,
-	newUnit: UnitSystem,
 	currentUnit: UnitSystem,
+	newUnit: UnitSystem,
 ): FFMICalculationResult {
 	if (currentUnit === newUnit) {
 		return result;

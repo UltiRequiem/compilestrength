@@ -450,8 +450,8 @@ describe("FFMI Calculator Logic", () => {
 		it("should convert fat-free mass from lbs to kg", () => {
 			const converted = convertFFMIResultUnits(
 				sampleResult,
-				"metric",
 				"imperial",
+				"metric",
 			);
 
 			expect(converted.fatFreeMass).toBeCloseTo(
@@ -473,8 +473,8 @@ describe("FFMI Calculator Logic", () => {
 
 			const converted = convertFFMIResultUnits(
 				metricResult,
-				"imperial",
 				"metric",
+				"imperial",
 			);
 
 			expect(converted.fatFreeMass).toBeCloseTo(73.5 * KG_TO_LBS, 1);
@@ -495,8 +495,8 @@ describe("FFMI Calculator Logic", () => {
 		it("should preserve FFMI values (they are unitless)", () => {
 			const converted = convertFFMIResultUnits(
 				sampleResult,
-				"metric",
 				"imperial",
+				"metric",
 			);
 
 			expect(converted.ffmi).toBe(sampleResult.ffmi);
@@ -506,8 +506,8 @@ describe("FFMI Calculator Logic", () => {
 		it("should round converted fat-free mass to 1 decimal place", () => {
 			const converted = convertFFMIResultUnits(
 				sampleResult,
-				"metric",
 				"imperial",
+				"metric",
 			);
 
 			expect(converted.fatFreeMass.toString()).toMatch(/^\d+\.\d$/);
