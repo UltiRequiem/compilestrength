@@ -91,6 +91,7 @@
 		"preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
 		"start": "next start",
 		"test": "vitest",
+		"test:changed": "./scripts/test-changed.sh",
 		"test:ui": "vitest --ui",
 		"test:coverage": "vitest --coverage"
 	}
