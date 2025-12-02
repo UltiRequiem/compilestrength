@@ -7,105 +7,46 @@ import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import type { BodyFatResult, Gender, UnitSystem } from "./config";
+import { calculateBodyFat } from "./logic";
+import { bodyFatInputSchema } from "./validation";
 
 export default function BodyFatCalculator() {
-	const [unit, setUnit] = useState<"metric" | "imperial">("imperial");
-	const [gender, setGender] = useState<"male" | "female">("male");
+	const [unit, setUnit] = useState<UnitSystem>("imperial");
+	const [gender, setGender] = useState<Gender>("male");
 	const [height, setHeight] = useState("");
 	const [waist, setWaist] = useState("");
 	const [neck, setNeck] = useState("");
 	const [hip, setHip] = useState(""); // Only for females
-	const [results, setResults] = useState<{
-		bodyFat: number;
-		category: string;
-		method: string;
-	} | null>(null);
+	const [results, setResults] = useState<BodyFatResult | null>(null);
 
 	const calculate = () => {
-		if (!height.trim() || !waist.trim() || !neck.trim()) {
-			toast.error("Please enter height, waist, and neck measurements");
-			return;
-		}
-
-		if (gender === "female" && !hip.trim()) {
-			toast.error("Please enter hip measurement for females");
-			return;
-		}
-
-		const h = Number.parseFloat(height);
-		const w = Number.parseFloat(waist);
-		const n = Number.parseFloat(neck);
-		const hipMeasure = gender === "female" ? Number.parseFloat(hip) : 0;
-
-		if (
-			Number.isNaN(h) ||
-			Number.isNaN(w) ||
-			Number.isNaN(n) ||
-			h <= 0 ||
-			w <= 0 ||
-			n <= 0
-		) {
-			toast.error(
-				"Please enter valid measurements for height, waist, and neck",
-			);
-			return;
-		}
-
-		if (gender === "female" && (Number.isNaN(hipMeasure) || hipMeasure <= 0)) {
-			toast.error("Please enter a valid hip measurement");
-			return;
-		}
-
-		// Convert to cm if imperial
-		const heightCm = unit === "imperial" ? h * 2.54 : h;
-		const waistCm = unit === "imperial" ? w * 2.54 : w;
-		const neckCm = unit === "imperial" ? n * 2.54 : n;
-		const hipCm =
-			gender === "female" && unit === "imperial"
-				? hipMeasure * 2.54
-				: hipMeasure;
-
-		let bodyFatPercentage: number;
-
-		if (gender === "male") {
-			// US Navy formula for males
-			bodyFatPercentage =
-				495 /
-					(1.0324 -
-						0.19077 * Math.log10(waistCm - neckCm) +
-						0.15456 * Math.log10(heightCm)) -
-				450;
-		} else {
-			// US Navy formula for females
-			bodyFatPercentage =
-				495 /
-					(1.29579 -
-						0.35004 * Math.log10(waistCm + hipCm - neckCm) +
-						0.221 * Math.log10(heightCm)) -
-				450;
-		}
-
-		// Determine category
-		let category = "";
-		if (gender === "male") {
-			if (bodyFatPercentage < 6) category = "Essential fat (too low)";
-			else if (bodyFatPercentage < 14) category = "Athletic";
-			else if (bodyFatPercentage < 18) category = "Fitness";
-			else if (bodyFatPercentage < 25) category = "Average";
-			else category = "Above average";
-		} else {
-			if (bodyFatPercentage < 14) category = "Essential fat (too low)";
-			else if (bodyFatPercentage < 21) category = "Athletic";
-			else if (bodyFatPercentage < 25) category = "Fitness";
-			else if (bodyFatPercentage < 32) category = "Average";
-			else category = "Above average";
-		}
-
-		setResults({
-			bodyFat: Number(bodyFatPercentage.toFixed(1)),
-			category,
-			method: "US Navy",
+		// Validate inputs using Zod schema
+		const result = bodyFatInputSchema.safeParse({
+			height,
+			waist,
+			neck,
+			hip: hip || undefined,
+			gender,
+			unit,
 		});
+
+		if (!result.success) {
+			console.log(result.error);
+			return toast.error(`${result.error.issues.map((issue) => issue.message).join(". ")}.`);
+		}
+
+		// Calculate body fat using pure logic function
+		const calculationResult = calculateBodyFat({
+			height: result.data.height,
+			waist: result.data.waist,
+			neck: result.data.neck,
+			hip: result.data.hip,
+			gender: result.data.gender,
+			unit: result.data.unit,
+		});
+
+		setResults(calculationResult);
 	};
 
 	return (
