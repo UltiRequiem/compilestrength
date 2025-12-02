@@ -108,6 +108,7 @@ export default async function ToolsPage() {
 			{/* Structured Data */}
 			<script
 				type="application/ld+json"
+				// biome-ignore lint/security/noDangerouslySetInnerHtml: It is safe here
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
 			/>
 

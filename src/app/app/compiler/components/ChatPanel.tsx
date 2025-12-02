@@ -264,20 +264,23 @@ export function ChatPanel() {
 							{message.role === "user" ? "You:" : "AI Assistant:"}
 						</div>
 						<div className="ml-4 whitespace-pre-wrap">
-							{message.parts.map((part, index) => {
+							{message.parts.map((part) => {
 								if (part.type === "text") {
-									return <span key={index}>{part.text}</span>;
+									return <span key={part.text}>{part.text}</span>;
 								}
 								if (part.type === "tool-call") {
 									return (
-										<div key={index} className="text-blue-400 text-xs mt-2">
+										<div
+											key={part.toolCallId}
+											className="text-blue-400 text-xs mt-2"
+										>
 											Analyzing your requirements...
 										</div>
 									);
 								}
 								if (part.type === "tool-result") {
 									return (
-										<div key={index} className="text-blue-400 text-xs">
+										<div key={part.state} className="text-blue-400 text-xs">
 											✓ Analysis complete
 										</div>
 									);

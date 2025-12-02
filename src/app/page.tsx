@@ -1,3 +1,5 @@
+/** biome-ignore-all lint/security/noDangerouslySetInnerHtml: SEO */
+
 import { headers } from "next/headers";
 import Link from "next/link";
 import { LandingNavbar } from "@/components/landing-navbar";
