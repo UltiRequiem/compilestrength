@@ -15,7 +15,7 @@ export interface OneRepMaxResult {
 	/** Mayhew formula result */
 	mayhew: number;
 	/** O'Connor formula result */
-	oConner: number;
+	oConnor: number;
 	/** Wathen formula result */
 	wathen: number;
 	/** Average of all formulas */

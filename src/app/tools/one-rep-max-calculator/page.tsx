@@ -178,7 +178,7 @@ export default function OneRepMaxCalculator() {
 									<div className="flex justify-between">
 										<span className="text-zinc-400">O'Connor Formula:</span>
 										<span className="font-bold">
-											{results.oConner} {unit}
+											{results.oConnor} {unit}
 										</span>
 									</div>
 									<div className="flex justify-between">

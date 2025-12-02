@@ -198,7 +198,7 @@ export function calculateOneRepMax(
 		lander: roundToDecimals(lander, RESULT_DECIMAL_PLACES),
 		lombardi: roundToDecimals(lombardi, RESULT_DECIMAL_PLACES),
 		mayhew: roundToDecimals(mayhew, RESULT_DECIMAL_PLACES),
-		oConner: roundToDecimals(oConner, RESULT_DECIMAL_PLACES),
+		oConnor: roundToDecimals(oConner, RESULT_DECIMAL_PLACES),
 		wathen: roundToDecimals(wathen, RESULT_DECIMAL_PLACES),
 		average: roundToDecimals(average, RESULT_DECIMAL_PLACES),
 	};
@@ -244,8 +244,8 @@ export function convertOneRepMaxResults(
 			results.mayhew * conversionFactor,
 			RESULT_DECIMAL_PLACES,
 		),
-		oConner: roundToDecimals(
-			results.oConner * conversionFactor,
+		oConnor: roundToDecimals(
+			results.oConnor * conversionFactor,
 			RESULT_DECIMAL_PLACES,
 		),
 		wathen: roundToDecimals(
