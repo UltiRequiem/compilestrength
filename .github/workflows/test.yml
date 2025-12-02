@@ -1,0 +1,95 @@
+name: Tests
+
+on:
+  pull_request:
+    branches: [main, testing]
+  push:
+    branches: [main, testing]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all history for changed files detection
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v45
+        with:
+          files: |
+            src/**/*.ts
+            src/**/*.tsx
+          files_ignore: |
+            **/*.test.ts
+            **/*.test.tsx
+
+      - name: Find related test files
+        id: test-files
+        run: |
+          echo "Finding test files for changed source files..."
+
+          CHANGED_FILES="${{ steps.changed-files.outputs.all_changed_files }}"
+          TEST_FILES=""
+
+          if [ -z "$CHANGED_FILES" ]; then
+            echo "No source files changed, running all tests as fallback"
+            echo "pattern=src/**/*.test.ts" >> $GITHUB_OUTPUT
+            echo "has_tests=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          for file in $CHANGED_FILES; do
+            # Remove src/ prefix and extension
+            base_path="${file#src/}"
+            base_path="${base_path%.ts}"
+            base_path="${base_path%.tsx}"
+
+            # Check for corresponding test file
+            test_file="src/${base_path}.test.ts"
+            if [ -f "$test_file" ]; then
+              TEST_FILES="$TEST_FILES $test_file"
+            fi
+
+            # Also check for .test.tsx
+            test_file_tsx="src/${base_path}.test.tsx"
+            if [ -f "$test_file_tsx" ]; then
+              TEST_FILES="$TEST_FILES $test_file_tsx"
+            fi
+          done
+
+          if [ -z "$TEST_FILES" ]; then
+            echo "No test files found for changed files"
+            echo "has_tests=false" >> $GITHUB_OUTPUT
+          else
+            echo "Test files to run: $TEST_FILES"
+            # Remove leading/trailing spaces and convert to single line
+            TEST_FILES=$(echo $TEST_FILES | xargs)
+            echo "pattern=$TEST_FILES" >> $GITHUB_OUTPUT
+            echo "has_tests=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Run tests for changed files
+        if: steps.test-files.outputs.has_tests == 'true'
+        run: |
+          TEST_PATTERN="${{ steps.test-files.outputs.pattern }}"
+          echo "Running tests: $TEST_PATTERN"
+          bun test $TEST_PATTERN
+
+      - name: Type check
+        run: npx tsc --noEmit
+
+      - name: Lint check
+        run: bun run biocheck
