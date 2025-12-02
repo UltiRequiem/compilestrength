@@ -14,11 +14,7 @@ export const oneRepMaxInputSchema = z.object({
 		.trim()
 		.min(1, "Please enter weight")
 		.transform((val) => Number.parseFloat(val))
-		.pipe(
-			z
-				.number()
-				.positive("Weight must be greater than 0"),
-		),
+		.pipe(z.number().positive("Weight must be greater than 0")),
 	reps: z
 		.string()
 		.trim()

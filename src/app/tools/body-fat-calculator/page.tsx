@@ -33,7 +33,9 @@ export default function BodyFatCalculator() {
 
 		if (!result.success) {
 			console.log(result.error);
-			return toast.error(`${result.error.issues.map((issue) => issue.message).join(". ")}.`);
+			return toast.error(
+				`${result.error.issues.map((issue) => issue.message).join(". ")}.`,
+			);
 		}
 
 		// Calculate body fat using pure logic function

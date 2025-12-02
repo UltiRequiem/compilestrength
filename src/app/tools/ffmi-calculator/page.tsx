@@ -7,10 +7,10 @@ import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import type { UnitSystem } from "@/types/unit-system";
 import type { FFMICalculationResult } from "./config";
 import { calculateFFMI, convertFFMIResultUnits } from "./logic";
 import { ffmiCalculatorInputSchema } from "./validation";
-import type { UnitSystem } from "@/types/unit-system";
 
 export default function FFMICalculator() {
 	const [unit, setUnit] = useState<UnitSystem>("imperial");

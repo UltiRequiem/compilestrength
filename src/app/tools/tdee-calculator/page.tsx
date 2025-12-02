@@ -7,14 +7,11 @@ import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-	ACTIVITY_LEVELS,
-	type TDEEResult,
-} from "./config";
+import type { Gender } from "@/types/gender";
+import type { UnitSystem } from "@/types/unit-system";
+import { ACTIVITY_LEVELS, type TDEEResult } from "./config";
 import { calculateTDEEResults } from "./logic";
 import { tdeeInputSchema } from "./validation";
-import type { UnitSystem } from "@/types/unit-system";
-import type { Gender } from "@/types/gender";
 
 export default function TDEECalculator() {
 	const [unit, setUnit] = useState<UnitSystem>("imperial");

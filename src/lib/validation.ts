@@ -37,17 +37,14 @@ export function createValidationErrorResponse(error: ValidationError) {
 
 export function createErrorResponse(message: string, status = 500) {
 	const response = {
-			success: false,
-			error: message,
-		};
+		success: false,
+		error: message,
+	};
 
-	return new Response(
-		JSON.stringify(response),
-		{
-			status,
-			headers: { "Content-Type": "application/json" },
-		},
-	);
+	return new Response(JSON.stringify(response), {
+		status,
+		headers: { "Content-Type": "application/json" },
+	});
 }
 
 export function createSuccessResponse(

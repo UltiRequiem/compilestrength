@@ -26,9 +26,9 @@ const FEMALE_BMR_CONSTANTS = {
 } as const;
 
 export const BMR_CONSTANTS_BY_GENDER = {
-	"male": MALE_BMR_CONSTANTS,
-	"female": FEMALE_BMR_CONSTANTS,
-}
+	male: MALE_BMR_CONSTANTS,
+	female: FEMALE_BMR_CONSTANTS,
+};
 
 // Activity level multipliers and descriptions
 export const ACTIVITY_LEVELS = [
