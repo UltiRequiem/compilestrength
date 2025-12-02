@@ -328,14 +328,25 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 - Unit conversion (imperial/metric)
 - Type-safe validation and calculations
 
-### ⚠️ Other Calculators (Need Refactoring)
+### ✅ One Rep Max Calculator (Refactored)
 
-The following calculators have all logic embedded in `page.tsx` and would
-benefit from refactoring:
+**Status**: Fully refactored following the recommended pattern
 
-1. **One Rep Max Calculator** (`one-rep-max-calculator/`)
-   - All logic in page.tsx
-   - Needs full architecture refactor
+**Structure**:
+
+- ✅ Separated logic (`logic.ts`) with pure calculation functions for all 7 formulas
+- ✅ Zod validation (`validation.ts`) with comprehensive input validation
+- ✅ Configuration constants (`config.ts`) with named constants for all formulas
+- ✅ Clean page orchestration with toast notifications
+- ✅ JSDoc documentation for all formulas
+
+**Features**:
+
+- Seven 1RM formulas: Brzycki, Epley, Lander, Lombardi, Mayhew, O'Connor, Wathen
+- Average calculation across all formulas for reliability
+- Unit conversion (imperial/metric)
+- Type-safe validation and calculations
+- Formula-specific documentation explaining accuracy and use cases
 
 ## Migration Guide
 
