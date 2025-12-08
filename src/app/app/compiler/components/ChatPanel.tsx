@@ -4,6 +4,7 @@ import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import { Loader2, Send, Square } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { debug } from "@/lib/debug";
 import type { UserProfile } from "@/schemas";
 import {
 	useWorkoutRoutineActions,
@@ -17,10 +18,10 @@ export function ChatPanel() {
 		}),
 		onFinish: (result) => {
 			// Handle any post-message processing
-			console.log("Message finished:", result);
+			debug.log("Message finished:", result);
 		},
 		onError: (error) => {
-			console.error("Chat error:", error);
+			debug.error("Chat error:", error);
 		},
 	});
 
@@ -35,7 +36,7 @@ export function ChatPanel() {
 	// Function to save routine to database - wrapped in useCallback to prevent recreating on every render
 	const saveRoutineToDatabase = useCallback(async (routine: WorkoutRoutine) => {
 		try {
-			console.log("💾 Saving routine to database:", routine.name);
+			debug.log("💾 Saving routine to database:", routine.name);
 
 			const response = await fetch("/api/compiler/save-routine", {
 				method: "POST",
@@ -51,28 +52,28 @@ export function ChatPanel() {
 					programId: string;
 					message: string;
 				};
-				console.log(
+				debug.log(
 					"✅ Routine saved to database successfully:",
 					result.programId,
 				);
 			} else {
-				console.error(
+				debug.error(
 					"❌ Failed to save routine to database:",
 					response.statusText,
 				);
 			}
 		} catch (error) {
-			console.error("❌ Error saving routine to database:", error);
+			debug.error("❌ Error saving routine to database:", error);
 		}
 	}, []);
 
 	// Handle tool result data from API - wrapped in useCallback to prevent infinite loops
 	const handleToolResult = useCallback(
 		(data: { toolName: string; result: unknown }) => {
-			console.log("=== HANDLING TOOL RESULT ===");
-			console.log("Tool name:", data.toolName);
-			console.log("Tool result:", data.result);
-			console.log("Full data object:", JSON.stringify(data, null, 2));
+			debug.log("=== HANDLING TOOL RESULT ===");
+			debug.log("Tool name:", data.toolName);
+			debug.log("Tool result:", data.result);
+			debug.log("Full data object:", JSON.stringify(data, null, 2));
 
 			switch (data.toolName) {
 				case "updateUserProfile":
@@ -81,14 +82,14 @@ export function ChatPanel() {
 						typeof data.result === "object" &&
 						"profile" in data.result
 					) {
-						console.log(
+						debug.log(
 							"📝 Updating user profile in store:",
 							data.result.profile,
 						);
 						setUserProfile(data.result.profile as UserProfile);
-						console.log("✅ User profile updated in store");
+						debug.log("✅ User profile updated in store");
 					} else {
-						console.log("❌ No profile data found in result");
+						debug.log("❌ No profile data found in result");
 					}
 					break;
 
@@ -99,26 +100,24 @@ export function ChatPanel() {
 						"routine" in data.result
 					) {
 						const routine = data.result.routine as WorkoutRoutine;
-						console.log("🏋️ Creating workout routine in store:", routine);
-						console.log("🏋️ Routine has", routine.days?.length || 0, "days");
+						debug.log("🏋️ Creating workout routine in store:", routine);
+						debug.log("🏋️ Routine has", routine.days?.length || 0, "days");
 						setRoutine(routine);
-						console.log("✅ Workout routine updated in store");
+						debug.log("✅ Workout routine updated in store");
 
 						// Only save to database if we haven't already saved this routine
 						// Use both ID and name for more robust duplicate detection
 						const routineKey = `${routine.id}-${routine.name}`;
 						if (!processedRoutinesRef.current.has(routineKey)) {
-							console.log("💾 New routine detected, saving to database");
+							debug.log("💾 New routine detected, saving to database");
 							processedRoutinesRef.current.add(routineKey);
 							void saveRoutineToDatabase(routine);
 						} else {
-							console.log(
-								"🔄 Routine already processed, skipping database save",
-							);
+							debug.log("🔄 Routine already processed, skipping database save");
 						}
 					} else {
-						console.log("❌ No routine data found in result");
-						console.log(
+						debug.log("❌ No routine data found in result");
+						debug.log(
 							"Available keys in result:",
 							Object.keys((data.result as object) || {}),
 						);
@@ -131,7 +130,7 @@ export function ChatPanel() {
 						typeof data.result === "object" &&
 						"steps" in data.result
 					) {
-						console.log(
+						debug.log(
 							"📊 Updating generation progress in store:",
 							data.result.steps,
 						);
@@ -142,15 +141,15 @@ export function ChatPanel() {
 								completed: boolean;
 							}>,
 						);
-						console.log("✅ Generation progress updated in store");
+						debug.log("✅ Generation progress updated in store");
 					} else {
-						console.log("❌ No steps data found in result");
+						debug.log("❌ No steps data found in result");
 					}
 					break;
 
 				default:
-					console.log("❓ Unknown tool result:", data.toolName, data.result);
-					console.log(
+					debug.log("❓ Unknown tool result:", data.toolName, data.result);
+					debug.log(
 						"Available keys in result:",
 						Object.keys((data.result as object) || {}),
 					);
@@ -166,7 +165,7 @@ export function ChatPanel() {
 
 	// Process tool results from messages when they update
 	useEffect(() => {
-		console.log("💭 Messages changed, checking for tool results");
+		debug.log("💭 Messages changed, checking for tool results");
 
 		// Only auto-scroll when a new message is added (not during streaming updates)
 		// This prevents uncomfortable scrolling while the user is reading
@@ -178,7 +177,7 @@ export function ChatPanel() {
 		// Get the latest message
 		const latestMessage = messages[messages.length - 1];
 		if (latestMessage && latestMessage.role === "assistant") {
-			console.log("🔍 Processing latest assistant message:", latestMessage);
+			debug.log("🔍 Processing latest assistant message:", latestMessage);
 
 			// Check each part of the message for tool results
 			latestMessage.parts.forEach((part) => {
@@ -189,7 +188,7 @@ export function ChatPanel() {
 					const toolName = part.type.replace("tool-", "");
 					const output = (part as unknown as { output: unknown }).output;
 
-					console.log("🛠️ Found tool result in message:", toolName, output);
+					debug.log("🛠️ Found tool result in message:", toolName, output);
 
 					handleToolResult({
 						toolName,

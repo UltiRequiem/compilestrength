@@ -3,6 +3,7 @@
 import { Brain, Dumbbell, Heart, Zap } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { debug } from "@/lib/debug";
 
 type AgentType = "bodybuilding" | "powerlifting" | "endurance" | "general";
 
@@ -53,7 +54,7 @@ export function AgentSelector() {
 		if (agents.find((a) => a.id === agentId)?.available) {
 			setSelectedAgent(agentId);
 			// TODO: Reset chat when agent changes
-			console.log("Switching to agent:", agentId);
+			debug.log("Switching to agent:", agentId);
 		}
 	};
 
